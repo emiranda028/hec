@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Hospital El Cruce — Presupuesto Financiero 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --navy:#0F2A44;
+    --navy-2:#153A5C;
+    --teal:#0E8074;
+    --teal-light:#E4F3F1;
+    --gold:#C98A2C;
+    --gold-light:#FBF0DE;
+    --bg:#F4F6F7;
+    --card:#FFFFFF;
+    --ink:#16232E;
+    --muted:#65727D;
+    --line:#E3E8EB;
+    --red:#B5482F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 22px 60px;}
+
+  /* ---- signature cross-hatch pattern ---- */
+  .cross-pattern{
+    position:absolute; inset:0; opacity:0.10; pointer-events:none;
+    background-image:
+      linear-gradient(var(--teal) 1.5px, transparent 1.5px),
+      linear-gradient(90deg, var(--teal) 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse at 80% 0%, black 0%, transparent 70%);
+  }
+
+  header{
+    position:relative;
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    border-radius:18px;
+    padding:34px 34px 30px;
+    color:#fff;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .eyebrow{
+    font-size:12.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:#9FD4CC; font-weight:600; margin-bottom:10px;
+  }
+  h1{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    font-size:clamp(28px,4vw,40px);
+    margin:0 0 8px;
+    line-height:1.08;
+  }
+  .sub{
+    color:#C7D5E0; font-size:14.5px; max-width:560px; line-height:1.5;
+  }
+  .header-row{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap;}
+  .badge-vencido{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.28);
+    border-radius:10px;
+    padding:12px 16px;
+    text-align:right;
+    min-width:190px;
+  }
+  .badge-vencido .lbl{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#C7D5E0;}
+  .badge-vencido .val{font-family:'Newsreader',serif; font-size:20px; font-weight:600; color:#F3C88C; margin-top:2px;}
+
+  /* ---- section divider: the "cruce" mark ---- */
+  .divider{
+    display:flex; align-items:center; gap:14px;
+    margin:38px 0 16px;
+  }
+  .divider .plus{
+    font-family:'Newsreader',serif; font-size:20px; color:var(--teal); font-weight:600;
+  }
+  .divider h2{
+    font-family:'Newsreader',serif; font-weight:600; font-size:19px; margin:0; color:var(--navy);
+  }
+  .divider .rule{flex:1; height:1px; background:var(--line);}
+
+  /* ---- KPI cards ---- */
+  .kpi-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px;
+  }
+  @media (max-width:900px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} }
+  .kpi{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:18px 18px 16px; position:relative; overflow:hidden;
+  }
+  .kpi::before{
+    content:""; position:absolute; top:0; left:0; width:3px; height:100%;
+    background:var(--teal);
+  }
+  .kpi.gold::before{background:var(--gold);}
+  .kpi.navy::before{background:var(--navy);}
+  .kpi .lbl{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600;}
+  .kpi .num{
+    font-family:'Newsreader',serif; font-weight:600; font-size:25px; margin-top:8px; color:var(--ink);
+    line-height:1.15;
+  }
+  .kpi .foot{font-size:12.5px; color:var(--muted); margin-top:6px;}
+
+  /* ---- progress bar ---- */
+  .exec-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin-top:16px;
+  }
+  .exec-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; flex-wrap:wrap; gap:8px;}
+  .exec-top .t{font-weight:600; font-size:14.5px;}
+  .exec-top .p{font-family:'Newsreader',serif; font-weight:600; font-size:22px; color:var(--teal);}
+  .bar-track{height:14px; border-radius:8px; background:var(--gold-light); overflow:hidden; display:flex;}
+  .bar-fill{height:100%; background:var(--teal);}
+  .exec-legend{display:flex; gap:22px; margin-top:12px; font-size:13px; color:var(--muted); flex-wrap:wrap;}
+  .exec-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* ---- charts ---- */
+  .chart-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:14px; margin-top:16px;}
+  @media (max-width:900px){ .chart-grid{grid-template-columns:1fr;} }
+  .chart-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .chart-card h3{margin:0 0 4px; font-family:'Newsreader',serif; font-weight:600; font-size:16.5px;}
+  .chart-card .cap{font-size:12.5px; color:var(--muted); margin-bottom:10px;}
+  .chart-wrap{position:relative; height:270px;}
+
+  /* ---- filters ---- */
+  .filter-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; margin-top:16px;
+  }
+  .filter-row{display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;}
+  .field{display:flex; flex-direction:column; gap:6px; min-width:150px;}
+  .field label{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600;}
+  .field select, .field input[type=date]{
+    font-family:'IBM Plex Sans',sans-serif; font-size:13.5px; color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:#fff;
+    outline:none;
+  }
+  .field select:focus, .field input[type=date]:focus{border-color:var(--teal);}
+  .checkbox-field{min-width:auto; justify-content:center;}
+  .chk{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  .chk input{width:15px; height:15px; accent-color:var(--teal); cursor:pointer;}
+  .clear-btn{
+    margin-left:auto; background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    padding:9px 14px; font-size:13px; color:var(--muted); font-weight:600; cursor:pointer;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .clear-btn:hover{background:var(--teal-light); color:#0A5A51; border-color:var(--teal);}
+  .filter-summary{font-size:12.5px; color:var(--muted); margin-top:12px; padding-top:12px; border-top:1px dashed var(--line);}
+  .filter-summary strong{color:var(--ink);}
+  .no-results{padding:26px; text-align:center; color:var(--muted); font-size:13.5px;}
+
+  /* ---- table ---- */
+  .table-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px 6px 10px; margin-top:16px; overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:680px;}
+  thead th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--muted); padding:14px 16px 10px; border-bottom:1px solid var(--line); font-weight:600;
+  }
+  tbody td{padding:11px 16px; border-bottom:1px solid var(--line); color:var(--ink);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAFBFC;}
+  .num-cell{text-align:right; font-variant-numeric:tabular-nums;}
+  .status{
+    display:inline-block; padding:3px 9px; border-radius:20px; font-size:11.5px; font-weight:600;
+  }
+  .status.vencido{background:var(--gold-light); color:#8A5A17;}
+  .status.pendiente{background:var(--teal-light); color:#0A5A51;}
+  .status.pagado{background:#EAF3E9; color:#2E6B37;}
+
+  footer{margin-top:34px; text-align:center; font-size:12px; color:var(--muted); line-height:1.7;}
+  footer .cross{color:var(--teal); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="cross-pattern"></div>
+    <div class="header-row">
+      <div>
+        <div class="eyebrow">Alta Complejidad en Red · Ministerio de Salud · Prov. de Buenos Aires</div>
+        <h1>Hospital El Cruce — Presupuesto Financiero 2026</h1>
+        <div class="sub">Seguimiento de resoluciones, cobros e ingresos SIDIF sobre el ejercicio 2025–2026. Datos extraídos del Presupuesto Financiero 2026 (EEP2026).</div>
+      </div>
+      <div class="badge-vencido">
+        <div class="lbl">Vencido al</div>
+        <div class="val">4 / 8 / 2026</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"><span class="plus">✚</span><h2>Resumen ejecutivo</h2><div class="rule"></div></div>
+  <div class="kpi-grid">
+    <div class="kpi navy">
+      <div class="lbl">Total percibido histórico</div>
+      <div class="num">$ 82.046.188.742</div>
+      <div class="foot">2025 + 2026 acumulado</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Presupuesto aprobado 2026</div>
+      <div class="num">$ 128.343.252.243</div>
+      <div class="foot">RESOL-2026-374-APN-MS</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Afectado 2026 (cobrado)</div>
+      <div class="num">$ 76.586.432.666</div>
+      <div class="foot">59,7% del presupuesto aprobado</div>
+    </div>
+    <div class="kpi gold">
+      <div class="lbl">Sin afectar 2026</div>
+      <div class="num">$ 51.756.819.577</div>
+      <div class="foot">40,3% pendiente de afectación</div>
+    </div>
+  </div>
+
+  <div class="exec-card">
+    <div class="exec-top">
+      <div class="t">Ejecución presupuestaria 2026 (Afectado vs. presupuesto aprobado)</div>
+      <div class="p">59,7%</div>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:59.7%"></div></div>
+    <div class="exec-legend">
+      <span><span class="dot" style="background:var(--teal)"></span>Afectado — $ 76.586.432.666</span>
+      <span><span class="dot" style="background:var(--gold-light);border:1px solid var(--gold)"></span>Sin afectar — $ 51.756.819.577</span>
+      <span>Saldo pendiente 2025: <strong>$ 0</strong> (100% cobrado a la fecha)</span>
+    </div>
+  </div>
+
+  <div class="divider"><span class="plus">✚</span><h2>Evolución y composición 2026</h2><div class="rule"></div></div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Presupuestado por mes — 2026</h3>
+      <div class="cap">Enero a julio, según fecha de vencimiento de cada partida (SIDIF)</div>
+      <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Por tipo de gasto — 2026</h3>
+      <div class="cap">Acumulado enero–julio</div>
+      <div class="chart-wrap"><canvas id="typeChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="divider"><span class="plus">✚</span><h2>Comparación 2025 vs. 2026</h2><div class="rule"></div></div>
+  <div class="chart-grid" style="grid-template-columns:1fr 1.5fr;">
+    <div class="chart-card">
+      <h3>Total percibido por período</h3>
+      <div class="cap">En pesos</div>
+      <div class="chart-wrap"><canvas id="yearChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Lectura rápida</h3>
+      <div class="cap">&nbsp;</div>
+      <ul style="font-size:13.5px; line-height:1.9; color:var(--ink); padding-left:18px; margin-top:6px;">
+        <li>El ejercicio <strong>2025</strong> quedó totalmente cobrado: $ 5.459.756.076 (Nación $ 3.459.756.076 + Provincia $ 2.000.000.000), saldo $ 0.</li>
+        <li><strong>Enero 2026</strong> concentra el mayor desembolso del año ($ 21.538.172.320), impulsado por Sueldos y Funcionamiento de la RESOL-2026-374.</li>
+        <li><strong>Funcionamiento</strong> es la partida más pesada del año ($ 39.841.537.201), seguida por Sueldos ($ 25.721.689.322) y CCSS ($ 8.574.188.112).</li>
+        <li>Del presupuesto aprobado 2026 ($ 128.343.252.243), resta afectar el <strong>40,3%</strong> ($ 51.756.819.577) — sin movimientos registrados desde agosto en adelante.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"><span class="plus">✚</span><h2>Detalle de resoluciones</h2><div class="rule"></div></div>
+
+  <div class="filter-card">
+    <div class="filter-row">
+      <div class="field">
+        <label>Normativa</label>
+        <select id="fNorm"><option value="">Todas</option></select>
+      </div>
+      <div class="field">
+        <label>Período</label>
+        <select id="fPeriodo">
+          <option value="">Todos</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Estado</label>
+        <select id="fEstado">
+          <option value="">Todos</option>
+          <option value="pagado">Pagado</option>
+          <option value="vencido">Vencido</option>
+          <option value="pendiente">Pendiente</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Vencimiento desde</label>
+        <input type="date" id="fDesde">
+      </div>
+      <div class="field">
+        <label>Vencimiento hasta</label>
+        <input type="date" id="fHasta">
+      </div>
+      <div class="field checkbox-field">
+        <label class="chk"><input type="checkbox" id="fPendiente"> Solo con saldo pendiente de cobro</label>
+      </div>
+      <button id="fClear" class="clear-btn">Limpiar filtros</button>
+    </div>
+    <div class="filter-summary" id="filterSummary"></div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Período</th>
+          <th>Resolución</th>
+          <th class="num-cell">Presupuestado</th>
+          <th class="num-cell">Pendiente de cobro</th>
+          <th>Vencimiento</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <footer>
+    Hospital El Cruce <span class="cross">✚</span> Dr. Néstor Carlos Kirchner — Ministerio de Salud, Provincia de Buenos Aires<br>
+    Fuente: Presupuesto Financiero 2026 (EEP2026) · Dirección de Administración — Finanzas / Tesorería · Vencido al 4/8/2026
+  </footer>
+</div>
+
+<script>
+Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+Chart.defaults.color = '#65727D';
+
+const navy = '#0F2A44', teal = '#0E8074', gold = '#C98A2C', red='#B5482F', tealLight='#7FC2B9';
+
+// ---- Monthly chart (2026) ----
+new Chart(document.getElementById('monthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul'],
+    datasets: [{
+      label: 'Presupuestado ($)',
+      data: [21538172320, 348751554, 11338536482, 11660492753, 11998546838, 14802521657, 4899411062],
+      backgroundColor: teal,
+      borderRadius: 5,
+      maxBarThickness: 44
+    }]
+  },
+  options: {
+    plugins: { legend: { display:false }, tooltip:{ callbacks:{ label: c => ' $ ' + c.parsed.y.toLocaleString('es-AR') } } },
+    scales: {
+      y: { ticks: { callback: v => '$' + (v/1e9).toFixed(0) + 'mM' }, grid:{ color:'#EEF1F2' } },
+      x: { grid: { display:false } }
+    }
+  }
+});
+
+// ---- Type of expense chart ----
+new Chart(document.getElementById('typeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Funcionamiento','Sueldos','CCSS','SAC','CCSS SAC'],
+    datasets: [{
+      data: [39841537201, 25721689322, 8574188112, 1836763523, 612254508],
+      backgroundColor: [navy, teal, tealLight, gold, '#E3A94A'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { position:'bottom', labels:{ boxWidth:10, padding:12, font:{size:11.5} } },
+      tooltip:{ callbacks:{ label: c => c.label + ': $ ' + c.parsed.toLocaleString('es-AR') } }
+    },
+    cutout:'62%'
+  }
+});
+
+// ---- Year comparison ----
+new Chart(document.getElementById('yearChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2025','2026 (a jul.)'],
+    datasets: [{
+      data: [5459756076, 76586432666],
+      backgroundColor: [navy, teal],
+      borderRadius: 6,
+      maxBarThickness: 60
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: c => ' $ ' + c.parsed.x.toLocaleString('es-AR') } } },
+    scales: {
+      x: { ticks: { callback: v => '$' + (v/1e9).toFixed(0) + 'mM' }, grid:{ color:'#EEF1F2' } },
+      y: { grid:{ display:false } }
+    }
+  }
+});
+
+// ---- Table data ----
+// norm: normativa agrupadora (para el filtro) · venc: texto mostrado · vencISO: fecha para filtrar/ordenar
+const rows = [
+  { periodo:'2025', norm:'RESOL-2025-3391-APN-MS', res:'RESOL-2025-3391-APN-MS', presup:5570607466, pend:3194443949, venc:'30/dic/2025', vencISO:'2025-12-30', estado:'pagado' },
+  { periodo:'2025', norm:'RESOL-2025-3396-APN-MS', res:'RESOL-2025-3396-APN-MS', presup:559316920, pend:220580559, venc:'30/dic/2025', vencISO:'2025-12-30', estado:'pagado' },
+  { periodo:'2025', norm:'RESOL-2025-3386-APN-MS', res:'RESOL-2025-3386-APN-MS', presup:0, pend:44731568, venc:'30/dic/2025', vencISO:'2025-12-30', estado:'pagado' },
+  { periodo:'2025', norm:'DECRETO N° 2956/2025', res:'DECRETO N° 2956/2025 — Funcionamiento PBA', presup:2000000000, pend:0, venc:'15/dic/2025', vencISO:'2025-12-15', estado:'pagado' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Enero', presup:21538172320, pend:0, venc:'11/mar/2026', vencISO:'2026-03-11', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Febrero', presup:348751554, pend:0, venc:'18/mar/2026', vencISO:'2026-03-18', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Marzo', presup:11338536482, pend:0, venc:'31/mar/2026', vencISO:'2026-03-31', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Abril', presup:11660492753, pend:0, venc:'30/abr/2026', vencISO:'2026-04-30', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Mayo', presup:11998546838, pend:0, venc:'29/may/2026', vencISO:'2026-05-29', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Junio', presup:14802521657, pend:0, venc:'30/jun/2026', vencISO:'2026-06-30', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Julio', presup:4899411062, pend:0, venc:'31/jul/2026', vencISO:'2026-07-31', estado:'vencido' },
+  { periodo:'2026', norm:'RESOL-2026-374-APN-MS', res:'RESOL-2026-374-APN-MS — Sin afectar (ago.–dic.)', presup:51756819577, pend:51756819577, venc:'—', vencISO:'', estado:'pendiente' },
+];
+
+const fmt = n => '$ ' + n.toLocaleString('es-AR');
+const badge = e => e === 'vencido'
+  ? '<span class="status vencido">Vencido</span>'
+  : e === 'pendiente'
+    ? '<span class="status pendiente">Pendiente</span>'
+    : '<span class="status pagado">Pagado</span>';
+
+// Poblar el select de normativa dinámicamente
+const normSelect = document.getElementById('fNorm');
+[...new Set(rows.map(r => r.norm))].forEach(n => {
+  const opt = document.createElement('option');
+  opt.value = n; opt.textContent = n;
+  normSelect.appendChild(opt);
+});
+
+function renderTable(){
+  const norm = document.getElementById('fNorm').value;
+  const periodo = document.getElementById('fPeriodo').value;
+  const estado = document.getElementById('fEstado').value;
+  const desde = document.getElementById('fDesde').value;
+  const hasta = document.getElementById('fHasta').value;
+  const soloPendiente = document.getElementById('fPendiente').checked;
+
+  const filtered = rows.filter(r => {
+    if (norm && r.norm !== norm) return false;
+    if (periodo && r.periodo !== periodo) return false;
+    if (estado && r.estado !== estado) return false;
+    if (soloPendiente && r.pend <= 0) return false;
+    if (desde && (!r.vencISO || r.vencISO < desde)) return false;
+    if (hasta && (!r.vencISO || r.vencISO > hasta)) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = filtered.length ? filtered.map(r => `
+    <tr>
+      <td>${r.periodo}</td>
+      <td>${r.res}</td>
+      <td class="num-cell">${fmt(r.presup)}</td>
+      <td class="num-cell">${fmt(r.pend)}</td>
+      <td>${r.venc}</td>
+      <td>${badge(r.estado)}</td>
+    </tr>
+  `).join('') : `<tr><td colspan="6" class="no-results">Ningún registro coincide con los filtros seleccionados.</td></tr>`;
+
+  const totalPend = filtered.reduce((a,r) => a + r.pend, 0);
+  document.getElementById('filterSummary').innerHTML =
+    `Mostrando <strong>${filtered.length}</strong> de ${rows.length} registros · Pendiente de cobro en la selección: <strong>${fmt(totalPend)}</strong>`;
+}
+
+['fNorm','fPeriodo','fEstado','fDesde','fHasta'].forEach(id =>
+  document.getElementById(id).addEventListener('change', renderTable)
+);
+document.getElementById('fPendiente').addEventListener('change', renderTable);
+document.getElementById('fClear').addEventListener('click', () => {
+  document.getElementById('fNorm').value = '';
+  document.getElementById('fPeriodo').value = '';
+  document.getElementById('fEstado').value = '';
+  document.getElementById('fDesde').value = '';
+  document.getElementById('fHasta').value = '';
+  document.getElementById('fPendiente').checked = false;
+  renderTable();
+});
+
+renderTable();
+</script>
+</body>
+</html>
