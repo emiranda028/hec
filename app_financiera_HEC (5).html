@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Hospital El Cruce — Sistema de Administración</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --navy:#0F2A44; --navy-2:#153A5C; --teal:#0E8074; --teal-light:#E4F3F1;
+    --gold:#C98A2C; --gold-light:#FBF0DE; --amber:#B5482F; --amber-light:#FBEAE4;
+    --bg:#F4F6F7; --card:#FFFFFF; --ink:#16232E; --muted:#65727D; --line:#E3E8EB;
+    --sidebar-w:236px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0; background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; background:linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color:#fff; position:sticky; top:0; height:100vh; padding:22px 16px; display:flex; flex-direction:column;
+  }
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .brand .mark{font-family:'Newsreader',serif; font-size:22px; color:var(--teal); font-weight:700;}
+  .brand .txt{font-family:'Newsreader',serif; font-size:15.5px; font-weight:600; line-height:1.25;}
+  .brand-sub{font-size:11px; color:#9FD4CC; letter-spacing:.04em; text-transform:uppercase; margin:2px 0 26px 0;}
+
+  nav.navlist{display:flex; flex-direction:column; gap:3px; flex:1;}
+  nav.navlist button{
+    all:unset; display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:9px;
+    color:#C7D5E0; font-size:13.5px; font-weight:500; cursor:pointer; font-family:inherit;
+  }
+  nav.navlist button .ic{font-size:15px; width:18px; text-align:center; opacity:.9;}
+  nav.navlist button:hover{background:rgba(255,255,255,0.08); color:#fff;}
+  nav.navlist button.active{background:rgba(14,128,116,0.35); color:#fff; box-shadow: inset 3px 0 0 var(--teal);}
+  nav.navlist button{position:relative;}
+  .nav-badge{position:absolute; right:10px; top:50%; transform:translateY(-50%); background:var(--amber); color:#fff; font-size:10.5px; font-weight:700; border-radius:10px; padding:1px 7px; line-height:1.5;}
+
+  .alert-hero{display:flex; align-items:center; gap:16px; background:linear-gradient(135deg, #D6472E 0%, #B5482F 100%); color:#fff; border-radius:14px; padding:18px 22px; margin-bottom:20px; box-shadow:0 6px 18px rgba(181,72,47,0.28);}
+  .alert-hero .icon{font-size:30px; line-height:1;}
+  .alert-hero .body{flex:1;}
+  .alert-hero .headline{font-family:'Newsreader',serif; font-weight:700; font-size:19px; margin-bottom:3px;}
+  .alert-hero .sub{font-size:13px; opacity:.92;}
+  .alert-hero .cta{background:#fff; color:var(--amber); font-weight:700; font-size:13px; border:none; border-radius:8px; padding:9px 16px; cursor:pointer; white-space:nowrap;}
+  .alert-hero .cta:hover{background:#FBEAE4;}
+  @keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 rgba(181,72,47,0.5);} 50%{box-shadow:0 0 0 5px rgba(181,72,47,0);}}
+  .nav-badge{animation:pulse-badge 2.2s infinite;}
+
+  .sidebar-foot{font-size:11px; color:#7E93A6; line-height:1.7; border-top:1px solid rgba(255,255,255,0.12); padding-top:14px; margin-top:14px;}
+  .sidebar-foot b{color:#C7D5E0;}
+
+  /* ---------------- MAIN ---------------- */
+  main.content{flex:1; padding:26px 34px 60px; max-width:1180px;}
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:22px;}
+  .topbar h1{font-family:'Newsreader',serif; font-weight:600; font-size:25px; margin:0 0 4px; color:var(--navy);}
+  .topbar .sub{color:var(--muted); font-size:13.5px;}
+  .topbar .dates{font-size:11.5px; color:var(--muted); text-align:right; line-height:1.7;}
+  .topbar .dates b{color:var(--ink);}
+
+  section.view{display:none;}
+  section.view.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .warn-banner{
+    display:flex; gap:12px; align-items:flex-start; background:var(--amber-light); border:1px solid #E7C4B6;
+    border-radius:12px; padding:13px 17px; margin-bottom:20px; font-size:13px; color:#7A3423; line-height:1.55;
+  }
+  .warn-banner a{color:#7A3423; font-weight:600; text-decoration:underline; cursor:pointer;}
+
+  .section-title{display:flex; align-items:baseline; gap:10px; margin:28px 0 14px; }
+  .section-title h2{font-family:'Newsreader',serif; font-weight:600; font-size:18px; margin:0; color:var(--navy);}
+  .section-title .tag{font-size:11px; color:var(--muted); background:var(--bg); border:1px solid var(--line); border-radius:20px; padding:3px 10px;}
+  .section-title:first-child{margin-top:0;}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:13px;}
+  @media (max-width:980px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} }
+  .kpi{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 17px 15px; position:relative; overflow:hidden;}
+  .kpi::before{content:""; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--teal);}
+  .kpi.gold::before{background:var(--gold);} .kpi.navy::before{background:var(--navy);} .kpi.amber::before{background:var(--amber);}
+  .kpi .lbl{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; display:flex; justify-content:space-between; gap:6px;}
+  .kpi .num{font-family:'Newsreader',serif; font-weight:600; font-size:21px; margin-top:7px; line-height:1.15;}
+  .kpi .foot{font-size:12px; color:var(--muted); margin-top:5px;}
+  .flagchip{font-size:9.5px; background:var(--amber-light); color:#8A5A17; border-radius:10px; padding:2px 6px; font-weight:600; white-space:nowrap;}
+
+  .chart-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:14px; margin-top:6px;}
+  @media (max-width:980px){ .chart-grid{grid-template-columns:1fr;} }
+  .chart-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:19px;}
+  .chart-card h3{margin:0 0 3px; font-family:'Newsreader',serif; font-weight:600; font-size:15.5px;}
+  .chart-card .cap{font-size:12px; color:var(--muted); margin-bottom:8px;}
+  .chart-wrap{position:relative; height:255px;}
+  .chart-wrap.tall{height:305px;}
+
+  .exec-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-top:6px;}
+  .exec-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:11px; flex-wrap:wrap; gap:8px;}
+  .exec-top .t{font-weight:600; font-size:14px;}
+  .exec-top .p{font-family:'Newsreader',serif; font-weight:600; font-size:20px; color:var(--teal);}
+  .bar-track{height:13px; border-radius:8px; background:var(--gold-light); overflow:hidden;}
+  .bar-fill{height:100%; background:var(--teal);}
+  .exec-legend{display:flex; gap:20px; margin-top:11px; font-size:12.5px; color:var(--muted); flex-wrap:wrap;}
+  .exec-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  .table-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px 6px 8px; margin-top:14px; overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13px; min-width:700px;}
+  thead th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:13px 15px 9px; border-bottom:1px solid var(--line); font-weight:600;}
+  tbody td{padding:10px 15px; border-bottom:1px solid var(--line); color:var(--ink);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAFBFC;}
+  .num-cell{text-align:right; font-variant-numeric:tabular-nums;}
+  .status{display:inline-block; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600;}
+  .status.vencido{background:var(--gold-light); color:#8A5A17;}
+  .status.pendiente{background:var(--teal-light); color:#0A5A51;}
+  .status.pagado{background:#EAF3E9; color:#2E6B37;}
+  .status.revisar{background:var(--amber-light); color:#8A3423;}
+
+  .filter-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-top:14px;}
+  .filter-row{display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap;}
+  .field{display:flex; flex-direction:column; gap:6px; min-width:140px;}
+  .field label{font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600;}
+  .field select, .field input[type=date], .field input[type=text]{font-family:'IBM Plex Sans',sans-serif; font-size:13px; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:7px 9px; background:#fff; outline:none;}
+  .field select:focus, .field input[type=date]:focus, .field input[type=text]:focus{border-color:var(--teal);}
+  .field input[type=text]{min-width:200px;}
+  .field.search-field{position:relative;}
+  .field.search-field input[type=text]{padding-left:28px;}
+  .field.search-field::before{content:'🔎'; position:absolute; left:9px; bottom:8px; font-size:11px; opacity:.55; pointer-events:none;}
+  .clear-btn{margin-left:auto; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:8px 13px; font-size:12.5px; color:var(--muted); font-weight:600; cursor:pointer; font-family:'IBM Plex Sans',sans-serif;}
+  .clear-btn:hover{background:var(--teal-light); color:#0A5A51; border-color:var(--teal);}
+  .export-btns{display:flex; flex-direction:column; gap:8px; margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.12);}
+  .export-btns button{font-family:'IBM Plex Sans',sans-serif; font-size:12px; font-weight:600; border-radius:8px; padding:9px 10px; cursor:pointer; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.08); color:#fff; text-align:left; display:flex; align-items:center; gap:8px; transition:background .15s;}
+  .export-btns button:hover{background:rgba(255,255,255,.18);}
+  .export-btns button .ic{font-size:14px;}
+  .filter-summary{font-size:12px; color:var(--muted); margin-top:11px; padding-top:11px; border-top:1px dashed var(--line);}
+  .filter-summary strong{color:var(--ink);}
+  .no-results{padding:24px; text-align:center; color:var(--muted); font-size:13px;}
+  tr.factura-pagada{opacity:.5; text-decoration:line-through; background:var(--teal-light);}
+  tr.factura-pagada td{color:#3d7a6e !important;}
+  .chk-pagada{width:17px; height:17px; cursor:pointer; accent-color:var(--teal);}
+
+  .note-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-top:14px;}
+  .note-card h3{margin:0 0 4px; font-family:'Newsreader',serif; font-weight:600; font-size:15.5px;}
+  .note-card .cap{font-size:12px; color:var(--muted); margin-bottom:13px;}
+  .note-list{margin:0; padding-left:19px; font-size:13px; line-height:1.8; color:var(--ink);}
+  .note-list li{margin-bottom:5px;}
+  .note-list b{color:var(--amber);}
+
+  .est-callout{
+    background:linear-gradient(135deg, var(--teal-light) 0%, #fff 100%); border:1px dashed var(--teal);
+    border-radius:12px; padding:15px 19px; margin-bottom:15px; font-size:13px; color:var(--ink); line-height:1.6;
+  }
+  .est-callout b{color:var(--teal);}
+
+  .fixed-badge{
+    display:inline-flex; align-items:center; gap:5px; font-size:10.5px; background:var(--teal-light); color:#0A5A51;
+    border-radius:20px; padding:3px 10px; font-weight:600; margin-left:8px;
+  }
+
+  footer.appfoot{margin-top:36px; text-align:center; font-size:11.5px; color:var(--muted); line-height:1.7;}
+  footer.appfoot .cross{color:var(--teal); font-weight:700;}
+
+  @media print{
+    body{background:#fff;}
+    .sidebar{display:none !important;}
+    section.view{display:block !important; page-break-after:always; margin-bottom:24px;}
+    section.view:last-of-type{page-break-after:auto;}
+    .clear-btn, .cta, .export-btns, button{display:none !important;}
+    .filter-card{display:none !important;}
+    .table-card, .note-card, .kpi-grid, .chart-card{page-break-inside:avoid;}
+    .content{padding:0 12px;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">✚</span><span class="txt">Hospital<br>El Cruce</span></div>
+    <div class="brand-sub">Sistema de Administración</div>
+    <nav class="navlist">
+      <button class="active" data-view="resumen"><span class="ic">◆</span> Resumen General</button>
+      <button data-view="saldos"><span class="ic">▤</span> Saldos</button>
+      <button data-view="cuentaspagar"><span class="ic">⚠</span> Cuentas a Pagar <span class="nav-badge" id="navBadgeCP">84</span></button>
+      <button data-view="recupero"><span class="ic">↻</span> Recupero de Costos</button>
+      <button data-view="ejecucion"><span class="ic">▦</span> Ejecución Presupuestaria</button>
+      <button data-view="cruce"><span class="ic">⇄</span> Presupuesto vs. Ejecución</button>
+      <button data-view="proyecciones"><span class="ic">↗</span> Proyecciones</button>
+      <button data-view="validaciones"><span class="ic">✓</span> Validaciones</button>
+    </nav>
+    <div class="sidebar-foot">
+      Dirección General<br>de Administración<br><br>
+      <b>Última actualización:</b><br>17/09/2026 (saldos)<br>09/09/2026 (ejecución)
+    </div>
+    <div class="export-btns">
+      <button onclick="exportExcelBase()"><span class="ic">⬇</span> Exportar base de datos (Excel)</button>
+      <button onclick="window.print()"><span class="ic">🖨</span> Exportar informe (PDF)</button>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- ============ RESUMEN ============ -->
+    <section class="view active" id="view-resumen">
+      <div class="topbar">
+        <div>
+          <h1>Resumen General</h1>
+          <div class="sub">Hospital El Cruce Dr. Néstor Carlos Kirchner — vista consolidada para el Jefe de Administración</div>
+        </div>
+        <div class="dates">Ejercicio <b>2026</b> · acumulado ene–ago<br>4 fuentes consolidadas</div>
+      </div>
+
+      <div class="alert-hero">
+        <div class="icon">⚠</div>
+        <div class="body">
+          <div class="headline">84 facturas vencen esta semana — $ 525.703.899</div>
+          <div class="sub">22 al 28/09/2026 · 45 proveedores. Incluye 743 facturas ya vencidas por $8.775.806.887 acumuladas.</div>
+        </div>
+        <button class="cta" onclick="showView('cuentaspagar')">Ver alerta →</button>
+      </div>
+
+      <div class="warn-banner">
+        <span>⚠</span>
+        <span>Este sistema cruza 4 planillas de gestión distintas. Se corrigieron 2 archivos con fechas de encabezado mal rotuladas y una fórmula de suma incompleta (ver <a onclick="showView('validaciones')">Validaciones</a>); las cifras acá mostradas ya usan las versiones corregidas y fueron recalculadas para verificarlas.</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi navy">
+          <div class="lbl">Total disponible</div>
+          <div class="num">$ 49.582.099.477</div>
+          <div class="foot">Bancos + inversiones · 17/09</div>
+        </div>
+        <div class="kpi teal">
+          <div class="lbl">Recupero de costos cobrado</div>
+          <div class="num">$ 12.563.483.321</div>
+          <div class="foot">Acum. ene–ago 2026</div>
+        </div>
+        <div class="kpi gold">
+          <div class="lbl">Resultado de caja acumulado</div>
+          <div class="num">+ $ 7.509.661.922</div>
+          <div class="foot">Ingresos − Egresos, ene–ago</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Pendiente de cobro Nación <span class="flagchip">🔎</span></div>
+          <div class="num">$ 23.426.638.232</div>
+          <div class="foot">Autorizado, no acreditado</div>
+        </div>
+      </div>
+
+      <div class="section-title"><h2>Ingresos vs. egresos por mes</h2><span class="tag">datos reales, corregidos</span></div>
+      <div class="chart-card">
+        <h3>Evolución mensual 2026</h3>
+        <div class="cap">Enero a agosto — únicos meses con datos ejecutados a la fecha</div>
+        <div class="chart-wrap tall"><canvas id="monthlyResultChart"></canvas></div>
+      </div>
+
+      <div class="chart-grid" style="margin-top:14px;">
+        <div class="chart-card">
+          <h3>Composición de ingresos (acum. ene–ago)</h3>
+          <div class="cap">&nbsp;</div>
+          <div class="chart-wrap"><canvas id="miniIngresosChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Egresos por categoría (acum. ene–ago)</h3>
+          <div class="cap">&nbsp;</div>
+          <div class="chart-wrap"><canvas id="miniEgresosChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SALDOS ============ -->
+    <section class="view" id="view-saldos">
+      <div class="topbar">
+        <div><h1>Saldos</h1><div class="sub">Cuentas bancarias, inversiones y saldos pendientes de cobro</div></div>
+        <div class="dates">Al <b>17/09/2026</b></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Cuentas bancarias</div><div class="num">$ 10.804.327.671</div><div class="foot">14 cuentas operativas</div></div>
+        <div class="kpi"><div class="lbl">Cuenta comitente / inversiones</div><div class="num">$ 38.777.771.806</div><div class="foot">Letras del Tesoro (LECAPs)</div></div>
+        <div class="kpi gold"><div class="lbl">Total disponible</div><div class="num">$ 49.582.099.477</div><div class="foot">Bancos + inversiones</div></div>
+        <div class="kpi"><div class="lbl">Pendiente Nación 2026 <span class="flagchip">🔎</span></div><div class="num">$ 23.426.638.232</div><div class="foot">Autorizado, no acreditado</div></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Saldo por cuenta bancaria</h3>
+          <div class="cap">14 cuentas operativas</div>
+          <div class="chart-wrap tall"><canvas id="accChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Disponible: bancos vs. inversiones</h3>
+          <div class="cap">Composición del total disponible</div>
+          <div class="chart-wrap tall"><canvas id="dispChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-title"><h2>Saldos pendientes de cobro y deuda</h2></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="field"><label>Organismo</label><select id="fOrg"><option value="">Todos</option></select></div>
+          <div class="field"><label>Período</label><select id="fPer"><option value="">Todos</option></select></div>
+          <div class="field"><label>Estado</label>
+            <select id="fEst"><option value="">Todos</option><option value="pendiente">Pendiente de cobro</option><option value="pagado">Cobrado</option><option value="revisar">A validar</option></select>
+          </div>
+          <button id="fClear" class="clear-btn">Limpiar filtros</button>
+        </div>
+        <div class="filter-summary" id="filterSummary"></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Período</th><th>Organismo</th><th>Concepto</th><th class="num-cell">Monto</th><th>Estado</th></tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ CUENTAS A PAGAR ============ -->
+    <section class="view" id="view-cuentaspagar">
+      <div class="topbar">
+        <div><h1>Cuentas a Pagar</h1><div class="sub">Cuenta corriente con proveedores — alertas de vencimiento y vínculo con el presupuesto</div></div>
+        <div class="dates">Al <b>21/09/2026</b></div>
+      </div>
+
+      <div class="alert-hero">
+        <div class="icon">⚠</div>
+        <div class="body">
+          <div class="headline" id="cpAlertHeadline">84 facturas vencen entre el 22 y el 28/09 — $ 525.703.899</div>
+          <div class="sub" id="cpAlertSub">45 proveedores. Ordenadas por fecha más próxima de vencimiento, con filtro por proveedor y por presupuesto más abajo.</div>
+        </div>
+        <button class="cta" onclick="document.getElementById('cpTableBody').closest('.table-card').scrollIntoView({behavior:'smooth', block:'start'})">Ir a la tabla ↓</button>
+      </div>
+
+      <div class="warn-banner">
+        <span>⚠</span>
+        <span>Este archivo es la cuenta corriente de facturas <b>pendientes de pago</b> (no incluye historial de pagos ya realizados), así que no puedo calcular "cuánto le pagamos" a cada proveedor — solo lo que se le debe hoy. Si me pasás un reporte de pagos históricos (OP liquidadas), agrego esa columna. La deuda mostrada acá probablemente ya está contada como "gasto ejecutado" en la sección de Ejecución Presupuestaria (es la brecha entre devengado y pagado, no gasto adicional) — <a onclick="showView('validaciones')">a confirmar con Contabilidad</a>.</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Deuda total con proveedores</div><div class="num">$ 13.419.020.294</div><div class="foot">1.129 facturas · 213 proveedores</div></div>
+        <div class="kpi amber"><div class="lbl">Ya vencidas</div><div class="num">$ 8.775.806.887</div><div class="foot">743 facturas · 65,4% del total</div></div>
+        <div class="kpi gold"><div class="lbl">Vencen esta semana (7 días)</div><div class="num" id="kpiVencenSemanaNum">$ 525.703.899</div><div class="foot" id="kpiVencenSemanaFoot">84 facturas · 45 proveedores</div></div>
+        <div class="kpi teal"><div class="lbl">Atraso promedio (vencidas)</div><div class="num">48 días</div><div class="foot">Máximo: 215 días</div></div>
+      </div>
+
+      <div class="section-title"><h2>⚠ Alerta: facturas que vencen esta semana</h2><span class="tag">22 al 28/09/2026 · ordenadas por urgencia</span></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="field search-field"><label>Buscar proveedor / factura</label><input type="text" id="fCPSearch" placeholder="Nombre de proveedor o Nº de factura…"></div>
+          <div class="field"><label>Proveedor</label><select id="fProv"><option value="">Todos</option></select></div>
+          <div class="field"><label>Presupuesto</label><select id="fPresup"><option value="">Todos</option></select></div>
+          <button id="fClearCP" class="clear-btn">Limpiar filtros</button>
+          <button id="fResetPagos" class="clear-btn" style="color:var(--amber);">↺ Restablecer pagos tildados</button>
+        </div>
+        <div class="filter-summary" id="cpFilterSummary"></div>
+        <div class="filter-summary" id="cpPagoSummary" style="margin-top:6px;"></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Pagada</th><th>Días</th><th>Proveedor</th><th>Nº Factura</th><th>Vencimiento</th><th class="num-cell">Monto</th><th>Orden de Compra</th><th>Partida</th><th>Presupuesto</th></tr></thead>
+          <tbody id="cpTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title"><h2>Vínculo con el presupuesto vigente</h2><span class="tag">Ejecución Presupuestaria al 21/09/2026 — las 6 fuentes de financiamiento</span></div>
+      <div class="chart-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="kpi navy"><div class="lbl">Crédito vigente TOTAL 2026</div><div class="num">$ 229.409.251.547</div><div class="foot">HNK-2026 (Nación+Pcia) + Remanente + Rec. Propios + Sumar/Invest/Salud Mental</div></div>
+        <div class="kpi teal"><div class="lbl">% Ejecutado (devengado, al 21/09)</div><div class="num">53,2%</div><div class="foot">$121.927 M sobre crédito vigente total</div></div>
+        <div class="kpi gold"><div class="lbl">% Disponible a afectar</div><div class="num">30,0%</div><div class="foot">$68.787 M sin afectar</div></div>
+      </div>
+      <div class="exec-card">
+        <div class="exec-top"><div class="t">De lo ya ejecutado, cuánto sigue sin pagarse en caja</div><div class="p">$13.419 M</div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:11%; background:var(--amber);"></div></div>
+        <div class="exec-legend">
+          <span><span class="dot" style="background:var(--amber)"></span>Deuda con proveedores — 11,0% del devengado acumulado total ($121.927 M) según Ejecución Presupuestaria al 21/09</span>
+        </div>
+      </div>
+
+      <div class="chart-grid" style="margin-top:14px;">
+        <div class="chart-card">
+          <h3>Deuda por categoría presupuestaria</h3>
+          <div class="cap">Según primer dígito de la partida contable (inciso)</div>
+          <div class="chart-wrap"><canvas id="deudaCategoriaChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Antigüedad de la deuda vencida</h3>
+          <div class="cap">743 facturas ya vencidas, por rango de días de atraso</div>
+          <div class="chart-wrap"><canvas id="antiguedadChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="table-card" style="margin-top:14px;">
+        <table>
+          <thead><tr><th>Inciso</th><th class="num-cell">Deuda con proveedores</th><th class="num-cell">Devengado total del inciso (6 fuentes)</th><th class="num-cell">% deuda / devengado del inciso</th></tr></thead>
+          <tbody id="deudaVsIncisoBody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title"><h2>Todos los proveedores — deuda acumulada total</h2><span class="tag">213 proveedores · 1.129 facturas · cuenta corriente completa al 21/09</span></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="field search-field"><label>Buscar proveedor</label><input type="text" id="fTopProvSearch" placeholder="Nombre del proveedor…"></div>
+          <button id="fClearTopProv" class="clear-btn">Limpiar búsqueda</button>
+        </div>
+        <div class="filter-summary" id="topProvSummary"></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Proveedor</th><th class="num-cell">Deuda total</th><th class="num-cell">Nº facturas</th><th class="num-cell">% del total</th><th class="num-cell">Atraso promedio (días)*</th></tr></thead>
+          <tbody id="topProvBody"></tbody>
+        </table>
+        <div style="padding:10px 16px; font-size:11.5px; color:var(--muted);">*Promedio de días de atraso solo sobre facturas ya vencidas de ese proveedor; las facturas que todavía no llegaron a su vencimiento no tienen atraso y se excluyen del promedio.</div>
+      </div>
+
+      <div class="section-title"><h2>Otros circuitos de deuda</h2></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="lbl">Reconocimientos de deuda</div><div class="num">$ 1.416.070.232</div><div class="foot">84 comprobantes, ejercicios anteriores</div></div>
+        <div class="kpi"><div class="lbl">Anestesia (Asoc. AAARBA)</div><div class="num">$ 653.404.940</div><div class="foot">7 comprobantes</div></div>
+        <div class="kpi"><div class="lbl">Tercerizados (Logistical, Belclau, etc.)</div><div class="num">$ 3.077.686.135</div><div class="foot">7 comprobantes · jul–ago 2026</div></div>
+      </div>
+
+      <div class="note-card">
+        <h3>Sobre las alertas automáticas</h3>
+        <div class="cap">&nbsp;</div>
+        <p style="font-size:13px; color:var(--ink); line-height:1.7; margin:0;">
+          Este panel refleja la foto del archivo que me pasaste (21/09/2026). Para que la alerta de "factura que vence esta semana" te llegue sola cada semana sin que abras este archivo, hay dos caminos: (1) me pasás la Cuenta Corriente actualizada cada semana y te devuelvo el reporte al toque, o (2) configuro un recordatorio programado que te pida el archivo actualizado un día fijo (por ejemplo, todos los lunes) y regenero esto automáticamente. Decime si querés que arme esa segunda opción.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ RECUPERO ============ -->
+    <section class="view" id="view-recupero">
+      <div class="topbar">
+        <div><h1>Recupero de Costos</h1><div class="sub">Cobranza a terceros pagadores y distribución al personal</div></div>
+        <div class="dates">Acum. <b>ene–ago 2026</b></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi teal"><div class="lbl">Cobrado a terceros</div><div class="num">$ 12.563.483.321</div><div class="foot">Ingreso</div></div>
+        <div class="kpi gold"><div class="lbl">Distribuido al personal</div><div class="num">$ 5.383.378.132</div><div class="foot">42,9% de lo cobrado</div></div>
+        <div class="kpi navy"><div class="lbl">Ratio s/egresos totales</div><div class="num">11,9%</div><div class="foot">Recupero cobrado / erogaciones</div></div>
+        <div class="kpi"><div class="lbl">Por financiador <span class="flagchip">🔎</span></div><div class="num">No disponible</div><div class="foot">Solo hay corte por prestación</div></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Recupero cobrado por tipo de prestación</h3>
+          <div class="cap">Acumulado ene–ago 2026</div>
+          <div class="chart-wrap tall"><canvas id="recuperoChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Cobrado vs. distribuido al personal</h3>
+          <div class="cap">Recupero de costos, acumulado ene–ago 2026</div>
+          <div class="chart-wrap tall"><canvas id="recuperoVsChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-title"><h2>Evolución mensual del recupero cobrado</h2></div>
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="recuperoMonthChart"></canvas></div>
+      </div>
+    </section>
+
+    <!-- ============ EJECUCION ============ -->
+    <section class="view" id="view-ejecucion">
+      <div class="topbar">
+        <div><h1>Ejecución Presupuestaria</h1><div class="sub">Ingresos y egresos mensuales, con datos ya corregidos y verificados</div></div>
+        <div class="dates">Acum. <b>ene–ago 2026</b></div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-top">
+          <div class="t">Resultado de caja acumulado</div>
+          <div class="p">+ $ 7.509.661.922</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:93.4%"></div></div>
+        <div class="exec-legend">
+          <span><span class="dot" style="background:var(--teal)"></span>Ingresos — $ 112.843.498.256</span>
+          <span><span class="dot" style="background:var(--gold-light);border:1px solid var(--gold)"></span>Egresos — $ 105.333.836.334</span>
+        </div>
+      </div>
+
+      <div class="section-title"><h2>Egresos por categoría, mes a mes</h2><span class="tag">fechas corregidas <span class="fixed-badge">✓ verificado</span></span></div>
+      <div class="chart-card">
+        <div class="chart-wrap tall"><canvas id="egresosMonthChart"></canvas></div>
+      </div>
+
+      <div class="chart-grid" style="margin-top:14px;">
+        <div class="chart-card">
+          <h3>Composición de ingresos</h3>
+          <div class="cap">Acumulado ene–ago 2026</div>
+          <div class="chart-wrap"><canvas id="ingresosChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Egresos por gran categoría</h3>
+          <div class="cap">Acumulado ene–ago 2026</div>
+          <div class="chart-wrap"><canvas id="egresosChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-title"><h2>Presupuesto: aprobado → otorgado vigente → disponible</h2><span class="tag">fuente: Ejecución Presupuestaria al 21/09/2026, hoja "Hoja de Trabajo" (1.246 líneas)</span></div>
+      <div class="warn-banner">
+        <span>🔎</span>
+        <span>El presupuesto de Nación creció con dos ampliaciones desde la resolución original ($128.343 M): +$8.130 M y +$21.647 M, llegando a <b>$158.120 M</b>. Pero el crédito vigente total del hospital no es solo Nación+Provincia ($168.953 M, la cifra "HNK-2026" del pivot): sumando <b>las 6 fuentes de financiamiento</b> (HNK-2026, Remanente de ejercicios anteriores, Recursos Propios, Plan Sumar, Investigación y Estrategia de Salud Mental), el crédito vigente real es <b>$229.409 M</b>. Reordené toda esta sección para que se vea la cascada completa: Asignado → Crédito Vigente → Afectado/Comprometido/Devengado → Disponible, por fuente, por inciso y por subpartida. <a onclick="showView('validaciones')">Ver validaciones</a>.</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Crédito vigente TOTAL (6 fuentes)</div><div class="num">$ 229.409.251.547</div><div class="foot">Asignado original $168.953 M + ajustes/remanentes $60.457 M</div></div>
+        <div class="kpi teal"><div class="lbl">Devengado acumulado</div><div class="num">$ 121.926.869.429</div><div class="foot">53,2% del crédito vigente total</div></div>
+        <div class="kpi gold"><div class="lbl">Comprometido</div><div class="num">$ 149.511.408.346</div><div class="foot">65,2% del crédito vigente total</div></div>
+        <div class="kpi amber"><div class="lbl">Disponible a afectar</div><div class="num">$ 68.787.311.607</div><div class="foot">30,0% aún sin afectar</div></div>
+      </div>
+
+      <div class="section-title"><h2>1. Por fuente de financiamiento</h2><span class="tag">Asignado → Crédito Vigente → Disponible</span></div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Fuente</th><th class="num-cell">Asignado</th><th class="num-cell">Crédito Vigente</th><th class="num-cell">Afectado</th><th class="num-cell">Comprometido</th><th class="num-cell">Devengado</th><th class="num-cell">Disponible a afectar</th><th class="num-cell">% Ejecutado</th></tr></thead>
+          <tbody id="ejecFuenteBody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title"><h2>2. Por inciso (partida principal) — total de las 6 fuentes</h2></div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Inciso</th><th class="num-cell">Crédito Vigente</th><th class="num-cell">Afectado</th><th class="num-cell">Comprometido</th><th class="num-cell">Devengado</th><th class="num-cell">Disponible a afectar</th><th class="num-cell">% Ejecutado</th></tr></thead>
+          <tbody id="ejecPartidaBody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title"><h2>3. Detalle por rubro / subpartida — TODAS las que tienen movimiento</h2><span class="tag">136 subpartidas, todas las fuentes combinadas</span></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="field search-field"><label>Buscar código o rubro</label><input type="text" id="fIncisoSearch" placeholder="Ej: 2.5.2.5 o Antiinfecciosos…"></div>
+          <div class="field"><label>Inciso</label><select id="fInciso"><option value="">Todos</option></select></div>
+          <button id="fClearInciso" class="clear-btn">Limpiar filtro</button>
+        </div>
+        <div class="filter-summary" id="ejecSubpartidaSummary"></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Inciso</th><th>Subpartida</th><th>Rubro</th><th class="num-cell">Crédito Vigente</th><th class="num-cell">Afectado</th><th class="num-cell">Comprometido</th><th class="num-cell">Devengado</th><th class="num-cell">% Ejecutado</th></tr></thead>
+          <tbody id="ejecSubpartidaBody"></tbody>
+        </table>
+      </div>
+      <div class="note-card" style="margin-top:10px;">
+        <h3>Conciliación subpartida → inciso → total general <span class="fixed-badge">✓ cierra exacto</span></h3>
+        <div class="cap" id="ejecConciliacion" style="font-size:13px; color:var(--ink); line-height:1.7;"></div>
+      </div>
+    </section>
+
+    <!-- ============ CRUCE PRESUPUESTO ============ -->
+    <section class="view" id="view-cruce">
+      <div class="topbar">
+        <div><h1>Presupuesto vs. Ejecución</h1><div class="sub">Ejecución real por inciso y subpartida (EEPM), vinculada al crédito vigente y conciliada contra la Ejecución Presupuestaria</div></div>
+        <div class="dates">EEPM: acum. <b>ene–sep 2026</b> (parcial) · Ejecución Presup.: al <b>21/09/2026</b></div>
+      </div>
+
+      <div class="warn-banner">
+        <span>🔎</span>
+        <span>El devengado acumulado de EEPM ($105.334 M, con datos hasta principios de septiembre) es <b>menor</b> al devengado de la Ejecución Presupuestaria al 21/09 filtrado a HNK-2026 ($100.464 M)... en realidad es <b>mayor</b>, lo que no debería pasar si EEPM tiene fecha de corte más vieja. Esto short-circuitea la hipótesis de que son el mismo universo con distinto corte de fecha — más abajo está la conciliación subpartida por subpartida para ver exactamente dónde difieren. <a onclick="showView('validaciones')">Ver validaciones</a>.</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Devengado EEPM (ene–sep, parcial)</div><div class="num">$ 105.333.836.334</div><div class="foot">124 subpartidas con movimiento</div></div>
+        <div class="kpi teal"><div class="lbl">% sobre crédito vigente TOTAL (6 fuentes)</div><div class="num">45,9%</div><div class="foot">$229.409 M</div></div>
+        <div class="kpi gold"><div class="lbl">% sobre crédito vigente HNK-2026</div><div class="num">62,3%</div><div class="foot">$168.953 M (Nación+Provincia)</div></div>
+        <div class="kpi amber"><div class="lbl">Mayor variación por subpartida <span class="flagchip">🔎</span></div><div class="num">Drogas y reactivos lab.</div><div class="foot">−$4.011 M vs. Ejecución 21/09</div></div>
+      </div>
+
+      <div class="section-title"><h2>1. Evolución mensual del devengado por inciso</h2><span class="tag">Ene–Sep 2026, fuente: EEPM</span></div>
+      <div class="chart-card">
+        <h3>Devengado mensual, apilado por inciso</h3>
+        <div class="cap">Setiembre está parcial (datos hasta principios del mes en la fuente)</div>
+        <div class="chart-wrap tall"><canvas id="ejecMensualChart"></canvas></div>
+      </div>
+
+      <div class="section-title"><h2>2. Matriz inciso × mes, con % vinculados al presupuesto</h2></div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Inciso</th><th class="num-cell">Ene</th><th class="num-cell">Feb</th><th class="num-cell">Mar</th><th class="num-cell">Abr</th><th class="num-cell">May</th><th class="num-cell">Jun</th><th class="num-cell">Jul</th><th class="num-cell">Ago</th><th class="num-cell">Sep*</th><th class="num-cell">Total</th><th class="num-cell">% del total</th><th class="num-cell">% s/ créd. vigente del inciso</th></tr></thead>
+          <tbody id="ejecMensualBody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title"><h2>3. Detalle completo por subpartida — Partida Principal / Sub Principal / Parcial / Sub Parcial / Apartado</h2><span class="tag">124 subpartidas, conciliadas contra Ejecución Presupuestaria al 21/09</span></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="field search-field"><label>Buscar código o descripción</label><input type="text" id="fEjecDetalleSearch" placeholder="Ej: 2.5.2.5 o Anestesia…"></div>
+          <div class="field"><label>Inciso (Partida Principal)</label><select id="fEjecInciso"><option value="">Todos</option></select></div>
+          <div class="field"><label>Apartado</label><select id="fEjecApartado"><option value="">Todos</option></select></div>
+          <button id="fClearEjecMes" class="clear-btn">Limpiar filtros</button>
+        </div>
+        <div class="filter-summary" id="ejecDetalleSummary"></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>P. Principal</th><th>P. Sub Principal</th><th>P. Parcial</th><th>P. Sub Parcial</th><th>Apartado</th><th>Descripción</th><th class="num-cell">Devengado EEPM (ene–sep)</th><th class="num-cell">% del inciso</th><th class="num-cell">% del total</th><th class="num-cell">Devengado Ejecución (21/09)</th><th class="num-cell">Diferencia</th></tr></thead>
+          <tbody id="ejecDetalleBody"></tbody>
+        </table>
+      </div>
+
+      <div class="note-card">
+        <h3>Lectura de la conciliación por subpartida</h3>
+        <ol class="note-list">
+          <li>En la <b>mayoría</b> de las subpartidas, el devengado de la Ejecución Presupuestaria (21/09) es mayor al de EEPM — coherente con que tiene 2-3 semanas más de datos.</li>
+          <li><b>Excepción a validar:</b> "3.4.2.2 Servicios profesionales Anestesia" tiene $3.174 M en EEPM pero solo $0.563 M en Ejecución Presupuestaria — una diferencia de +$2.610 M en sentido contrario al patrón general. Puede ser una reclasificación de partida o un problema de carga en una de las dos fuentes.</li>
+          <li><b>12 subpartidas</b> aparecen en la Ejecución Presupuestaria (21/09) pero no en EEPM — mayormente de Recursos Propios/Remanente que EEPM no parece registrar, o gasto que arrancó después del corte de EEPM.</li>
+        </ol>
+      </div>
+
+      <div class="section-title"><h2>4. Ejecución por trimestre (EEPM Pagado)</h2><span class="tag">variación % entre trimestres, por inciso</span></div>
+      <div class="chart-card">
+        <h3>Devengado por trimestre, por inciso</h3>
+        <canvas id="trimestralChart" height="90"></canvas>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Inciso</th><th class="num-cell">1er Trim.</th><th class="num-cell">2do Trim.</th><th class="num-cell">Var. % T1→T2</th><th class="num-cell">3er Trim.*</th><th class="num-cell">Var. % T2→T3</th><th class="num-cell">4to Trim.</th><th class="num-cell">Total</th></tr></thead>
+          <tbody id="trimestralBody"></tbody>
+        </table>
+      </div>
+      <div class="note-card">
+        <h3>Lectura de la ejecución trimestral</h3>
+        <ol class="note-list">
+          <li>El <b>1er y 2do trimestre están cerrados</b> (ene–jun); el <b>3er trimestre (jul-ago-sep) está parcial</b> — la fuente EEPM llega hasta comienzos de septiembre, por lo que la variación T2→T3 luce fuertemente negativa en todos los incisos, pero es en gran parte un efecto de <b>trimestre incompleto</b>, no una caída real del gasto.</li>
+          <li>El <b>4to trimestre todavía no tiene devengado registrado</b> ($0) porque no comenzó.</li>
+          <li>Entre T1 y T2 (ambos completos), el mayor salto lo tuvo <b>Bienes de Uso (+90,8%)</b> y <b>Bienes de Consumo (+45,1%)</b> — coherente con compras/licitaciones concentradas en el 2° trimestre; <b>Personal</b> creció de forma más estable (+11,0%), como es esperable en una partida con poca estacionalidad.</li>
+        </ol>
+      </div>
+
+      <div class="section-title"><h2>5. Cronograma Nación (SIDIF) vs. acreditación en Tesorería</h2><span class="tag">complementario — mirada de caja, no de devengado</span></div>
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Presupuesto Nación 2026 <span class="flagchip">🔎</span></div><div class="num">$ 158.120.327.242</div><div class="foot">$128.343 M original + 2 ampliaciones ($8.130 M y $21.647 M)</div></div>
+        <div class="kpi teal"><div class="lbl">Afectado por resolución (SIDIF, cronograma original)</div><div class="num">$ 76.586.432.666</div><div class="foot">Vencido ene–jul, sobre el presupuesto original $128.343 M</div></div>
+        <div class="kpi gold"><div class="lbl">Sin afectar (cronograma original)</div><div class="num">$ 51.756.819.577</div><div class="foot">Sobre el presupuesto original, antes de las 2 ampliaciones</div></div>
+        <div class="kpi amber"><div class="lbl">Acreditado en Tesorería <span class="flagchip">🔎</span></div><div class="num">$ 87.872.985.935</div><div class="foot">Ledger "eppagado", ene–ago</div></div>
+      </div>
+
+      <div class="warn-banner">
+        <span>🔎</span>
+        <span>El presupuesto de Nación se amplió dos veces después del cronograma SIDIF del PDF original ($128.343 M → $158.120 M). Las barras de "Autorizado" de abajo siguen representando el cronograma original mes a mes (el PDF no desglosa cómo se distribuyen las 2 ampliaciones por mes) — <b>a validar con Presupuesto</b> en qué mes(es) impactan esos $29.777 M adicionales.</span>
+      </div>
+
+      <div class="est-callout" style="border-color:var(--amber); background:linear-gradient(135deg, var(--amber-light) 0%, #fff 100%);">
+        <b>Diferencia de $11.286.553.269 entre lo "afectado" según el cronograma SIDIF y lo acreditado en Tesorería.</b> No es un error de cálculo — son dos recortes distintos del mismo dinero: el cronograma de Nación (PDF) ordena las partidas por <b>mes de vencimiento</b> de la resolución y llega solo hasta julio; el ledger de Tesorería ("eppagado") registra por <b>mes en que el efectivo entra a la cuenta</b>, y llega hasta agosto. El propio PDF documenta ese desfasaje en su columna "Fecha de Pago": lo que vence, por ejemplo, el 11/mar se paga el 16/abr; lo que vence el 30/abr se paga el 5/may — un rezago de 1 a 1,5 meses. Además, el ledger de enero 2026 incluye <b>$3.459.756.076 que en realidad es el pago tardío de la deuda de Nación del ejercicio 2025</b>, no presupuesto 2026. Ajustando por ese arrastre, la diferencia real ronda los <b>$7.826 M</b> — coherente con el desfasaje de un mes que todavía no se acreditó de la resolución de agosto.
+      </div>
+
+      <div class="chart-card">
+        <h3>Autorizado (SIDIF, por vencimiento) vs. Acreditado (Tesorería, por mes de cobro)</h3>
+        <div class="cap">Cada barra "Autorizado" corresponde a la resolución que vence ese mes; "Acreditado" es cuándo el efectivo entró realmente a la cuenta</div>
+        <div class="chart-wrap tall"><canvas id="cruceChart"></canvas></div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Mes</th><th class="num-cell">Autorizado (vencimiento SIDIF)</th><th class="num-cell">Acreditado (Tesorería)</th><th class="num-cell">Diferencia</th><th>Nota</th></tr></thead>
+          <tbody id="cruceBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ PROYECCIONES ============ -->
+    <section class="view" id="view-proyecciones">
+      <div class="topbar">
+        <div><h1>Proyecciones</h1><div class="sub">Proyección real de necesidad presupuestaria, hoja "Proyección" del archivo de Ejecución</div></div>
+        <div class="dates">Al <b>21/09/2026</b> — resto de <b>2026</b></div>
+      </div>
+
+      <div class="est-callout" style="border-color:var(--amber); background:linear-gradient(135deg, var(--amber-light) 0%, #fff 100%);">
+        <b>Proyección real encontrada: déficit estimado de $25.630.904.470 para el resto de 2026</b>, si no hay una ampliación presupuestaria adicional. Reemplaza al run-rate estimado que usaba este panel antes — esta proyección viene directamente de la planilla de Presupuesto/Control de Gestión, comparando lo disponible a afectar contra la necesidad proyectada de gasto partida por partida.
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi navy"><div class="lbl">Necesidad total proyectada</div><div class="num">− $ 25.630.904.470</div><div class="foot">Déficit: falta ampliar presupuesto</div></div>
+        <div class="kpi amber"><div class="lbl">Partida 1 · Personal</div><div class="num">− $ 22.302.225.208</div><div class="foot">Disponible $16.420 M vs. necesidad $38.722 M</div></div>
+        <div class="kpi gold"><div class="lbl">Partidas 2 y 3 · Consumo + Servicios</div><div class="num">− $ 3.328.679.262</div><div class="foot">Disponible $20.046 M (neto Pcia) vs. necesidad $12.542 M + $10.833 M sin asignar</div></div>
+        <div class="kpi teal"><div class="lbl">Ejercicios anteriores · Obra Oncológica/PET/Acelerador</div><div class="num">+ $ 2.687.421.846</div><div class="foot">Único ítem con superávit proyectado</div></div>
+      </div>
+
+      <div class="section-title"><h2>Detalle de la proyección de necesidad</h2></div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Línea presupuestaria</th><th class="num-cell">Disponible a afectar</th><th class="num-cell">Proyección de gasto</th><th class="num-cell">Necesidad</th></tr></thead>
+          <tbody id="proyeccionBody"></tbody>
+        </table>
+      </div>
+
+      <div class="chart-grid" style="margin-top:14px;">
+        <div class="chart-card">
+          <h3>Disponible vs. necesidad proyectada</h3>
+          <div class="cap">Por línea presupuestaria — resto de 2026</div>
+          <div class="chart-wrap"><canvas id="projChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Lectura rápida</h3>
+          <div class="cap">&nbsp;</div>
+          <ul style="font-size:13px; line-height:1.85; color:var(--ink); padding-left:18px; margin-top:6px;">
+            <li><strong>Personal (Partida 1)</strong> es el principal driver del déficit: la proyección de gasto ($38.722 M) casi duplica lo disponible a afectar ($16.420 M).</li>
+            <li>En <strong>Bienes de Consumo + Servicios No Personales</strong>, la necesidad ($3.329 M) es más chica pero incluye $10.833 M de Provincia todavía "sin asignar" a partida — a confirmar con Contabilidad si ese monto se puede reasignar.</li>
+            <li><strong>Recursos Propios</strong> ($9.740 M disponibles) no tiene proyección de necesidad cargada en la fuente — no se puede afirmar que cubra el déficit de las otras líneas sin confirmarlo con Presupuesto.</li>
+            <li>La obra Oncológica + PET + Acelerador es la única línea con superávit proyectado (+$2.687 M), sobre un presupuesto de ejercicios anteriores.</li>
+            <li>🔎 A validar: si Nación o Provincia prevén una tercera ampliación antes de fin de año que cubra este déficit proyectado.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VALIDACIONES ============ -->
+    <section class="view" id="view-validaciones">
+      <div class="topbar">
+        <div><h1>Validaciones</h1><div class="sub">Estado de las correcciones aplicadas y puntos abiertos con Contabilidad</div></div>
+      </div>
+
+      <div class="note-card">
+        <h3>Correcciones ya aplicadas y verificadas <span class="fixed-badge">✓</span></h3>
+        <div class="cap">Cada corrección se recalculó con el motor de cálculo (no solo se revisó la fórmula) antes de confirmarla.</div>
+        <ol class="note-list">
+          <li><b>Tablero Financiero Diario, celdas S16/T16:</b> la suma trimestral de Ingresos omitía dos partidas (Otros Ingresos Facturados y Venta de pliegos). Corregido — ahora el total trimestral suma exactamente $112.843.498.256,19, igual al total real.</li>
+          <li><b>Fechas de encabezado 2024/2021 → 2026:</b> corregidas en "Ejecución Presupuestaria", "Tablero Financiero Diario", "TABLERO RESU" y "EEPM Pagado". Los totales no cambiaron (eran solo etiquetas).</li>
+          <li><b>Bloque "INICIAL" (filas 3-6 de Tablero Financiero Diario):</b> se eliminó el error #REF!, pero el resultado sigue en $0 porque el rango con nombre "MesVto" apunta a una columna de "eProv" que no contiene fechas de vencimiento reales. No afecta ningún total del sistema (nada más lo referencia) — pendiente de definir con Contabilidad si vale la pena repararlo de raíz.</li>
+        </ol>
+      </div>
+
+      <div class="note-card">
+        <h3>Puntos abiertos a validar con Contabilidad</h3>
+        <div class="cap">Ningún número fue inventado para "cerrar" una cifra; donde hay ambigüedad, se muestra tal cual aparece en la fuente.</div>
+        <ol class="note-list">
+          <li><b>Deuda de la Provincia ($62.794 M):</b> calculada solo hasta 06/02/2025. No incluye el resto de 2025 ni 2026 — el saldo real hoy es probablemente mayor.</li>
+          <li><b>Campo "Pendiente de Autorización Contables" en Calipso ($101.223 M):</b> parece un estado de workflow congelado al momento de la extracción, no una deuda real. No se usó en este sistema.</li>
+          <li><b>Hoja "@-Prov":</b> a pesar del nombre, contiene giros de Nación, no de Provincia.</li>
+          <li><b>Recupero de costos por financiador:</b> las planillas solo desagregan por tipo de prestación, no por obra social/ART/particular.</li>
+          <li><b>Devengado: $105.334 M (EEPM, ene–ago) vs. $100.464 M (Ejecución Presupuestaria, al 21/09):</b> el devengado acumulado de la Ejecución Presupuestaria más reciente es menor al de la planilla EEPM de agosto, cuando debería ser igual o mayor tres semanas después. Puede deberse a que "Ejecución Presupuestaria" filtra solo la categoría de presupuesto "HNK-2026" y excluye devengado de Ejercicios Anteriores o Recursos Propios que sí estarían en el EEPM — no se fuerza una reconciliación sin confirmarlo con Contabilidad.</li>
+          <li><b>Provincia: $10.833 M (crédito vigente en Ejecución Presupuestaria) vs. $55.004 M / $62.794 M (cuota teórica usada en Saldos):</b> son conceptos distintos — cuota teórica anual vs. crédito efectivamente vigente en el sistema presupuestario del hospital al 21/09 — pero la brecha es grande y debería explicarse con Presupuesto/Contabilidad antes de usarse en un informe externo.</li>
+          <li><b>Ajuste de $10.833 M "No Asignado Pcia" en la proyección de Partidas 2 y 3:</b> la hoja "Proyección" resta el crédito de Provincia del disponible a afectar de Consumo+Servicios sin una nota que explique el criterio — se muestra tal cual la fuente, a confirmar el porqué.</li>
+        </ol>
+      </div>
+
+      <div class="note-card">
+        <h3>Actualización 22/09: Ejecución Presupuestaria y Proyecciones reales <span class="fixed-badge">✓ incorporado</span></h3>
+        <div class="cap">A partir del archivo "Ejecución Presupuestaria al 21-09-2026", que reemplaza estimaciones anteriores de este panel.</div>
+        <ol class="note-list">
+          <li>El presupuesto de Nación 2026 no es $128.343 M: tuvo <b>2 ampliaciones</b> ($8.130 M y $21.647 M) y hoy es <b>$158.120 M</b>. Sumado a Provincia ($10.833 M), esa combinación ("HNK-2026") totaliza $168.953 M.</li>
+          <li>Ya existe una <b>proyección real de necesidad presupuestaria</b> para el resto de 2026 (hoja "Proyección" del mismo archivo): un déficit estimado de <b>$25.630.904.470</b>, concentrado en Personal (Partida 1: −$22.302 M).</li>
+          <li>La sección "Cuentas a Pagar" ahora vincula la deuda con proveedores ($13.419 M) contra el devengado real de esta fuente.</li>
+        </ol>
+      </div>
+
+      <div class="note-card">
+        <h3>Actualización 22/09 (2): cascada completa — Aprobado → Vigente → Disponible, por inciso y subpartida <span class="fixed-badge">✓ incorporado</span></h3>
+        <div class="cap">A pedido explícito: reordené toda la app siguiendo la cascada presupuestaria y vinculando cada nivel, usando la hoja "Hoja de Trabajo" (1.246 líneas, ledger completo) reconciliada contra el pivot "Tabla" del mismo archivo.</div>
+        <ol class="note-list">
+          <li><b>El crédito vigente "HNK-2026" ($168.953 M) no es el techo total del hospital.</b> Hay <b>6 fuentes de financiamiento</b> vigentes simultáneamente: HNK-2026 (Nación+Provincia), Remanente de ejercicios anteriores ($21.244 M), Recursos Propios ($38.593 M), Plan Sumar ($220 M), Investigación ($359 M) y Estrategia de Salud Mental ($40 M). El crédito vigente TOTAL real es <b>$229.409.251.547</b>, con devengado acumulado de <b>$121.926.869.429 (53,2%)</b> y disponible a afectar de <b>$68.787.311.607 (30,0%)</b>. Actualicé "Ejecución Presupuestaria" y "Cuentas a Pagar" contra este número — es el más correcto para responder "cuánto presupuesto queda".</li>
+          <li>Agregué en "Ejecución Presupuestaria" la cascada completa en 3 niveles: <b>(1) por fuente de financiamiento</b> (Asignado → Crédito Vigente → Disponible), <b>(2) por inciso</b> (Personal, Bienes de Consumo, Servicios No Personales, Bienes de Uso, sumando las 6 fuentes) y <b>(3) por subpartida/rubro</b> (32 subpartidas con mayor movimiento, con filtro por inciso) — esto conecta el presupuesto aprobado con el nivel más granular de gasto real.</li>
+          <li>En "Cuentas a Pagar" agregué una tabla que vincula la deuda por categoría contra el devengado total de cada inciso (no solo el gráfico): Bienes de Consumo 41,6%, Servicios No Personales 8,3%, Bienes de Uso 3,1% de deuda sobre lo ya devengado en cada inciso.</li>
+          <li>🔎 La proyección de "Necesidad" (hoja "Proyección") sigue usando el disponible <b>solo de HNK-2026</b> (no las 6 fuentes) porque así está armada en la fuente original — no la recalculé contra el total general para no alterar el criterio de Presupuesto/Control de Gestión. Si el déficit de $25.631 M debería compararse contra el disponible total de $68.787 M (incluyendo Recursos Propios y Remanentes), eso cambiaría la lectura del déficit y debería confirmarse con ellos.</li>
+        </ol>
+      </div>
+
+      <div class="note-card">
+        <h3>Actualización 22/09 (3): detalle completo por subpartida + conciliación, y alerta semanal más visible <span class="fixed-badge">✓ incorporado</span></h3>
+        <ol class="note-list">
+          <li>La tabla "Detalle por rubro/subpartida" de Ejecución Presupuestaria ahora muestra <b>las 136 subpartidas con movimiento</b> (antes solo 32, un top-8 por inciso), y agregué un bloque de <b>conciliación</b> debajo de la tabla: al filtrar por inciso, muestra la suma exacta de las subpartidas visibles contra el total de ese inciso (y contra el total general sin filtro) — cierra exacto en los 4 incisos, sin diferencias de redondeo relevantes. Esto conecta explícitamente presupuesto → inciso → subpartida → ejecución en un solo lugar verificable.</li>
+          <li>La alerta de "facturas que vencen esta semana" ahora es más visible: hay un banner rojo grande al tope de Resumen General y de Cuentas a Pagar (antes solo aparecía como una fila más en una tabla), un contador con las 84 facturas en la pestaña "Cuentas a Pagar" del menú lateral, y la tabla de alerta se movió arriba de todo (antes aparecía después del vínculo con el presupuesto) con una columna nueva de "Días" que marca en rojo/naranja/verde qué tan urgente es cada factura, ordenada por vencimiento más próximo primero.</li>
+        </ol>
+      </div>
+
+      <div class="note-card">
+        <h3>Actualización 22/09 (4): "Presupuesto vs. Ejecución" reconstruido con EEPM por subpartida <span class="fixed-badge">✓ incorporado</span></h3>
+        <div class="cap">La pestaña no traía nada útil (solo el cronograma SIDIF de Nación, que es una mirada de caja, no de ejecución). La reconstruí usando la hoja "EJECUCION" de EEPM_2026_agosto, que trae devengado mensual (ene–sep, parcial) por subpartida completa.</div>
+        <ol class="note-list">
+          <li>Nuevo gráfico de <b>evolución mensual del devengado, apilado por inciso</b> (Personal/Consumo/Servicios/Bienes de Uso), y una matriz inciso × mes con columnas de <b>% del total</b> y <b>% sobre el crédito vigente de ese inciso</b> (vinculando ejecución con presupuesto, no solo mostrando el gasto aislado).</li>
+          <li>Tabla de <b>124 subpartidas</b> con las 4 columnas pedidas — Partida Principal, Partida Sub Principal, Partida Parcial, Partida Sub Parcial — más "Apartado" (la agrupación administrativa de EEPM: Honorarios, Proveedores Comunes, Servicios Básicos, Erogaciones, Beca-Institución, Recupero de Costos), con filtro por inciso y por apartado.</li>
+          <li><b>Conciliación real, subpartida por subpartida</b>, entre EEPM (ene–sep) y la Ejecución Presupuestaria (21/09): 112 de 124 subpartidas coinciden en dirección esperada (Ejecución ≥ EEPM, por tener más semanas de datos). Encontré una excepción relevante — "Servicios profesionales Anestesia" (3.4.2.2) tiene $3.174 M en EEPM pero solo $0.563 M en Ejecución Presupuestaria, +$2.610 M en sentido contrario al patrón — y 12 subpartidas que están en Ejecución Presupuestaria pero no aparecen en EEPM. Ambos puntos quedan para confirmar con Contabilidad, no los fuerzo a cerrar.</li>
+          <li>El bloque del cronograma SIDIF de Nación (autorizado vs. acreditado) se mantiene más abajo en la misma pestaña, como vista complementaria de caja — ya no es lo único que muestra la pestaña.</li>
+        </ol>
+      </div>
+    </section>
+
+    <footer class="appfoot">
+      Hospital El Cruce <span class="cross">✚</span> Dr. Néstor Carlos Kirchner — Sistema de Administración interno<br>
+      Fuentes: Saldos_17092026_detallados_V2.xlsx · Tablero_Financiero_09-09-2026.xlsm (corregido) · Pres._FINANCIERO_HEC_2026_al_150926.xlsx · EEPM_2026_agosto_07092026_1003.xlsm (corregido) · Cuenta_Corriente_con_Proveedores_al_21-09-2026.xlsx · Ejecución_Presupuestaria_al_21-09-2026.xlsx
+    </footer>
+  </main>
+</div>
+
+<script>
+const chartLibOk = typeof Chart !== 'undefined';
+if (chartLibOk) {
+  Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+  Chart.defaults.color = '#65727D';
+} else {
+  console.warn('Chart.js no cargó (posible bloqueo de red/CDN) — los gráficos no se van a mostrar, pero las tablas y filtros funcionan igual.');
+}
+// safeChart: si Chart.js no cargó o un gráfico puntual falla, no se cae el resto de la página (tablas, filtros, KPIs)
+function safeChart(el, config){
+  if (!chartLibOk || !el) return null;
+  try { return new Chart(el, config); }
+  catch(e){ console.warn('No se pudo renderizar un gráfico:', e); return null; }
+}
+const navy='#0F2A44', teal='#0E8074', gold='#C98A2C', amber='#B5482F', tealLight='#7FC2B9', goldLight='#E3A94A';
+
+// ---------------- NAV ----------------
+function showView(name){
+  document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('nav.navlist button').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.querySelectorAll('nav.navlist button').forEach(b=>b.addEventListener('click', ()=>showView(b.dataset.view)));
+
+// ---------------- DATA (verificado, ene-ago 2026) ----------------
+const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago'];
+const ingresosMes = [8477218674.09, 2155491571.37, 10785064838.31, 25761693813.64, 14036227563.5, 7451527670.64, 24227559704.78, 14998233751.37];
+const egresosMes  = [11768749756.94, 13561622811.52, 11858619484, 15255522679.8, 13444054448.08, 15831309562.57, 11083444498.62, 11135147869.92];
+const resultadoMes = ingresosMes.map((v,i)=>v-egresosMes[i]);
+
+const personalMes = [6550880936.54, 6509826064.26, 6893664564.74, 6950462957.31, 6713061844.96, 8484467313.07, 7507239488.99, 8547249039.72];
+const consumoMes  = [2084161285.69, 3120629659.24, 1301025495.12, 3755997182.89, 2422633501.97, 3259423323.63, 892571523.83, 38769363.69];
+const serviciosMes= [2907646132.27, 3493086419.69, 3393014635.05, 3749957537.76, 3849698695.77, 3561049361.42, 1902011415.16, 1888493487.92];
+const bienesUsoMes= [226061402.44, 438080668.33, 270914789.09, 799105001.84, 458660405.38, 526369564.45, 781622070.64, 660635978.59];
+
+const recuperoMes = [1891581683.48, 1168235189.47, 910393682, 1590483320.86, 1890688129.81, 1476490896.7, 1812982813.95, 1773557998.55];
+const fmt = n => '$ ' + n.toLocaleString('es-AR');
+
+// ---------------- RESUMEN ----------------
+safeChart(document.getElementById('monthlyResultChart'), {
+  data:{
+    labels:meses,
+    datasets:[
+      {type:'bar', label:'Ingresos', data:ingresosMes, backgroundColor:teal, borderRadius:5, order:2},
+      {type:'bar', label:'Egresos', data:egresosMes, backgroundColor:goldLight, borderRadius:5, order:2},
+      {type:'line', label:'Resultado', data:resultadoMes, borderColor:navy, backgroundColor:navy, tension:.35, order:1, yAxisID:'y'}
+    ]
+  },
+  options:{
+    plugins:{ legend:{position:'bottom', labels:{boxWidth:10,padding:14,font:{size:11.5}}}, tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: $ ${c.parsed.y.toLocaleString('es-AR')}` } } },
+    scales:{ y:{ ticks:{ callback:v=>'$'+(v/1e9).toFixed(0)+'mM' }, grid:{color:'#EEF1F2'} }, x:{ grid:{display:false} } }
+  }
+});
+
+safeChart(document.getElementById('miniIngresosChart'), {
+  type:'doughnut',
+  data:{ labels:['Aportes Nacionales','Recupero de Costos','Venta pliegos y otros','Aportes Provinciales','Otros'],
+    datasets:[{ data:[92772396997, 12563483321, 5083385394, 2000000000, 424232543], backgroundColor:[navy,teal,gold,tealLight,'#C6CDD2'], borderWidth:2, borderColor:'#fff' }]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:8,font:{size:10}}}, tooltip:{callbacks:{label:c=>c.label+': $ '+c.parsed.toLocaleString('es-AR')}}}, cutout:'58%' }
+});
+safeChart(document.getElementById('miniEgresosChart'), {
+  type:'doughnut',
+  data:{ labels:['Gastos en personal','Servicios no personales','Bienes de consumo','Bienes de uso'],
+    datasets:[{ data:[59548234975, 24748940142, 16875211336, 4161449881], backgroundColor:[navy,teal,gold,tealLight], borderWidth:2, borderColor:'#fff' }]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:8,font:{size:10}}}, tooltip:{callbacks:{label:c=>c.label+': $ '+c.parsed.toLocaleString('es-AR')}}}, cutout:'58%' }
+});
+
+// ---------------- SALDOS ----------------
+safeChart(document.getElementById('accChart'), {
+  type:'bar',
+  data:{ labels:['501701','501718','527145 / otras','501732','501756','501770','527381','501749','535508','6574-2 132-2','505765','501763'],
+    datasets:[{ data:[5750855932,1372800606,70166581,2101331008,756061486,237587453,14642925,18578867,4548659,97169647,240944270,39337897], backgroundColor:teal, borderRadius:5, maxBarThickness:30 }]},
+  options:{ indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $ '+c.parsed.x.toLocaleString('es-AR')}}}, scales:{x:{ticks:{callback:v=>'$'+(v/1e9).toFixed(1)+'mM'},grid:{color:'#EEF1F2'}}, y:{grid:{display:false}}} }
+});
+safeChart(document.getElementById('dispChart'), {
+  type:'doughnut',
+  data:{ labels:['Cuentas bancarias','Cuenta comitente (inversiones)'], datasets:[{ data:[10804327671, 38777771806], backgroundColor:[teal, navy], borderWidth:2, borderColor:'#fff' }]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12}}, tooltip:{callbacks:{label:c=>c.label+': $ '+c.parsed.toLocaleString('es-AR')}}}, cutout:'62%' }
+});
+
+// ---------------- RECUPERO ----------------
+safeChart(document.getElementById('recuperoChart'), {
+  type:'doughnut',
+  data:{ labels:['Trasplante','Internación','Extramódulo','Prestaciones','Medicamentos Tx','Medicamentos','Prácticas','Eval. Pretrasplante','Otros'],
+    datasets:[{ data:[3815917552,2273657358,2244135460,1902151282,770919119,526485339,464148864,329540488,236557552], backgroundColor:[navy,teal,tealLight,gold,goldLight,'#8FA8BD','#C9DAD1','#D9B98A','#C6CDD2'], borderWidth:2, borderColor:'#fff' }]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:8,font:{size:10}}}, tooltip:{callbacks:{label:c=>c.label+': $ '+c.parsed.toLocaleString('es-AR')}}}, cutout:'58%' }
+});
+safeChart(document.getElementById('recuperoVsChart'), {
+  type:'bar',
+  data:{ labels:['Cobrado (ingreso)','Distribuido a personal','Neto retenido'], datasets:[{ data:[12563483321, 5383378132, 7180105189], backgroundColor:[teal, gold, navy], borderRadius:6, maxBarThickness:52 }]},
+  options:{ plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $ '+c.parsed.y.toLocaleString('es-AR')}}}, scales:{y:{ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'},grid:{color:'#EEF1F2'}}, x:{grid:{display:false}}} }
+});
+safeChart(document.getElementById('recuperoMonthChart'), {
+  type:'bar',
+  data:{ labels:meses, datasets:[{ label:'Recupero cobrado', data:recuperoMes, backgroundColor:teal, borderRadius:5, maxBarThickness:38 }]},
+  options:{ plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $ '+c.parsed.y.toLocaleString('es-AR')}}}, scales:{y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M'},grid:{color:'#EEF1F2'}}, x:{grid:{display:false}}} }
+});
+
+// ---------------- EJECUCION ----------------
+safeChart(document.getElementById('egresosMonthChart'), {
+  type:'bar',
+  data:{ labels:meses, datasets:[
+    {label:'Gastos en personal', data:personalMes, backgroundColor:navy, stack:'s'},
+    {label:'Servicios no personales', data:serviciosMes, backgroundColor:teal, stack:'s'},
+    {label:'Bienes de consumo', data:consumoMes, backgroundColor:gold, stack:'s'},
+    {label:'Bienes de uso', data:bienesUsoMes, backgroundColor:tealLight, stack:'s'}
+  ]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:14,font:{size:11.5}}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $ ${c.parsed.y.toLocaleString('es-AR')}`}}},
+    scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'}, grid:{color:'#EEF1F2'}} } }
+});
+safeChart(document.getElementById('ingresosChart'), {
+  type:'doughnut',
+  data:{ labels:['Aportes Nacionales','Recupero de Costos','Venta pliegos y otros','Aportes Provinciales','Proyectos/Investigación','Otros ingresos facturados'],
+    datasets:[{ data:[92772396997, 12563483321, 5083385394, 2000000000, 400466102, 23766442], backgroundColor:[navy,teal,gold,tealLight,goldLight,'#C6CDD2'], borderWidth:2, borderColor:'#fff' }]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10.5}}}, tooltip:{callbacks:{label:c=>c.label+': $ '+c.parsed.toLocaleString('es-AR')}}}, cutout:'58%' }
+});
+safeChart(document.getElementById('egresosChart'), {
+  type:'bar',
+  data:{ labels:['Gastos en personal','Servicios no personales','Bienes de consumo','Bienes de uso'],
+    datasets:[{ data:[59548234975, 24748940142, 16875211336, 4161449881], backgroundColor:[navy,teal,gold,tealLight], borderRadius:6, maxBarThickness:36 }]},
+  options:{ indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $ '+c.parsed.x.toLocaleString('es-AR')}}}, scales:{x:{ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'},grid:{color:'#EEF1F2'}}, y:{grid:{display:false}}} }
+});
+
+// ---------------- PRESUPUESTO VS EJECUCIÓN: EEPM por inciso y subpartida ----------------
+const ejecMensualPorInciso = {"1": {"meses": [6550880936.54, 6509826064.26, 6893664564.74, 6950462957.31, 6713061844.96, 8484467313.07, 7507239488.99, 8547249039.72, 1391382765.87], "total": 59548234975.46, "pct_total": 56.53, "pct_ejec": 60.77}, "2": {"meses": [2084161285.69, 3120629659.24, 1301025495.12, 3755997182.89, 2422633501.97, 3259423323.63, 892571523.83, 38769363.69, 0.0], "total": 16875211336.06, "pct_total": 16.02, "pct_ejec": 28.76}, "3": {"meses": [2907646132.27, 3493086419.69, 3393014635.05, 3749957537.76, 3849698695.77, 3561049361.42, 1902011415.16, 1888493487.92, 3982456.6], "total": 24748940141.64, "pct_total": 23.5, "pct_ejec": 38.61}, "4": {"meses": [226061402.44, 438080668.33, 270914789.09, 799105001.84, 458660405.38, 526369564.45, 781622070.64, 660635978.59, 0.0], "total": 4161449880.76, "pct_total": 3.95, "pct_ejec": 48.18}};
+const ejecDetalleSub = [{"pp": 1, "psp": 1, "ppar": 1, "pspar": 1, "cod": "1.1.1.1", "desc": "Retribución del cargo", "apartado": "Honorarios", "total": 13653208241.34, "pct_inc": 22.93, "pct_tot": 12.96, "deveng_ejec": 13729682063.56, "diff": -76473822.22}, {"pp": 1, "psp": 1, "ppar": 3, "pspar": 1, "cod": "1.1.3.1", "desc": "Retribuciones que no hacen al cargo", "apartado": "Honorarios", "total": 10418412386.86, "pct_inc": 17.5, "pct_tot": 9.89, "deveng_ejec": 10412416921.96, "diff": 5995464.9}, {"pp": 1, "psp": 8, "ppar": 1, "pspar": 1, "cod": "1.8.1.1", "desc": "Honorarios Profesionales - Loc. de Serv.", "apartado": "Honorarios", "total": 6463479173.34, "pct_inc": 10.85, "pct_tot": 6.14, "deveng_ejec": 6373172040.44, "diff": 90307132.9}, {"pp": 1, "psp": 1, "ppar": 6, "pspar": 2, "cod": "1.1.6.2", "desc": "Contribuciones IPS", "apartado": "Honorarios", "total": 4079212034.58, "pct_inc": 6.85, "pct_tot": 3.87, "deveng_ejec": 4004257155.68, "diff": 74954878.9}, {"pp": 1, "psp": 1, "ppar": 8, "pspar": 1, "cod": "1.1.8.1", "desc": "Recupero de costos", "apartado": "Recupero de Costos", "total": 3766745706.99, "pct_inc": 6.33, "pct_tot": 3.58, "deveng_ejec": 4336324110.13, "diff": -569578403.14}, {"pp": 1, "psp": 8, "ppar": 1, "pspar": 2, "cod": "1.8.1.2", "desc": "Honorarios Profesionales Anestesiólogos", "apartado": "Honorarios", "total": 3519624275.87, "pct_inc": 5.91, "pct_tot": 3.34, "deveng_ejec": 4307829342.17, "diff": -788205066.3}, {"pp": 1, "psp": 1, "ppar": 7, "pspar": 5, "cod": "1.1.7.5", "desc": "Adicional por desarrollo", "apartado": "Honorarios", "total": 2650126348.07, "pct_inc": 4.45, "pct_tot": 2.52, "deveng_ejec": 2652358367.33, "diff": -2232019.26}, {"pp": 1, "psp": 1, "ppar": 7, "pspar": 6, "cod": "1.1.7.6", "desc": "Incentivo a la mejora continua", "apartado": "Honorarios", "total": 2650004007.28, "pct_inc": 4.45, "pct_tot": 2.52, "deveng_ejec": 2652236026.54, "diff": -2232019.26}, {"pp": 1, "psp": 8, "ppar": 1, "pspar": 3, "cod": "1.8.1.3", "desc": "Contrato de Loc. de Obra - Guardias Médicas", "apartado": "Honorarios", "total": 2327101899.31, "pct_inc": 3.91, "pct_tot": 2.21, "deveng_ejec": 2313529069.22, "diff": 13572830.09}, {"pp": 1, "psp": 1, "ppar": 4, "pspar": 1, "cod": "1.1.4.1", "desc": "Sueldo anual complementario", "apartado": "Honorarios", "total": 1825181075.63, "pct_inc": 3.07, "pct_tot": 1.73, "deveng_ejec": 1893919103.63, "diff": -68738028.0}, {"pp": 1, "psp": 1, "ppar": 1, "pspar": 2, "cod": "1.1.1.2", "desc": "Guardias Médicas", "apartado": "Honorarios", "total": 1621023037.58, "pct_inc": 2.72, "pct_tot": 1.54, "deveng_ejec": 1622460046.93, "diff": -1437009.35}, {"pp": 1, "psp": 8, "ppar": 8, "pspar": 1, "cod": "1.8.8.1", "desc": "Recupero de costos S/HONORARIOS", "apartado": "Recupero de Costos", "total": 1174178408.92, "pct_inc": 1.97, "pct_tot": 1.11, "deveng_ejec": 1367175826.11, "diff": -192997417.19}, {"pp": 1, "psp": 3, "ppar": 1, "pspar": 1, "cod": "1.3.1.1", "desc": "Retribuciones extraordinarias", "apartado": "Honorarios", "total": 963800282.01, "pct_inc": 1.62, "pct_tot": 0.91, "deveng_ejec": 963800282.01, "diff": 0.0}, {"pp": 1, "psp": 1, "ppar": 7, "pspar": 1, "cod": "1.1.7.1", "desc": "Complementos", "apartado": "Honorarios", "total": 675126310.16, "pct_inc": 1.13, "pct_tot": 0.64, "deveng_ejec": 785981307.03, "diff": -110854996.87}, {"pp": 1, "psp": 1, "ppar": 6, "pspar": 1, "cod": "1.1.6.1", "desc": "Contribuciones Obra Social", "apartado": "Honorarios", "total": 628148346.39, "pct_inc": 1.05, "pct_tot": 0.6, "deveng_ejec": 637417438.63, "diff": -9269092.24}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 1, "cod": "1.9.2.1", "desc": "Retribución - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 613926843.0, "pct_inc": 1.03, "pct_tot": 0.58, "deveng_ejec": 611606843.0, "diff": 2320000.0}, {"pp": 1, "psp": 9, "ppar": 1, "pspar": 1, "cod": "1.9.1.1", "desc": "Otros Gastos", "apartado": "Honorarios", "total": 498131066.67, "pct_inc": 0.84, "pct_tot": 0.47, "deveng_ejec": 500324679.95, "diff": -2193613.28}, {"pp": 1, "psp": 5, "ppar": 1, "pspar": 1, "cod": "1.5.1.1", "desc": "Seguros de riesgo de trabajo", "apartado": "Honorarios", "total": 445201695.29, "pct_inc": 0.75, "pct_tot": 0.42, "deveng_ejec": 500459807.93, "diff": -55258112.64}, {"pp": 1, "psp": 1, "ppar": 8, "pspar": 2, "cod": "1.1.8.2", "desc": "Rec. de costos - Trasplantes", "apartado": "Recupero de Costos", "total": 351073478.22, "pct_inc": 0.59, "pct_tot": 0.33, "deveng_ejec": 359998986.89, "diff": -8925508.67}, {"pp": 1, "psp": 1, "ppar": 7, "pspar": 3, "cod": "1.1.7.3", "desc": "Complementos protocolos de investigación", "apartado": "Honorarios", "total": 239975084.32, "pct_inc": 0.4, "pct_tot": 0.23, "deveng_ejec": 235759788.19, "diff": 4215296.13}, {"pp": 1, "psp": 5, "ppar": 4, "pspar": 1, "cod": "1.5.4.1", "desc": "Guardería", "apartado": "Honorarios", "total": 194883686.32, "pct_inc": 0.33, "pct_tot": 0.19, "deveng_ejec": 194916104.38, "diff": -32418.06}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 6, "cod": "1.9.2.6", "desc": "Complementos - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 129635020.01, "pct_inc": 0.22, "pct_tot": 0.12, "deveng_ejec": 60896992.01, "diff": 68738028.0}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 3, "cod": "1.9.2.3", "desc": "Adicional por desarrollo - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 123854722.2, "pct_inc": 0.21, "pct_tot": 0.12, "deveng_ejec": 123854722.2, "diff": 0.0}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 4, "cod": "1.9.2.4", "desc": "Incentivo a la mejora continua - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 123854722.2, "pct_inc": 0.21, "pct_tot": 0.12, "deveng_ejec": 123854722.2, "diff": 0.0}, {"pp": 1, "psp": 1, "ppar": 7, "pspar": 2, "cod": "1.1.7.2", "desc": "Complementos vacaciones", "apartado": "Honorarios", "total": 110626213.42, "pct_inc": 0.19, "pct_tot": 0.11, "deveng_ejec": 110626213.42, "diff": 0.0}, {"pp": 1, "psp": 4, "ppar": 1, "pspar": 1, "cod": "1.4.1.1", "desc": "Asignaciones familiares", "apartado": "Honorarios", "total": 100975654.0, "pct_inc": 0.17, "pct_tot": 0.1, "deveng_ejec": 100975654.0, "diff": 0.0}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 5, "cod": "1.9.2.5", "desc": "Guardias - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 95731223.11, "pct_inc": 0.16, "pct_tot": 0.09, "deveng_ejec": 95731223.11, "diff": 0.0}, {"pp": 1, "psp": 8, "ppar": 8, "pspar": 2, "cod": "1.8.8.2", "desc": "Rec. de costos - Trasplantes S/Honorarios", "apartado": "Recupero de Costos", "total": 91380538.28, "pct_inc": 0.15, "pct_tot": 0.09, "deveng_ejec": 91380538.28, "diff": 0.0}, {"pp": 1, "psp": 8, "ppar": 2, "pspar": 2, "cod": "1.8.2.2", "desc": "Complemento Honorarios Investigación", "apartado": "Honorarios", "total": 8783986.99, "pct_inc": 0.01, "pct_tot": 0.01, "deveng_ejec": 47526562.46, "diff": -38742575.47}, {"pp": 1, "psp": 5, "ppar": 3, "pspar": 1, "cod": "1.5.3.1", "desc": "Seguros de Vida Obligatorio", "apartado": "Honorarios", "total": 4829507.1, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 5473655.64, "diff": -644148.54}, {"pp": 1, "psp": 9, "ppar": 2, "pspar": 2, "cod": "1.9.2.2", "desc": "Contribuciones Obra Social - Beca Institución", "apartado": "BECA - INSTITUCION", "total": 0.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": -5293333.5, "diff": 5293333.5}, {"pp": 2, "psp": 5, "ppar": 2, "pspar": 5, "cod": "2.5.2.5", "desc": "Otros Productos farmacéuticos", "apartado": "Proveedores Comunes", "total": 3115328309.64, "pct_inc": 18.46, "pct_tot": 2.96, "deveng_ejec": 4007576688.45, "diff": -892248378.81}, {"pp": 2, "psp": 5, "ppar": 2, "pspar": 1, "cod": "2.5.2.1", "desc": "Antiinfecciosos", "apartado": "Proveedores Comunes", "total": 2870790962.17, "pct_inc": 17.01, "pct_tot": 2.73, "deveng_ejec": 3075031156.32, "diff": -204240194.15}, {"pp": 2, "psp": 5, "ppar": 1, "pspar": 3, "cod": "2.5.1.3", "desc": "Drogas y reactivos de laboratorio", "apartado": "Proveedores Comunes", "total": 2181420142.65, "pct_inc": 12.93, "pct_tot": 2.07, "deveng_ejec": 6192006055.02, "diff": -4010585912.37}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 1, "cod": "2.9.5.1", "desc": "Productos Médicos Generales", "apartado": "Proveedores Comunes", "total": 1655406743.27, "pct_inc": 9.81, "pct_tot": 1.57, "deveng_ejec": 2424376139.39, "diff": -768969396.12}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 2, "cod": "2.9.5.2", "desc": "Productos Médicos Hemodinamia y Neurointervencionismo", "apartado": "Proveedores Comunes", "total": 1621745876.77, "pct_inc": 9.61, "pct_tot": 1.54, "deveng_ejec": 2305659215.42, "diff": -683913338.65}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 3, "cod": "2.9.5.3", "desc": "Productos Médicos Cardiocirugía", "apartado": "Proveedores Comunes", "total": 1308334260.17, "pct_inc": 7.75, "pct_tot": 1.24, "deveng_ejec": 1900019468.21, "diff": -591685208.04}, {"pp": 2, "psp": 5, "ppar": 1, "pspar": 5, "cod": "2.5.1.5", "desc": "Otros Compuestos químicos", "apartado": "Proveedores Comunes", "total": 626139220.51, "pct_inc": 3.71, "pct_tot": 0.59, "deveng_ejec": 789177494.68, "diff": -163038274.17}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 4, "cod": "2.9.5.4", "desc": "Productos Médicos Neurocirugía", "apartado": "Proveedores Comunes", "total": 512111818.86, "pct_inc": 3.03, "pct_tot": 0.49, "deveng_ejec": 556425552.7, "diff": -44313733.84}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 6, "cod": "2.9.5.6", "desc": "Productos Médicos Ort. Y Traum, Maxilof.", "apartado": "Proveedores Comunes", "total": 364458404.8, "pct_inc": 2.16, "pct_tot": 0.35, "deveng_ejec": 543543824.8, "diff": -179085420.0}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 8, "cod": "2.9.5.8", "desc": "Otros materiales sanitarios", "apartado": "Proveedores Comunes", "total": 345926788.41, "pct_inc": 2.05, "pct_tot": 0.33, "deveng_ejec": 557043590.79, "diff": -211116802.38}, {"pp": 2, "psp": 5, "ppar": 2, "pspar": 2, "cod": "2.5.2.2", "desc": "Soluciones Parenterales", "apartado": "Proveedores Comunes", "total": 312555582.62, "pct_inc": 1.85, "pct_tot": 0.3, "deveng_ejec": 564068472.16, "diff": -251512889.54}, {"pp": 2, "psp": 5, "ppar": 2, "pspar": 4, "cod": "2.5.2.4", "desc": "Anestésicos", "apartado": "Proveedores Comunes", "total": 243250090.5, "pct_inc": 1.44, "pct_tot": 0.23, "deveng_ejec": 316344984.3, "diff": -73094893.8}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 5, "cod": "2.9.5.5", "desc": "Productos Médicos Gastroenterología", "apartado": "Proveedores Comunes", "total": 231280801.25, "pct_inc": 1.37, "pct_tot": 0.22, "deveng_ejec": 224642336.15, "diff": 6638465.1}, {"pp": 2, "psp": 5, "ppar": 2, "pspar": 3, "cod": "2.5.2.3", "desc": "Drogas de uso radiológico", "apartado": "Proveedores Comunes", "total": 212102250.0, "pct_inc": 1.26, "pct_tot": 0.2, "deveng_ejec": 281340186.0, "diff": -69237936.0}, {"pp": 2, "psp": 9, "ppar": 3, "pspar": 1, "cod": "2.9.3.1", "desc": "Útiles y materiales eléctricos", "apartado": "Proveedores Comunes", "total": 211498632.84, "pct_inc": 1.25, "pct_tot": 0.2, "deveng_ejec": 251524411.44, "diff": -40025778.6}, {"pp": 2, "psp": 9, "ppar": 5, "pspar": 7, "cod": "2.9.5.7", "desc": "Suturas", "apartado": "Proveedores Comunes", "total": 181707569.93, "pct_inc": 1.08, "pct_tot": 0.17, "deveng_ejec": 243671554.97, "diff": -61963985.04}, {"pp": 2, "psp": 9, "ppar": 9, "pspar": 2, "cod": "2.9.9.2", "desc": "Repuestos y Accesorios para equipos médicos", "apartado": "Proveedores Comunes", "total": 166423319.41, "pct_inc": 0.99, "pct_tot": 0.16, "deveng_ejec": 406933892.24, "diff": -240510572.83}, {"pp": 2, "psp": 3, "ppar": 4, "pspar": 1, "cod": "2.3.4.1", "desc": "Productos de papel y cartón", "apartado": "Proveedores Comunes", "total": 130608113.7, "pct_inc": 0.77, "pct_tot": 0.12, "deveng_ejec": 196502352.1, "diff": -65894238.4}, {"pp": 2, "psp": 5, "ppar": 1, "pspar": 1, "cod": "2.5.1.1", "desc": "Oxigeno líquido", "apartado": "Proveedores Comunes", "total": 120744685.47, "pct_inc": 0.72, "pct_tot": 0.11, "deveng_ejec": 217583889.47, "diff": -96839204.0}, {"pp": 2, "psp": 9, "ppar": 6, "pspar": 1, "cod": "2.9.6.1", "desc": "Repuestos y accesorios", "apartado": "Proveedores Comunes", "total": 115056101.52, "pct_inc": 0.68, "pct_tot": 0.11, "deveng_ejec": 319950581.97, "diff": -204894480.45}, {"pp": 2, "psp": 5, "ppar": 1, "pspar": 4, "cod": "2.5.1.4", "desc": "Reactivos y soluciones de Medicina Transfusional", "apartado": "Proveedores Comunes", "total": 74487448.22, "pct_inc": 0.44, "pct_tot": 0.07, "deveng_ejec": 141083748.49, "diff": -66596300.27}, {"pp": 2, "psp": 2, "ppar": 2, "pspar": 1, "cod": "2.2.2.1", "desc": "Prendas de vestir", "apartado": "Proveedores Comunes", "total": 66728600.0, "pct_inc": 0.4, "pct_tot": 0.06, "deveng_ejec": 2995560.0, "diff": 63733040.0}, {"pp": 2, "psp": 5, "ppar": 8, "pspar": 1, "cod": "2.5.8.1", "desc": "Productos de material plástico", "apartado": "Proveedores Comunes", "total": 56869851.0, "pct_inc": 0.34, "pct_tot": 0.05, "deveng_ejec": 86102251.0, "diff": -29232400.0}, {"pp": 2, "psp": 5, "ppar": 1, "pspar": 2, "cod": "2.5.1.2", "desc": "Oxigeno gaseoso", "apartado": "Proveedores Comunes", "total": 21471633.86, "pct_inc": 0.13, "pct_tot": 0.02, "deveng_ejec": 42826197.86, "diff": -21354564.0}, {"pp": 2, "psp": 9, "ppar": 9, "pspar": 3, "cod": "2.9.9.3", "desc": "Otros bienes de consumo n.e.p.", "apartado": "Proveedores Comunes", "total": 18417472.0, "pct_inc": 0.11, "pct_tot": 0.02, "deveng_ejec": 8213585.97, "diff": 10203886.03}, {"pp": 2, "psp": 5, "ppar": 6, "pspar": 1, "cod": "2.5.6.1", "desc": "Combustibles y lubricantes", "apartado": "Proveedores Comunes", "total": 18153790.78, "pct_inc": 0.11, "pct_tot": 0.02, "deveng_ejec": 34948057.26, "diff": -16794266.48}, {"pp": 2, "psp": 2, "ppar": 3, "pspar": 1, "cod": "2.2.3.1", "desc": "Confecciones textiles", "apartado": "Proveedores Comunes", "total": 16325000.0, "pct_inc": 0.1, "pct_tot": 0.02, "deveng_ejec": 3133800.0, "diff": 13191200.0}, {"pp": 2, "psp": 7, "ppar": 9, "pspar": 1, "cod": "2.7.9.1", "desc": "Otros productos metálicos", "apartado": "Proveedores Comunes", "total": 15528716.0, "pct_inc": 0.09, "pct_tot": 0.01, "deveng_ejec": 15528716.0, "diff": 0.0}, {"pp": 2, "psp": 9, "ppar": 9, "pspar": 1, "cod": "2.9.9.1", "desc": "Insumos de mantenimiento", "apartado": "Proveedores Comunes", "total": 11189870.43, "pct_inc": 0.07, "pct_tot": 0.01, "deveng_ejec": 34247858.43, "diff": -23057988.0}, {"pp": 2, "psp": 5, "ppar": 9, "pspar": 1, "cod": "2.5.9.1", "desc": "Otros Productos químicos, combustibles y lubricantes", "apartado": "Proveedores Comunes", "total": 10240000.0, "pct_inc": 0.06, "pct_tot": 0.01, "deveng_ejec": 14691820.0, "diff": -4451820.0}, {"pp": 2, "psp": 3, "ppar": 2, "pspar": 1, "cod": "2.3.2.1", "desc": "Papel para computación", "apartado": "Proveedores Comunes", "total": 8507800.0, "pct_inc": 0.05, "pct_tot": 0.01, "deveng_ejec": 17015600.0, "diff": -8507800.0}, {"pp": 2, "psp": 4, "ppar": 3, "pspar": 1, "cod": "2.4.3.1", "desc": "Artículos de caucho", "apartado": "Proveedores Comunes", "total": 7520000.0, "pct_inc": 0.04, "pct_tot": 0.01, "deveng_ejec": 7520000.0, "diff": 0.0}, {"pp": 2, "psp": 7, "ppar": 1, "pspar": 1, "cod": "2.7.1.1", "desc": "Productos ferrosos", "apartado": "Proveedores Comunes", "total": 6118140.0, "pct_inc": 0.04, "pct_tot": 0.01, "deveng_ejec": 4613390.0, "diff": 1504750.0}, {"pp": 2, "psp": 7, "ppar": 5, "pspar": 1, "cod": "2.7.5.1", "desc": "Herramientas menores", "apartado": "Proveedores Comunes", "total": 5657841.78, "pct_inc": 0.03, "pct_tot": 0.01, "deveng_ejec": 6268041.78, "diff": -610200.0}, {"pp": 2, "psp": 9, "ppar": 1, "pspar": 1, "cod": "2.9.1.1", "desc": "Elementos de limpieza", "apartado": "Proveedores Comunes", "total": 3445000.0, "pct_inc": 0.02, "pct_tot": 0.0, "deveng_ejec": 3445000.0, "diff": 0.0}, {"pp": 2, "psp": 1, "ppar": 9, "pspar": 1, "cod": "2.1.9.1", "desc": "Otros Productos alimenticios, agropecuarios y forestales", "apartado": "Proveedores Comunes", "total": 1848000.0, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 2082000.0, "diff": -234000.0}, {"pp": 2, "psp": 1, "ppar": 5, "pspar": 1, "cod": "2.1.5.1", "desc": "Madera, corcho y sus manufacturas", "apartado": "Proveedores Comunes", "total": 1519616.0, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 1519616.0, "diff": 0.0}, {"pp": 2, "psp": 6, "ppar": 9, "pspar": 1, "cod": "2.6.9.1", "desc": "Otros productos de minerales no metálicos", "apartado": "Proveedores Comunes", "total": 1388880.0, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 2171146.4, "diff": -782266.4}, {"pp": 2, "psp": 6, "ppar": 2, "pspar": 1, "cod": "2.6.2.1", "desc": "Productos de vidrio", "apartado": "Proveedores Comunes", "total": 1302071.5, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 1302071.5, "diff": 0.0}, {"pp": 2, "psp": 3, "ppar": 3, "pspar": 1, "cod": "2.3.3.1", "desc": "Productos de artes gráficas", "apartado": "Proveedores Comunes", "total": 819000.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 819000.0, "diff": 0.0}, {"pp": 2, "psp": 9, "ppar": 2, "pspar": 1, "cod": "2.9.2.1", "desc": "Útiles de escritorio, oficina y enseñanza", "apartado": "Proveedores Comunes", "total": 389930.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 4631450.0, "diff": -4241520.0}, {"pp": 2, "psp": 5, "ppar": 5, "pspar": 1, "cod": "2.5.5.1", "desc": "Tintas, pinturas y colorantes", "apartado": "Proveedores Comunes", "total": 243000.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 41493558.8, "diff": -41250558.8}, {"pp": 2, "psp": 7, "ppar": 4, "pspar": 1, "cod": "2.7.4.1", "desc": "Estructuras metálicas acabadas", "apartado": "Proveedores Comunes", "total": 150000.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 150000.0, "diff": 0.0}, {"pp": 3, "psp": 3, "ppar": 5, "pspar": 1, "cod": "3.3.5.1", "desc": "Limpieza", "apartado": "Erogaciones", "total": 6360799861.85, "pct_inc": 25.7, "pct_tot": 6.04, "deveng_ejec": 8212649861.85, "diff": -1851850000.0}, {"pp": 3, "psp": 9, "ppar": 6, "pspar": 1, "cod": "3.9.6.1", "desc": "Serv contratados de alimentación", "apartado": "Erogaciones", "total": 3962077212.15, "pct_inc": 16.01, "pct_tot": 3.76, "deveng_ejec": 5201790714.22, "diff": -1239713502.07}, {"pp": 3, "psp": 4, "ppar": 2, "pspar": 2, "cod": "3.4.2.2", "desc": "Servicios profesionales Anestesia", "apartado": "Proveedores Comunes", "total": 3173739126.37, "pct_inc": 12.82, "pct_tot": 3.01, "deveng_ejec": 563400826.0, "diff": 2610338300.37}, {"pp": 3, "psp": 9, "ppar": 3, "pspar": 1, "cod": "3.9.3.1", "desc": "Servicios de vigilancia", "apartado": "Erogaciones", "total": 2664281083.92, "pct_inc": 10.77, "pct_tot": 2.53, "deveng_ejec": 3552374778.56, "diff": -888093694.64}, {"pp": 3, "psp": 3, "ppar": 1, "pspar": 1, "cod": "3.3.1.1", "desc": "Mantenimiento y reparación de edificios y locales", "apartado": "Proveedores Comunes", "total": 1247854518.68, "pct_inc": 5.04, "pct_tot": 1.18, "deveng_ejec": 1404120700.0, "diff": -156266181.32}, {"pp": 3, "psp": 3, "ppar": 3, "pspar": 1, "cod": "3.3.3.1", "desc": "Mantenimiento y reparación de maquinaria y equipos médicos", "apartado": "Erogaciones", "total": 1243331601.57, "pct_inc": 5.02, "pct_tot": 1.18, "deveng_ejec": 2468603765.67, "diff": -1225272164.1}, {"pp": 3, "psp": 3, "ppar": 6, "pspar": 1, "cod": "3.3.6.1", "desc": "Mantenimiento de sistemas informáticos", "apartado": "Proveedores Comunes", "total": 1051039894.5, "pct_inc": 4.25, "pct_tot": 1.0, "deveng_ejec": 2279831252.78, "diff": -1228791358.28}, {"pp": 3, "psp": 3, "ppar": 3, "pspar": 2, "cod": "3.3.3.2", "desc": "Mantenimiento y reparación de maquinaria y equipos", "apartado": "Proveedores Comunes", "total": 832598405.75, "pct_inc": 3.36, "pct_tot": 0.79, "deveng_ejec": 1227745699.29, "diff": -395147293.54}, {"pp": 3, "psp": 1, "ppar": 1, "pspar": 1, "cod": "3.1.1.1", "desc": "Energía eléctrica", "apartado": "Servicios Básicos", "total": 755178890.14, "pct_inc": 3.05, "pct_tot": 0.72, "deveng_ejec": 884742075.12, "diff": -129563184.98}, {"pp": 3, "psp": 3, "ppar": 9, "pspar": 1, "cod": "3.3.9.1", "desc": "Servicio de lavado y planchado", "apartado": "Erogaciones", "total": 615331281.28, "pct_inc": 2.49, "pct_tot": 0.58, "deveng_ejec": 795609937.5, "diff": -180278656.22}, {"pp": 3, "psp": 4, "ppar": 2, "pspar": 1, "cod": "3.4.2.1", "desc": "Médicos y sanitarios", "apartado": "Proveedores Comunes", "total": 522399159.87, "pct_inc": 2.11, "pct_tot": 0.5, "deveng_ejec": 743524473.38, "diff": -221125313.51}, {"pp": 3, "psp": 3, "ppar": 5, "pspar": 2, "cod": "3.3.5.2", "desc": "Recoleccion Residuos patogenos", "apartado": "Erogaciones", "total": 488823257.48, "pct_inc": 1.98, "pct_tot": 0.46, "deveng_ejec": 634064355.62, "diff": -145241098.14}, {"pp": 3, "psp": 5, "ppar": 9, "pspar": 1, "cod": "3.5.9.1", "desc": "Otros servicios comerciales y financierosn.e.p", "apartado": "Proveedores Comunes", "total": 423984071.04, "pct_inc": 1.71, "pct_tot": 0.4, "deveng_ejec": 668484071.04, "diff": -244500000.0}, {"pp": 3, "psp": 1, "ppar": 2, "pspar": 1, "cod": "3.1.2.1", "desc": "Agua", "apartado": "Servicios Básicos", "total": 212960470.73, "pct_inc": 0.86, "pct_tot": 0.2, "deveng_ejec": 239328727.65, "diff": -26368256.92}, {"pp": 3, "psp": 5, "ppar": 4, "pspar": 1, "cod": "3.5.4.1", "desc": "Primas y gastos de seguros", "apartado": "Proveedores Comunes", "total": 151531688.34, "pct_inc": 0.61, "pct_tot": 0.14, "deveng_ejec": 173982627.84, "diff": -22450939.5}, {"pp": 3, "psp": 3, "ppar": 9, "pspar": 2, "cod": "3.3.9.2", "desc": "Mantenimiento de parques y jardines", "apartado": "Erogaciones", "total": 114411071.8, "pct_inc": 0.46, "pct_tot": 0.11, "deveng_ejec": 184243745.66, "diff": -69832673.86}, {"pp": 3, "psp": 4, "ppar": 9, "pspar": 1, "cod": "3.4.9.1", "desc": "Otros servicios técnicos y profesionales n.e.p.", "apartado": "Proveedores Comunes", "total": 105932824.32, "pct_inc": 0.43, "pct_tot": 0.1, "deveng_ejec": 213941702.73, "diff": -108008878.41}, {"pp": 3, "psp": 2, "ppar": 9, "pspar": 1, "cod": "3.2.9.1", "desc": "Otros alquileres y derechos n.e.p.", "apartado": "Proveedores Comunes", "total": 92035204.51, "pct_inc": 0.37, "pct_tot": 0.09, "deveng_ejec": 116943488.51, "diff": -24908284.0}, {"pp": 3, "psp": 2, "ppar": 4, "pspar": 1, "cod": "3.2.4.1", "desc": "Alquiler de fotocopiadoras", "apartado": "Proveedores Comunes", "total": 90595640.96, "pct_inc": 0.37, "pct_tot": 0.09, "deveng_ejec": 120088632.18, "diff": -29492991.22}, {"pp": 3, "psp": 1, "ppar": 3, "pspar": 1, "cod": "3.1.3.1", "desc": "Gas", "apartado": "Servicios Básicos", "total": 89518557.63, "pct_inc": 0.36, "pct_tot": 0.08, "deveng_ejec": 109690032.79, "diff": -20171475.16}, {"pp": 3, "psp": 1, "ppar": 4, "pspar": 1, "cod": "3.1.4.1", "desc": "Telefonía fija y móvil", "apartado": "Servicios Básicos", "total": 88128192.34, "pct_inc": 0.36, "pct_tot": 0.08, "deveng_ejec": 89672027.23, "diff": -1543834.89}, {"pp": 3, "psp": 4, "ppar": 6, "pspar": 1, "cod": "3.4.6.1", "desc": "De informática y sistemas computarizados", "apartado": "Proveedores Comunes", "total": 85151500.0, "pct_inc": 0.34, "pct_tot": 0.08, "deveng_ejec": 157397000.0, "diff": -72245500.0}, {"pp": 3, "psp": 2, "ppar": 6, "pspar": 1, "cod": "3.2.6.1", "desc": "Derechos de bienes intangibles", "apartado": "Proveedores Comunes", "total": 78628594.0, "pct_inc": 0.32, "pct_tot": 0.07, "deveng_ejec": 154144675.58, "diff": -75516081.58}, {"pp": 3, "psp": 5, "ppar": 1, "pspar": 1, "cod": "3.5.1.1", "desc": "Transporte", "apartado": "Proveedores Comunes", "total": 72534000.0, "pct_inc": 0.29, "pct_tot": 0.07, "deveng_ejec": 92307600.0, "diff": -19773600.0}, {"pp": 3, "psp": 2, "ppar": 2, "pspar": 1, "cod": "3.2.2.1", "desc": "Alquiler de maquinaria, equipo y medios de transporte", "apartado": "Proveedores Comunes", "total": 60662154.74, "pct_inc": 0.25, "pct_tot": 0.06, "deveng_ejec": 90552647.75, "diff": -29890493.01}, {"pp": 3, "psp": 9, "ppar": 9, "pspar": 1, "cod": "3.9.9.1", "desc": "Otros servicios n.e.p.", "apartado": "Proveedores Comunes", "total": 28297430.94, "pct_inc": 0.11, "pct_tot": 0.03, "deveng_ejec": 26492353.42, "diff": 1805077.52}, {"pp": 3, "psp": 5, "ppar": 2, "pspar": 1, "cod": "3.5.2.1", "desc": "Almacenamiento", "apartado": "Proveedores Comunes", "total": 24474849.0, "pct_inc": 0.1, "pct_tot": 0.02, "deveng_ejec": 6234038.88, "diff": 18240810.12}, {"pp": 3, "psp": 5, "ppar": 5, "pspar": 1, "cod": "3.5.5.1", "desc": "Comisiones y gastos bancarios", "apartado": "Proveedores Comunes", "total": 21915860.98, "pct_inc": 0.09, "pct_tot": 0.02, "deveng_ejec": 0.0, "diff": 21915860.98}, {"pp": 3, "psp": 2, "ppar": 1, "pspar": 1, "cod": "3.2.1.1", "desc": "Alquiler de edificios y locales", "apartado": "Proveedores Comunes", "total": 20120656.0, "pct_inc": 0.08, "pct_tot": 0.02, "deveng_ejec": 26916656.0, "diff": -6796000.0}, {"pp": 3, "psp": 3, "ppar": 9, "pspar": 3, "cod": "3.3.9.3", "desc": "Otros serv. de mantenimiento, reparación y limpieza n.e.p.", "apartado": "Proveedores Comunes", "total": 19729199.96, "pct_inc": 0.08, "pct_tot": 0.02, "deveng_ejec": 23034370.23, "diff": -3305170.27}, {"pp": 3, "psp": 3, "ppar": 2, "pspar": 1, "cod": "3.3.2.1", "desc": "Mantenimiento y reparación de vehículos", "apartado": "Proveedores Comunes", "total": 13969465.0, "pct_inc": 0.06, "pct_tot": 0.01, "deveng_ejec": 8981765.0, "diff": 4987700.0}, {"pp": 3, "psp": 8, "ppar": 9, "pspar": 1, "cod": "3.8.9.1", "desc": "Otros impuestos, derechos, tasas y juicios n.e.p.", "apartado": "Proveedores Comunes", "total": 12129850.0, "pct_inc": 0.05, "pct_tot": 0.01, "deveng_ejec": 12129850.0, "diff": 0.0}, {"pp": 3, "psp": 1, "ppar": 6, "pspar": 1, "cod": "3.1.6.1", "desc": "Televisión por Cable", "apartado": "Servicios Básicos", "total": 10742431.2, "pct_inc": 0.04, "pct_tot": 0.01, "deveng_ejec": 14366343.56, "diff": -3623912.36}, {"pp": 3, "psp": 3, "ppar": 5, "pspar": 3, "cod": "3.3.5.3", "desc": "Fumigacion", "apartado": "Proveedores Comunes", "total": 6831000.0, "pct_inc": 0.03, "pct_tot": 0.01, "deveng_ejec": 6831000.0, "diff": 0.0}, {"pp": 3, "psp": 1, "ppar": 5, "pspar": 1, "cod": "3.1.5.1", "desc": "Correos y telégrafo", "apartado": "Servicios Básicos", "total": 2374915.22, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 9335125.7, "diff": -6960210.48}, {"pp": 3, "psp": 4, "ppar": 5, "pspar": 2, "cod": "3.4.5.2", "desc": "Beca de Formación", "apartado": "Proveedores Comunes", "total": 2174979.75, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 2375722.34, "diff": -200742.59}, {"pp": 3, "psp": 4, "ppar": 1, "pspar": 1, "cod": "3.4.1.1", "desc": "Estudios, investigaciones y proyectos de factibili", "apartado": "Proveedores Comunes", "total": 1690000.0, "pct_inc": 0.01, "pct_tot": 0.0, "deveng_ejec": 10140000.0, "diff": -8450000.0}, {"pp": 3, "psp": 8, "ppar": 1, "pspar": 1, "cod": "3.8.1.1", "desc": "Impuestos indirectos", "apartado": "Proveedores Comunes", "total": 565546.7, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 565546.7, "diff": 0.0}, {"pp": 3, "psp": 8, "ppar": 3, "pspar": 1, "cod": "3.8.3.1", "desc": "Derechos y tasas", "apartado": "Proveedores Comunes", "total": 251692.92, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 251692.92, "diff": 0.0}, {"pp": 3, "psp": 4, "ppar": 5, "pspar": 1, "cod": "3.4.5.1", "desc": "Capacitación y difusión", "apartado": "Proveedores Comunes", "total": 144000.0, "pct_inc": 0.0, "pct_tot": 0.0, "deveng_ejec": 144000.0, "diff": 0.0}, {"pp": 4, "psp": 2, "ppar": 1, "pspar": 1, "cod": "4.2.1.1", "desc": "Construcciones en bienes de dominio privado", "apartado": "Proveedores Comunes", "total": 2372251435.96, "pct_inc": 57.01, "pct_tot": 2.25, "deveng_ejec": 2544315073.2, "diff": -172063637.24}, {"pp": 4, "psp": 3, "ppar": 9, "pspar": 1, "cod": "4.3.9.1", "desc": "Equipos varios", "apartado": "Proveedores Comunes", "total": 784990065.0, "pct_inc": 18.86, "pct_tot": 0.75, "deveng_ejec": 788410639.0, "diff": -3420574.0}, {"pp": 4, "psp": 3, "ppar": 3, "pspar": 1, "cod": "4.3.3.1", "desc": "Equipo sanitario y de laboratorio", "apartado": "Proveedores Comunes", "total": 617085027.45, "pct_inc": 14.83, "pct_tot": 0.59, "deveng_ejec": 618174854.34, "diff": -1089826.89}, {"pp": 4, "psp": 3, "ppar": 1, "pspar": 1, "cod": "4.3.1.1", "desc": "Maquinaria y equipo de producción", "apartado": "Proveedores Comunes", "total": 127000000.0, "pct_inc": 3.05, "pct_tot": 0.12, "deveng_ejec": 127000000.0, "diff": 0.0}, {"pp": 4, "psp": 3, "ppar": 6, "pspar": 1, "cod": "4.3.6.1", "desc": "Equipo para computación", "apartado": "Proveedores Comunes", "total": 109392737.7, "pct_inc": 2.63, "pct_tot": 0.1, "deveng_ejec": 106241641.7, "diff": 3151096.0}, {"pp": 4, "psp": 3, "ppar": 7, "pspar": 1, "cod": "4.3.7.1", "desc": "Equipo de oficina y muebles", "apartado": "Proveedores Comunes", "total": 88563377.09, "pct_inc": 2.13, "pct_tot": 0.08, "deveng_ejec": 90713377.09, "diff": -2150000.0}, {"pp": 4, "psp": 8, "ppar": 1, "pspar": 1, "cod": "4.8.1.1", "desc": "Programas de computación", "apartado": "Proveedores Comunes", "total": 29126662.56, "pct_inc": 0.7, "pct_tot": 0.03, "deveng_ejec": 29126662.56, "diff": 0.0}, {"pp": 4, "psp": 3, "ppar": 4, "pspar": 1, "cod": "4.3.4.1", "desc": "Equipo de comunicación y señalamiento", "apartado": "Proveedores Comunes", "total": 18166310.0, "pct_inc": 0.44, "pct_tot": 0.02, "deveng_ejec": 18166310.0, "diff": 0.0}, {"pp": 4, "psp": 3, "ppar": 8, "pspar": 1, "cod": "4.3.8.1", "desc": "Herramientas y repuestos mayores", "apartado": "Proveedores Comunes", "total": 8932365.0, "pct_inc": 0.21, "pct_tot": 0.01, "deveng_ejec": 10868510.0, "diff": -1936145.0}, {"pp": 4, "psp": 3, "ppar": 5, "pspar": 1, "cod": "4.3.5.1", "desc": "Equipo educacional y recreativo", "apartado": "Proveedores Comunes", "total": 5941900.0, "pct_inc": 0.14, "pct_tot": 0.01, "deveng_ejec": 5941900.0, "diff": 0.0}];
+const incisoNombreCorto = {1:'1 · Personal',2:'2 · Bienes de Consumo',3:'3 · Servicios No Personales',4:'4 · Bienes de Uso'};
+const mesesEEPM = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep*'];
+
+safeChart(document.getElementById('ejecMensualChart'), {
+  type:'bar',
+  data:{ labels:mesesEEPM, datasets:[
+    { label:incisoNombreCorto[1], data:ejecMensualPorInciso[1].meses, backgroundColor:navy, stack:'s' },
+    { label:incisoNombreCorto[2], data:ejecMensualPorInciso[2].meses, backgroundColor:gold, stack:'s' },
+    { label:incisoNombreCorto[3], data:ejecMensualPorInciso[3].meses, backgroundColor:teal, stack:'s' },
+    { label:incisoNombreCorto[4], data:ejecMensualPorInciso[4].meses, backgroundColor:tealLight, stack:'s' }
+  ]},
+  options:{ plugins:{ legend:{position:'bottom',labels:{boxWidth:10,padding:14,font:{size:11.5}}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $ ${c.parsed.y.toLocaleString('es-AR')}`}} },
+    scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'}, grid:{color:'#EEF1F2'}} } }
+});
+
+document.getElementById('ejecMensualBody').innerHTML = [1,2,3,4].map(i=>{
+  const d = ejecMensualPorInciso[i];
+  return `<tr><td>${incisoNombreCorto[i]}</td>${d.meses.map(m=>`<td class="num-cell">${fmt(m)}</td>`).join('')}<td class="num-cell" style="font-weight:600;">${fmt(d.total)}</td><td class="num-cell">${d.pct_total.toFixed(1)}%</td><td class="num-cell">${d.pct_ejec!==null?d.pct_ejec.toFixed(1)+'%':'—'}</td></tr>`;
+}).join('') + `<tr style="font-weight:600;background:var(--bg);"><td>TOTAL</td>${['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep'].map((m,idx)=>{
+  const s = [1,2,3,4].reduce((a,i)=>a+ejecMensualPorInciso[i].meses[idx],0);
+  return `<td class="num-cell">${fmt(s)}</td>`;
+}).join('')}<td class="num-cell">${fmt(105333836333.92)}</td><td class="num-cell">100,0%</td><td class="num-cell">45,9%</td></tr>`;
+
+function renderEjecDetalle(){
+  const inc = document.getElementById('fEjecInciso').value;
+  const apt = document.getElementById('fEjecApartado').value;
+  const q = (document.getElementById('fEjecDetalleSearch').value || '').trim().toLowerCase();
+  const filtered = ejecDetalleSub.filter(s => (!inc || String(s.pp)===inc) && (!apt || s.apartado===apt)
+    && (!q || (s.cod && s.cod.toLowerCase().includes(q)) || (s.desc && s.desc.toLowerCase().includes(q))));
+  document.getElementById('ejecDetalleBody').innerHTML = filtered.length ? filtered.map(s=>{
+    const diffColor = s.diff===null ? 'var(--muted)' : Math.abs(s.diff) > 500000000 ? 'var(--amber);font-weight:600;' : 'var(--ink)';
+    return `<tr><td>${s.pp}</td><td>${s.psp}</td><td>${s.ppar}</td><td>${s.pspar}</td><td>${s.apartado}</td><td>${s.desc}</td><td class="num-cell">${fmt(s.total)}</td><td class="num-cell">${s.pct_inc.toFixed(1)}%</td><td class="num-cell">${s.pct_tot.toFixed(1)}%</td><td class="num-cell">${s.deveng_ejec!==null?fmt(s.deveng_ejec):'sin dato'}</td><td class="num-cell" style="color:${diffColor}">${s.diff!==null?fmt(s.diff):'—'}</td></tr>`;
+  }).join('') : `<tr><td colspan="11" class="no-results">Ninguna subpartida coincide con los filtros seleccionados.</td></tr>`;
+  const total = filtered.reduce((a,s)=>a+s.total,0);
+  document.getElementById('ejecDetalleSummary').innerHTML = `Mostrando <strong>${filtered.length}</strong> de ${ejecDetalleSub.length} subpartidas · Total devengado EEPM de la selección: <strong>${fmt(total)}</strong>`;
+}
+const fEjecIncisoSelect = document.getElementById('fEjecInciso');
+[1,2,3,4].forEach(i=>{ const opt=document.createElement('option'); opt.value=i; opt.textContent=incisoNombreCorto[i]; fEjecIncisoSelect.appendChild(opt); });
+const fEjecApartadoSelect = document.getElementById('fEjecApartado');
+[...new Set(ejecDetalleSub.map(s=>s.apartado))].sort().forEach(a=>{ const opt=document.createElement('option'); opt.value=a; opt.textContent=a; fEjecApartadoSelect.appendChild(opt); });
+document.getElementById('fEjecInciso').addEventListener('change', renderEjecDetalle);
+document.getElementById('fEjecApartado').addEventListener('change', renderEjecDetalle);
+document.getElementById('fEjecDetalleSearch').addEventListener('input', renderEjecDetalle);
+document.getElementById('fClearEjecMes').addEventListener('click', ()=>{ document.getElementById('fEjecInciso').value=''; document.getElementById('fEjecApartado').value=''; document.getElementById('fEjecDetalleSearch').value=''; renderEjecDetalle(); });
+renderEjecDetalle();
+
+// ---------------- EJECUCIÓN POR TRIMESTRE (EEPM Pagado) ----------------
+const ejecTrimestral = [
+  {inciso:'1 · Personal', t1:19954371565.54, t2:22147992115.34, t3:17445871294.58, t4:0, total:59548234975.46},
+  {inciso:'2 · Bienes de Consumo', t1:6505816440.05, t2:9438054008.49, t3:931340887.52, t4:0, total:16875211336.06},
+  {inciso:'3 · Servicios No Personales', t1:9793747187.01, t2:11160705594.95, t3:3794487359.68, t4:0, total:24748940141.64},
+  {inciso:'4 · Bienes de Uso', t1:935056859.86, t2:1784134971.67, t3:1442258049.23, t4:0, total:4161449880.76},
+];
+const ejecTrimestralTotal = {t1:37188992052.46, t2:44530886690.45, t3:23613957591.01, t4:0, total:105333836333.92};
+function varPct(a,b){ if (a===0 || a===null) return null; return (b-a)/a*100; }
+document.getElementById('trimestralBody').innerHTML = ejecTrimestral.map(r=>{
+  const v12 = varPct(r.t1,r.t2), v23 = varPct(r.t2,r.t3);
+  const colorv = v => v===null ? 'var(--muted)' : v>=0 ? 'var(--teal)' : 'var(--amber)';
+  return `<tr><td>${r.inciso}</td><td class="num-cell">${fmt(r.t1)}</td><td class="num-cell">${fmt(r.t2)}</td>
+    <td class="num-cell" style="color:${colorv(v12)}; font-weight:600;">${v12===null?'—':(v12>=0?'+':'')+v12.toFixed(1)+'%'}</td>
+    <td class="num-cell">${fmt(r.t3)}</td>
+    <td class="num-cell" style="color:${colorv(v23)}; font-weight:600;">${v23===null?'—':(v23>=0?'+':'')+v23.toFixed(1)+'%'}</td>
+    <td class="num-cell">${fmt(r.t4)}</td><td class="num-cell">${fmt(r.total)}</td></tr>`;
+}).join('') + (()=>{
+  const v12 = varPct(ejecTrimestralTotal.t1, ejecTrimestralTotal.t2), v23 = varPct(ejecTrimestralTotal.t2, ejecTrimestralTotal.t3);
+  const colorv = v => v===null ? 'var(--muted)' : v>=0 ? 'var(--teal)' : 'var(--amber)';
+  return `<tr style="font-weight:700; background:var(--bg);"><td>TOTAL</td><td class="num-cell">${fmt(ejecTrimestralTotal.t1)}</td><td class="num-cell">${fmt(ejecTrimestralTotal.t2)}</td>
+    <td class="num-cell" style="color:${colorv(v12)}">${(v12>=0?'+':'')+v12.toFixed(1)}%</td>
+    <td class="num-cell">${fmt(ejecTrimestralTotal.t3)}</td>
+    <td class="num-cell" style="color:${colorv(v23)}">${(v23>=0?'+':'')+v23.toFixed(1)}%</td>
+    <td class="num-cell">${fmt(ejecTrimestralTotal.t4)}</td><td class="num-cell">${fmt(ejecTrimestralTotal.total)}</td></tr>`;
+})();
+safeChart(document.getElementById('trimestralChart'), {
+  type:'bar',
+  data:{
+    labels:['1er Trim.','2do Trim.','3er Trim.*','4to Trim.'],
+    datasets: ejecTrimestral.map((r,i)=>({
+      label:r.inciso, data:[r.t1,r.t2,r.t3,r.t4],
+      backgroundColor:[navy,teal,gold,amber][i], borderRadius:4, maxBarThickness:52
+    }))
+  },
+  options:{ plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, font:{size:11} } },
+    tooltip:{ callbacks:{ label:ctx => `${ctx.dataset.label}: ${fmt(ctx.raw)}` } } },
+    scales:{ x:{ stacked:true, grid:{ display:false } }, y:{ stacked:true, ticks:{ callback:v=>'$'+(v/1e9).toFixed(0)+'B' }, grid:{ color:'#EEF1F3' } } } }
+});
+
+// ---------------- CRUCE PRESUPUESTO ----------------
+const autorizadoMes = [21538172320, 348751554, 11338536482, 11660492753, 11998546838, 14802521657, 4899411062, 0];
+const acreditadoMes = [3459756076, 0, 9798822124, 23426638232, 11660492753, 4899411062, 21901657433, 12726208255];
+safeChart(document.getElementById('cruceChart'), {
+  type:'bar',
+  data:{ labels:meses, datasets:[
+    { label:'Autorizado (vencimiento SIDIF)', data:autorizadoMes, backgroundColor:navy, borderRadius:5, maxBarThickness:34 },
+    { label:'Acreditado (Tesorería)', data:acreditadoMes, backgroundColor:teal, borderRadius:5, maxBarThickness:34 }
+  ]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:14,font:{size:11.5}}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $ ${c.parsed.y.toLocaleString('es-AR')}`}}},
+    scales:{ y:{ ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'}, grid:{color:'#EEF1F2'}}, x:{grid:{display:false}} } }
+});
+const cruceNotas = ['Incluye arrastre de deuda 2025 ($3.460 M), no presupuesto 2026','—','Pago de la resolución de Enero (parte)','Pago de resol. Febrero+Marzo (acumulado)','Coincide con lo autorizado en Abril','Coincide con lo autorizado en Julio','Pago de resol. Mayo+Junio (acumulado)','Aún no vencido en el PDF (llega solo a julio)'];
+const cruceRows = meses.map((m,i)=>({mes:m, aut:autorizadoMes[i], acr:acreditadoMes[i], nota:cruceNotas[i]}));
+document.getElementById('cruceBody').innerHTML = cruceRows.map(r=>`
+  <tr><td>${r.mes}</td><td class="num-cell">${fmt(r.aut)}</td><td class="num-cell">${fmt(r.acr)}</td><td class="num-cell">${fmt(r.acr-r.aut)}</td><td style="font-size:12px;color:var(--muted)">${r.nota}</td></tr>
+`).join('');
+
+// ---------------- EJECUCIÓN: CASCADA PRESUPUESTARIA COMPLETA ----------------
+// 1. Por fuente de financiamiento (Asignado -> Crédito Vigente -> Disponible)
+const ejecFuentes = [
+  { fuente:'HNK-2026 (Nación + Provincia)', asig:168953393241.51, cv:168953393241.49, afect:132487314600.15, compr:124614311089.97, deveng:100463668831.22, disp:36466078641.07 },
+  { fuente:'HNK-2026 · Remanente del ej. anterior', asig:0, cv:21243588467.42, afect:16906436936.03, compr:14400789157.63, deveng:12114171980.70, disp:4337151531.34 },
+  { fuente:'Recursos Propios - 2026', asig:0, cv:38592922142.41, afect:10852598279.39, compr:10120717974.67, deveng:8973438493.35, disp:27740323863.00 },
+  { fuente:'Plan SUMAR - 2026', asig:0, cv:219855091.24, afect:92303708.81, compr:92303708.81, deveng:92303708.81, disp:127551382.42 },
+  { fuente:'Investigación - 2026', asig:0, cv:359492604.65, afect:283286415.12, compr:283286415.12, deveng:283286415.11, disp:76206189.53 },
+  { fuente:'Estrategia de Salud Mental - 2026', asig:0, cv:40000000, afect:0, compr:0, deveng:0, disp:40000000 },
+];
+document.getElementById('ejecFuenteBody').innerHTML = ejecFuentes.map(f=>`
+  <tr><td>${f.fuente}</td><td class="num-cell">${f.asig?fmt(f.asig):'—'}</td><td class="num-cell">${fmt(f.cv)}</td><td class="num-cell">${fmt(f.afect)}</td><td class="num-cell">${fmt(f.compr)}</td><td class="num-cell">${fmt(f.deveng)}</td><td class="num-cell">${fmt(f.disp)}</td><td class="num-cell">${(f.deveng/f.cv*100).toFixed(1)}%</td></tr>
+`).join('') + `<tr style="font-weight:600;background:var(--bg);"><td>TOTAL (6 fuentes)</td><td class="num-cell">${fmt(168953393241.51)}</td><td class="num-cell">${fmt(229409251547.21)}</td><td class="num-cell">${fmt(160621939939.5)}</td><td class="num-cell">${fmt(149511408346.2)}</td><td class="num-cell">${fmt(121926869429.19)}</td><td class="num-cell">${fmt(68787311607.36)}</td><td class="num-cell">53,2%</td></tr>`;
+
+// 2. Por inciso — total de las 6 fuentes combinadas
+const ejecPartidas = [
+  { partida:'1 · Personal', cv:97995901802.93, afect:61210652239.76, compr:61210652261.66, deveng:61210652261.53, disp:36785249563.15 },
+  { partida:'2 · Bienes de Consumo', cv:58683871559.03, afect:47379320120.11, compr:40378700551.5, deveng:25850224316.07, disp:11304551438.72 },
+  { partida:'3 · Servicios No Personales', cv:64092617530.73, afect:44772415476.97, compr:41421971005.29, deveng:30527033883.7, disp:19320202053.65 },
+  { partida:'4 · Bienes de Uso', cv:8636860654.52, afect:7259552102.66, compr:6500084527.75, deveng:4338958967.89, disp:1377308551.84 },
+];
+document.getElementById('ejecPartidaBody').innerHTML = ejecPartidas.map(p=>`
+  <tr><td>${p.partida}</td><td class="num-cell">${fmt(p.cv)}</td><td class="num-cell">${fmt(p.afect)}</td><td class="num-cell">${fmt(p.compr)}</td><td class="num-cell">${fmt(p.deveng)}</td><td class="num-cell">${fmt(p.disp)}</td><td class="num-cell">${(p.deveng/p.cv*100).toFixed(1)}%</td></tr>
+`).join('') + `<tr style="font-weight:600;background:var(--bg);"><td>TOTAL</td><td class="num-cell">${fmt(229409251547.21)}</td><td class="num-cell">${fmt(160621939939.5)}</td><td class="num-cell">${fmt(149511408346.2)}</td><td class="num-cell">${fmt(121926869429.19)}</td><td class="num-cell">${fmt(68787311607.36)}</td><td class="num-cell">53,2%</td></tr>`;
+
+// 3. Detalle por subpartida/rubro — TODAS las subpartidas con movimiento (136), todas las fuentes combinadas
+const ejecSubpartidas = [{"inc": 1, "cod": "1.1.7.1", "rubro": "Complementos", "cv": 18907561613.1, "afect": 785981307.03, "compr": 785981307.03, "deveng": 785981307.03}, {"inc": 1, "cod": "1.1.1.1", "rubro": "Retribución del cargo", "cv": 18090029003.0, "afect": 13729682063.66, "compr": 13729682063.56, "deveng": 13729682063.56}, {"inc": 1, "cod": "1.1.3.1", "rubro": "Retribuciones que no hacen al cargo", "cv": 13576656951.0, "afect": 10412416921.96, "compr": 10412416921.96, "deveng": 10412416921.96}, {"inc": 1, "cod": "1.8.1.1", "rubro": "Honorarios Profesionales - Loc. de Serv.", "cv": 7701331634.73, "afect": 6373172040.44, "compr": 6373172040.44, "deveng": 6373172040.44}, {"inc": 1, "cod": "1.1.4.1", "rubro": "Sueldo anual complementario", "cv": 5701223646.97, "afect": 1893919081.63, "compr": 1893919103.63, "deveng": 1893919103.63}, {"inc": 1, "cod": "1.1.6.2", "rubro": "Contribuciones IPS", "cv": 5577702896.0, "afect": 4004257155.68, "compr": 4004257155.68, "deveng": 4004257155.68}, {"inc": 1, "cod": "1.8.1.2", "rubro": "Honorarios Profesionales Anestesiólogos", "cv": 5284229635.56, "afect": 4307829342.17, "compr": 4307829342.17, "deveng": 4307829342.17}, {"inc": 1, "cod": "1.1.8.1", "rubro": "Recupero de costos", "cv": 4426418900.62, "afect": 4336324110.13, "compr": 4336324110.13, "deveng": 4336324110.13}, {"inc": 1, "cod": "1.1.7.5", "rubro": "Adicional por desarrollo", "cv": 2731866384.73, "afect": 2652358367.33, "compr": 2652358367.33, "deveng": 2652358367.33}, {"inc": 1, "cod": "1.1.7.6", "rubro": "Incentivo a la mejora continua", "cv": 2731744048.27, "afect": 2652236026.54, "compr": 2652236026.54, "deveng": 2652236026.54}, {"inc": 1, "cod": "1.8.1.3", "rubro": "Contrato de Loc. de Obra - Guardias Médicas", "cv": 2575308692.45, "afect": 2313529069.22, "compr": 2313529069.22, "deveng": 2313529069.22}, {"inc": 1, "cod": "1.1.1.2", "rubro": "Guardias Médicas", "cv": 1778452280.19, "afect": 1622460046.93, "compr": 1622460046.93, "deveng": 1622460046.93}, {"inc": 1, "cod": "1.1.8.2", "rubro": "Rec. de costos - Trasplantes", "cv": 1696428650.3, "afect": 359998986.89, "compr": 359998986.89, "deveng": 359998986.89}, {"inc": 1, "cod": "1.8.8.1", "rubro": "Recupero de costos S/HONORARIOS", "cv": 1367175826.12, "afect": 1367175826.11, "compr": 1367175826.11, "deveng": 1367175826.11}, {"inc": 1, "cod": "1.3.1.1", "rubro": "Retribuciones extraordinarias", "cv": 1306800722.85, "afect": 963800282.01, "compr": 963800282.01, "deveng": 963800282.01}, {"inc": 1, "cod": "1.9.2.1", "rubro": "Retribución - Beca Institución", "cv": 833357179.77, "afect": 611606843.0, "compr": 611606843.0, "deveng": 611606843.0}, {"inc": 1, "cod": "1.1.6.1", "rubro": "Contribuciones Obra Social", "cv": 767974190.0, "afect": 637417438.63, "compr": 637417438.63, "deveng": 637417438.63}, {"inc": 1, "cod": "1.9.1.1", "rubro": "Otros Gastos", "cv": 742912073.3, "afect": 500324679.95, "compr": 500324679.95, "deveng": 500324679.95}, {"inc": 1, "cod": "1.5.1.1", "rubro": "Seguros de riesgo de trabajo", "cv": 603606521.62, "afect": 500459808.05, "compr": 500459808.05, "deveng": 500459807.93}, {"inc": 1, "cod": "1.5.4.1", "rubro": "Guardería", "cv": 384471045.7, "afect": 194916104.38, "compr": 194916104.38, "deveng": 194916104.38}, {"inc": 1, "cod": "1.1.7.3", "rubro": "Complementos protocolos de investigación", "cv": 246091392.33, "afect": 235759788.2, "compr": 235759788.2, "deveng": 235759788.19}, {"inc": 1, "cod": "1.1.7.2", "rubro": "Complementos vacaciones", "cv": 195029724.01, "afect": 110626213.42, "compr": 110626213.42, "deveng": 110626213.42}, {"inc": 1, "cod": "1.4.1.1", "rubro": "Asignaciones familiares", "cv": 161442281.0, "afect": 100975654.0, "compr": 100975654.0, "deveng": 100975654.0}, {"inc": 1, "cod": "1.9.2.3", "rubro": "Adicional por desarrollo - Beca Institución", "cv": 123854722.2, "afect": 123854722.2, "compr": 123854722.2, "deveng": 123854722.2}, {"inc": 1, "cod": "1.9.2.4", "rubro": "Incentivo a la mejora continua - Beca Institución", "cv": 123854722.2, "afect": 123854722.2, "compr": 123854722.2, "deveng": 123854722.2}, {"inc": 1, "cod": "1.9.2.6", "rubro": "Complementos - Beca Institución", "cv": 106194696.3, "afect": 60896992.01, "compr": 60896992.01, "deveng": 60896992.01}, {"inc": 1, "cod": "1.9.2.5", "rubro": "Guardias - Beca Institución", "cv": 95731223.28, "afect": 95731223.11, "compr": 95731223.11, "deveng": 95731223.11}, {"inc": 1, "cod": "1.8.8.2", "rubro": "Rec. de costos - Trasplantes S/Honorarios", "cv": 91380538.28, "afect": 91380538.28, "compr": 91380538.28, "deveng": 91380538.28}, {"inc": 1, "cod": "1.8.2.2", "rubro": "Complemento Honorarios Investigación", "cv": 47730562.47, "afect": 47526562.46, "compr": 47526562.46, "deveng": 47526562.46}, {"inc": 1, "cod": "1.9.2.2", "rubro": "Contribuciones Obra Social - Beca Institución", "cv": 12300096.3, "afect": -5293333.5, "compr": -5293333.5, "deveng": -5293333.5}, {"inc": 1, "cod": "1.5.3.1", "rubro": "Seguros de Vida Obligatorio", "cv": 7039948.28, "afect": 5473655.64, "compr": 5473655.64, "deveng": 5473655.64}, {"inc": 2, "cod": "2.5.2.5", "rubro": "Otros Productos farmacéuticos", "cv": 12772707417.39, "afect": 7207424984.01, "compr": 5972100537.51, "deveng": 4007576688.45}, {"inc": 2, "cod": "2.5.1.3", "rubro": "Drogas y reactivos de laboratorio", "cv": 11483217287.62, "afect": 11420407280.72, "compr": 11010956439.73, "deveng": 6192006055.02}, {"inc": 2, "cod": "2.5.2.1", "rubro": "Antiinfecciosos", "cv": 5808859773.55, "afect": 5409517972.51, "compr": 3249162090.6, "deveng": 3075031156.32}, {"inc": 2, "cod": "2.9.5.1", "rubro": "Productos Médicos Generales", "cv": 4667553450.66, "afect": 4584009771.33, "compr": 3945666874.69, "deveng": 2424376139.39}, {"inc": 2, "cod": "2.9.5.2", "rubro": "Productos Médicos Hemodinamia y Neurointervencionismo", "cv": 4457612878.34, "afect": 4382061141.91, "compr": 4291803976.12, "deveng": 2305659215.42}, {"inc": 2, "cod": "2.9.5.3", "rubro": "Productos Médicos Cardiocirugía", "cv": 3067051534.97, "afect": 2815874266.17, "compr": 2379849109.34, "deveng": 1900019468.21}, {"inc": 2, "cod": "2.2.2.1", "rubro": "Prendas de vestir", "cv": 1856677424.38, "afect": 11942312.5, "compr": 11428100.0, "deveng": 2995560.0}, {"inc": 2, "cod": "2.5.1.5", "rubro": "Otros Compuestos químicos", "cv": 1791354085.27, "afect": 1706390648.72, "compr": 1607214132.69, "deveng": 789177494.68}, {"inc": 2, "cod": "2.9.5.6", "rubro": "Productos Médicos Ort. Y Traum, Maxilof.", "cv": 1731160195.76, "afect": 1527397154.36, "compr": 1233427073.18, "deveng": 543543824.8}, {"inc": 2, "cod": "2.5.2.2", "rubro": "Soluciones Parenterales", "cv": 1444012517.03, "afect": 1431214629.0, "compr": 1422871699.0, "deveng": 564068472.16}, {"inc": 2, "cod": "2.9.5.8", "rubro": "Otros materiales sanitarios", "cv": 1254970758.2, "afect": 1168949036.9, "compr": 1072524279.64, "deveng": 557043590.79}, {"inc": 2, "cod": "2.9.5.5", "rubro": "Productos Médicos Gastroenterología", "cv": 980968121.82, "afect": 456825036.2, "compr": 227284431.49, "deveng": 224642336.15}, {"inc": 2, "cod": "2.5.2.3", "rubro": "Drogas de uso radiológico", "cv": 938924901.86, "afect": 345850986.0, "compr": 339830586.0, "deveng": 281340186.0}, {"inc": 2, "cod": "2.9.9.2", "rubro": "Repuestos y Accesorios para equipos médicos", "cv": 848318270.94, "afect": 848316188.62, "compr": 456954225.12, "deveng": 406933892.24}, {"inc": 2, "cod": "2.5.2.4", "rubro": "Anestésicos", "cv": 833707880.79, "afect": 337575369.74, "compr": 336503805.74, "deveng": 316344984.3}, {"inc": 2, "cod": "2.9.5.4", "rubro": "Productos Médicos Neurocirugía", "cv": 628232772.89, "afect": 619829319.84, "compr": 600717579.57, "deveng": 556425552.7}, {"inc": 2, "cod": "2.9.6.1", "rubro": "Repuestos y accesorios", "cv": 589132163.74, "afect": 555972180.64, "compr": 343386818.31, "deveng": 319950581.97}, {"inc": 2, "cod": "2.3.4.1", "rubro": "Productos de papel y cartón", "cv": 488365566.66, "afect": 472287350.85, "compr": 308197863.65, "deveng": 196502352.1}, {"inc": 2, "cod": "2.5.1.1", "rubro": "Oxigeno líquido", "cv": 437316692.86, "afect": 312487836.24, "compr": 312487836.24, "deveng": 217583889.47}, {"inc": 2, "cod": "2.1.1.1", "rubro": "Alimentos para personas", "cv": 431216162.0, "afect": 211800000.0, "compr": 0.0, "deveng": 0.0}, {"inc": 2, "cod": "2.5.1.4", "rubro": "Reactivos y soluciones de Medicina Transfusional", "cv": 384498537.51, "afect": 383854530.77, "compr": 379354530.77, "deveng": 141083748.49}, {"inc": 2, "cod": "2.5.8.1", "rubro": "Productos de material plástico", "cv": 336315204.19, "afect": 92870796.01, "compr": 86102251.01, "deveng": 86102251.0}, {"inc": 2, "cod": "2.9.5.7", "rubro": "Suturas", "cv": 318534397.24, "afect": 317231404.48, "compr": 253980144.52, "deveng": 243671554.97}, {"inc": 2, "cod": "2.9.3.1", "rubro": "Útiles y materiales eléctricos", "cv": 302296930.27, "afect": 292205025.22, "compr": 261281213.42, "deveng": 251524411.44}, {"inc": 2, "cod": "2.9.1.1", "rubro": "Elementos de limpieza", "cv": 172351738.0, "afect": 3445000.0, "compr": 3445000.0, "deveng": 3445000.0}, {"inc": 2, "cod": "2.9.9.3", "rubro": "Otros bienes de consumo n.e.p.", "cv": 77502589.51, "afect": 29678937.97, "compr": 8213585.97, "deveng": 8213585.97}, {"inc": 2, "cod": "2.5.1.2", "rubro": "Oxigeno gaseoso", "cv": 66385495.52, "afect": 56440295.76, "compr": 56440295.76, "deveng": 42826197.86}, {"inc": 2, "cod": "2.3.2.1", "rubro": "Papel para computación", "cv": 65763950.0, "afect": 65703950.0, "compr": 17015600.0, "deveng": 17015600.0}, {"inc": 2, "cod": "2.3.3.1", "rubro": "Productos de artes gráficas", "cv": 60997647.6, "afect": 36735987.6, "compr": 819000.0, "deveng": 819000.0}, {"inc": 2, "cod": "2.9.2.1", "rubro": "Útiles de escritorio, oficina y enseñanza", "cv": 57557760.96, "afect": 49748135.8, "compr": 4631450.0, "deveng": 4631450.0}, {"inc": 2, "cod": "2.5.5.1", "rubro": "Tintas, pinturas y colorantes", "cv": 54690876.91, "afect": 43761666.92, "compr": 36823509.02, "deveng": 41493558.8}, {"inc": 2, "cod": "2.9.9.1", "rubro": "Insumos de mantenimiento", "cv": 50009894.43, "afect": 41200188.49, "compr": 37676985.94, "deveng": 34247858.43}, {"inc": 2, "cod": "2.7.9.1", "rubro": "Otros productos metálicos", "cv": 36633966.02, "afect": 16737142.85, "compr": 15528716.0, "deveng": 15528716.0}, {"inc": 2, "cod": "2.5.6.1", "rubro": "Combustibles y lubricantes", "cv": 36390108.28, "afect": 36292902.56, "compr": 34948202.56, "deveng": 34948057.26}, {"inc": 2, "cod": "2.5.9.1", "rubro": "Otros Productos químicos, combustibles y lubricantes", "cv": 22776433.0, "afect": 18331820.0, "compr": 18331820.0, "deveng": 14691820.0}, {"inc": 2, "cod": "2.7.4.1", "rubro": "Estructuras metálicas acabadas", "cv": 21148800.0, "afect": 150000.0, "compr": 150000.0, "deveng": 150000.0}, {"inc": 2, "cod": "2.4.3.1", "rubro": "Artículos de caucho", "cv": 19520000.0, "afect": 19520000.0, "compr": 7520000.0, "deveng": 7520000.0}, {"inc": 2, "cod": "2.2.1.1", "rubro": "Hilados y telas", "cv": 19431267.76, "afect": 0.1, "compr": 0.1, "deveng": 0.0}, {"inc": 2, "cod": "2.7.1.1", "rubro": "Productos ferrosos", "cv": 14326603.0, "afect": 6181390.0, "compr": 6181390.0, "deveng": 4613390.0}, {"inc": 2, "cod": "2.3.9.1", "rubro": "Otros Productos de papel, cartón e impresos", "cv": 11426484.0, "afect": 11385000.0, "compr": 0.0, "deveng": 0.0}, {"inc": 2, "cod": "2.2.9.1", "rubro": "Otros textiles y vestuarios", "cv": 9695200.0, "afect": 7096650.0, "compr": 7096650.0, "deveng": 0.0}, {"inc": 2, "cod": "2.6.2.1", "rubro": "Productos de vidrio", "cv": 8904331.5, "afect": 5747575.5, "compr": 5407575.5, "deveng": 1302071.5}, {"inc": 2, "cod": "2.7.5.1", "rubro": "Herramientas menores", "cv": 7298954.79, "afect": 6298625.02, "compr": 6268041.91, "deveng": 6268041.78}, {"inc": 2, "cod": "2.1.9.1", "rubro": "Otros Productos alimenticios, agropecuarios y forestales", "cv": 6855043.41, "afect": 4924768.0, "compr": 2292568.0, "deveng": 2082000.0}, {"inc": 2, "cod": "2.6.9.1", "rubro": "Otros productos de minerales no metálicos", "cv": 3272018.4, "afect": 2186484.8, "compr": 2171146.4, "deveng": 2171146.4}, {"inc": 2, "cod": "2.2.3.1", "rubro": "Confecciones textiles", "cv": 3194454.0, "afect": 3133800.0, "compr": 3133800.0, "deveng": 3133800.0}, {"inc": 2, "cod": "2.3.1.1", "rubro": "Papel de escritorio y cartón", "cv": 2202925.0, "afect": 161960.0, "compr": 0.0, "deveng": 0.0}, {"inc": 2, "cod": "2.1.5.1", "rubro": "Madera, corcho y sus manufacturas", "cv": 1755488.0, "afect": 1519616.0, "compr": 1519616.0, "deveng": 1519616.0}, {"inc": 2, "cod": "2.9.4.1", "rubro": "Utensilios de cocina y comedor", "cv": 650957.0, "afect": 598000.0, "compr": 0.0, "deveng": 0.0}, {"inc": 2, "cod": "2.1.4.1", "rubro": "Productos agroforestales", "cv": 123646.0, "afect": 45000.0, "compr": 0.0, "deveng": 0.0}, {"inc": 3, "cod": "3.9.3.1", "rubro": "Servicios de vigilancia", "cv": 16689464075.75, "afect": 3996421625.88, "compr": 3996421625.88, "deveng": 3552374778.56}, {"inc": 3, "cod": "3.3.5.1", "rubro": "Limpieza", "cv": 11932575525.07, "afect": 11917595941.85, "compr": 11917595941.85, "deveng": 8212649861.85}, {"inc": 3, "cod": "3.9.6.1", "rubro": "Serv contratados de alimentación", "cv": 6246800560.38, "afect": 5893665400.44, "compr": 5893665400.44, "deveng": 5201790714.22}, {"inc": 3, "cod": "3.3.1.1", "rubro": "Mantenimiento y reparación de edificios y locales", "cv": 4174414859.26, "afect": 4174414859.25, "compr": 2523845265.29, "deveng": 1404120700.0}, {"inc": 3, "cod": "3.3.3.1", "rubro": "Mantenimiento y reparación de maquinaria y equipos médicos", "cv": 3635328737.02, "afect": 3521969405.42, "compr": 3372893184.09, "deveng": 2468603765.67}, {"inc": 3, "cod": "3.3.6.1", "rubro": "Mantenimiento de sistemas informáticos", "cv": 3470212721.88, "afect": 3438260376.37, "compr": 3172929245.37, "deveng": 2279831252.78}, {"inc": 3, "cod": "3.4.2.1", "rubro": "Médicos y sanitarios", "cv": 3076568869.22, "afect": 2474329937.54, "compr": 2382942693.32, "deveng": 743524473.38}, {"inc": 3, "cod": "3.1.1.1", "rubro": "Energía eléctrica", "cv": 2138468230.59, "afect": 884742075.16, "compr": 884742075.16, "deveng": 884742075.12}, {"inc": 3, "cod": "3.3.3.2", "rubro": "Mantenimiento y reparación de maquinaria y equipos", "cv": 2065315368.11, "afect": 2012259346.06, "compr": 1956018267.52, "deveng": 1227745699.29}, {"inc": 3, "cod": "3.3.5.2", "rubro": "Recoleccion Residuos patogenos", "cv": 1417947995.47, "afect": 652814355.62, "compr": 652814355.62, "deveng": 634064355.62}, {"inc": 3, "cod": "3.4.9.1", "rubro": "Otros servicios técnicos y profesionales n.e.p.", "cv": 1304581293.74, "afect": 329606844.21, "compr": 237076128.21, "deveng": 213941702.73}, {"inc": 3, "cod": "3.4.2.2", "rubro": "Servicios profesionales Anestesia", "cv": 1155387775.9, "afect": 563400826.0, "compr": 563400826.0, "deveng": 563400826.0}, {"inc": 3, "cod": "3.5.9.1", "rubro": "Otros servicios comerciales y financierosn.e.p", "cv": 913366762.35, "afect": 912984071.04, "compr": 912984071.04, "deveng": 668484071.04}, {"inc": 3, "cod": "3.3.9.1", "rubro": "Servicio de lavado y planchado", "cv": 823609063.99, "afect": 795609937.5, "compr": 795609937.5, "deveng": 795609937.5}, {"inc": 3, "cod": "3.2.9.1", "rubro": "Otros alquileres y derechos n.e.p.", "cv": 707704653.35, "afect": 558495793.52, "compr": 149743593.52, "deveng": 116943488.51}, {"inc": 3, "cod": "3.5.4.1", "rubro": "Primas y gastos de seguros", "cv": 605349854.45, "afect": 173982627.84, "compr": 173982627.84, "deveng": 173982627.84}, {"inc": 3, "cod": "3.5.1.1", "rubro": "Transporte", "cv": 558664452.24, "afect": 187199283.4, "compr": 127883616.7, "deveng": 92307600.0}, {"inc": 3, "cod": "3.3.9.2", "rubro": "Mantenimiento de parques y jardines", "cv": 343354718.05, "afect": 300631535.42, "compr": 300631535.42, "deveng": 184243745.66}, {"inc": 3, "cod": "3.1.2.1", "rubro": "Agua", "cv": 324471458.76, "afect": 239328727.65, "compr": 239328727.65, "deveng": 239328727.65}, {"inc": 3, "cod": "3.4.6.1", "rubro": "De informática y sistemas computarizados", "cv": 319967085.95, "afect": 297485033.16, "compr": 215472148.16, "deveng": 157397000.0}, {"inc": 3, "cod": "3.3.9.3", "rubro": "Otros serv. de mantenimiento, reparación y limpieza n.e.p.", "cv": 318916614.82, "afect": 299874227.07, "compr": 25172164.23, "deveng": 23034370.23}, {"inc": 3, "cod": "3.2.6.1", "rubro": "Derechos de bienes intangibles", "cv": 272150724.42, "afect": 264916875.58, "compr": 193024675.58, "deveng": 154144675.58}, {"inc": 3, "cod": "3.9.9.1", "rubro": "Otros servicios n.e.p.", "cv": 219014833.09, "afect": 191579361.21, "compr": 65629161.21, "deveng": 26492353.42}, {"inc": 3, "cod": "3.2.4.1", "rubro": "Alquiler de fotocopiadoras", "cv": 213906651.83, "afect": 213790015.88, "compr": 203650215.88, "deveng": 120088632.18}, {"inc": 3, "cod": "3.4.1.2", "rubro": "Protocolos de investigación", "cv": 169673818.33, "afect": 0.0, "compr": 0.0, "deveng": 0.0}, {"inc": 3, "cod": "3.9.9.8", "rubro": "SAMO Pcia. de Bs. As.", "cv": 146831943.25, "afect": 0.0, "compr": 0.0, "deveng": 0.0}, {"inc": 3, "cod": "3.2.2.1", "rubro": "Alquiler de maquinaria, equipo y medios de transporte", "cv": 138461024.41, "afect": 131099640.75, "compr": 131097140.75, "deveng": 90552647.75}, {"inc": 3, "cod": "3.1.3.1", "rubro": "Gas", "cv": 134323930.99, "afect": 109690032.79, "compr": 109690032.79, "deveng": 109690032.79}, {"inc": 3, "cod": "3.4.5.1", "rubro": "Capacitación y difusión", "cv": 127701446.64, "afect": 144000.0, "compr": 144000.0, "deveng": 144000.0}, {"inc": 3, "cod": "3.4.1.1", "rubro": "Estudios, investigaciones y proyectos de factibili", "cv": 97888180.52, "afect": 16614622.09, "compr": 13595020.0, "deveng": 10140000.0}, {"inc": 3, "cod": "3.1.4.1", "rubro": "Telefonía fija y móvil", "cv": 94380714.76, "afect": 89672027.23, "compr": 89672027.23, "deveng": 89672027.23}, {"inc": 3, "cod": "3.5.2.1", "rubro": "Almacenamiento", "cv": 74236288.9, "afect": 27054518.82, "compr": 27054518.82, "deveng": 6234038.88}, {"inc": 3, "cod": "3.2.1.1", "rubro": "Alquiler de edificios y locales", "cv": 48465618.68, "afect": 31433072.0, "compr": 26916656.0, "deveng": 26916656.0}, {"inc": 3, "cod": "3.3.2.1", "rubro": "Mantenimiento y reparación de vehículos", "cv": 28051759.82, "afect": 9710085.0, "compr": 9274085.0, "deveng": 8981765.0}, {"inc": 3, "cod": "3.1.5.1", "rubro": "Correos y telégrafo", "cv": 26546340.72, "afect": 17316385.7, "compr": 12756385.7, "deveng": 9335125.7}, {"inc": 3, "cod": "3.3.5.3", "rubro": "Fumigacion", "cv": 26424276.15, "afect": 14458454.0, "compr": 14449500.0, "deveng": 6831000.0}, {"inc": 3, "cod": "3.8.9.1", "rubro": "Otros impuestos, derechos, tasas y juicios n.e.p.", "cv": 18774445.0, "afect": 12129850.0, "compr": 12129850.0, "deveng": 12129850.0}, {"inc": 3, "cod": "3.1.6.1", "rubro": "Televisión por Cable", "cv": 14367110.7, "afect": 14366343.56, "compr": 14366343.56, "deveng": 14366343.56}, {"inc": 3, "cod": "3.4.5.2", "rubro": "Beca de Formación", "cv": 13614549.47, "afect": 2375722.34, "compr": 2375722.34, "deveng": 2375722.34}, {"inc": 3, "cod": "3.5.3.1", "rubro": "Imprenta, publicaciones y reproducciones", "cv": 3368201.0, "afect": 175000.0, "compr": 175000.0, "deveng": 0.0}, {"inc": 3, "cod": "3.8.1.1", "rubro": "Impuestos indirectos", "cv": 1110879.7, "afect": 565546.7, "compr": 565546.7, "deveng": 565546.7}, {"inc": 3, "cod": "3.5.5.1", "rubro": "Comisiones y gastos bancarios", "cv": 455008.0, "afect": 0.0, "compr": 0.0, "deveng": 0.0}, {"inc": 3, "cod": "3.8.3.1", "rubro": "Derechos y tasas", "cv": 399108.0, "afect": 251692.92, "compr": 251692.92, "deveng": 251692.92}, {"inc": 4, "cod": "4.2.1.1", "rubro": "Construcciones en bienes de dominio privado", "cv": 5006964069.11, "afect": 4058802658.6, "compr": 4058730658.61, "deveng": 2544315073.2}, {"inc": 4, "cod": "4.3.3.1", "rubro": "Equipo sanitario y de laboratorio", "cv": 1839411806.31, "afect": 1754193604.77, "compr": 1231620191.67, "deveng": 618174854.34}, {"inc": 4, "cod": "4.3.9.1", "rubro": "Equipos varios", "cv": 1132773504.46, "afect": 799468090.66, "compr": 788435362.41, "deveng": 788410639.0}, {"inc": 4, "cod": "4.3.7.1", "rubro": "Equipo de oficina y muebles", "cv": 247945132.8, "afect": 237355234.8, "compr": 111874582.8, "deveng": 90713377.09}, {"inc": 4, "cod": "4.3.6.1", "rubro": "Equipo para computación", "cv": 144118841.7, "afect": 144118841.7, "compr": 106241641.7, "deveng": 106241641.7}, {"inc": 4, "cod": "4.3.1.1", "rubro": "Maquinaria y equipo de producción", "cv": 127015685.0, "afect": 127015685.0, "compr": 127015685.0, "deveng": 127000000.0}, {"inc": 4, "cod": "4.8.1.1", "rubro": "Programas de computación", "cv": 52748820.57, "afect": 52748820.56, "compr": 40593062.56, "deveng": 29126662.56}, {"inc": 4, "cod": "4.3.5.1", "rubro": "Equipo educacional y recreativo", "cv": 30235730.57, "afect": 30235730.57, "compr": 5941900.0, "deveng": 5941900.0}, {"inc": 4, "cod": "4.5.1.1", "rubro": "Libros, revistas y otros elementos coleccionables", "cv": 26015408.0, "afect": 25985780.0, "compr": 250623.0, "deveng": 0.0}, {"inc": 4, "cod": "4.3.4.1", "rubro": "Equipo de comunicación y señalamiento", "cv": 18166310.0, "afect": 18166310.0, "compr": 18166310.0, "deveng": 18166310.0}, {"inc": 4, "cod": "4.3.8.1", "rubro": "Herramientas y repuestos mayores", "cv": 11227546.0, "afect": 11223546.0, "compr": 11214510.0, "deveng": 10868510.0}, {"inc": 4, "cod": "4.3.2.1", "rubro": "Equipo de transporte, tracción y elevación", "cv": 237800.0, "afect": 237800.0, "compr": 0.0, "deveng": 0.0}];
+const incisoNombre = {1:'1 · Personal',2:'2 · Bienes de Consumo',3:'3 · Servicios No Personales',4:'4 · Bienes de Uso'};
+const incisoTotalCV = {1:97995901802.93,2:58683871559.03,3:64092617530.73,4:8636860654.52};
+const incisoTotalDeveng = {1:61210652261.53,2:25850224316.07,3:30527033883.7,4:4338958967.89};
+function renderEjecSubpartida(){
+  const inc = document.getElementById('fInciso').value;
+  const q = (document.getElementById('fIncisoSearch').value || '').trim().toLowerCase();
+  const filtered = ejecSubpartidas.filter(s => (!inc || String(s.inc)===inc)
+    && (!q || s.cod.toLowerCase().includes(q) || s.rubro.toLowerCase().includes(q)));
+  document.getElementById('ejecSubpartidaBody').innerHTML = filtered.length ? filtered.map(s=>`
+    <tr><td>${incisoNombre[s.inc]}</td><td>${s.cod}</td><td>${s.rubro}</td><td class="num-cell">${fmt(s.cv)}</td><td class="num-cell">${fmt(s.afect)}</td><td class="num-cell">${fmt(s.compr)}</td><td class="num-cell">${fmt(s.deveng)}</td><td class="num-cell">${(s.deveng/s.cv*100).toFixed(1)}%</td></tr>
+  `).join('') : `<tr><td colspan="8" class="no-results">Ninguna subpartida coincide con la búsqueda.</td></tr>`;
+  document.getElementById('ejecSubpartidaSummary').innerHTML = `Mostrando <strong>${filtered.length}</strong> de ${ejecSubpartidas.length} subpartidas`;
+  // Conciliación: la suma de las subpartidas filtradas debe igualar el total del inciso (tabla 2) o el total general
+  const sumCV = filtered.reduce((a,s)=>a+s.cv,0), sumDeveng = filtered.reduce((a,s)=>a+s.deveng,0);
+  const targetCV = inc ? incisoTotalCV[inc] : 229409251547.21;
+  const targetDeveng = inc ? incisoTotalDeveng[inc] : 121926869429.19;
+  const diffCV = sumCV - targetCV, diffDeveng = sumDeveng - targetDeveng;
+  const etiqueta = inc ? `Inciso ${inc} (${incisoNombre[inc]})` : 'Total general (4 incisos)';
+  document.getElementById('ejecConciliacion').innerHTML = `
+    <b>Conciliación:</b> suma de ${filtered.length} subpartidas = <b>${fmt(sumCV)}</b> de crédito vigente y <b>${fmt(sumDeveng)}</b> de devengado para ${etiqueta}
+    — contra el total de la tabla de incisos (<b>${fmt(targetCV)}</b> / ${fmt(targetDeveng)}), la diferencia es
+    <b style="color:${Math.abs(diffCV)<1 && Math.abs(diffDeveng)<1 ? 'var(--teal)' : 'var(--amber)'}">${fmt(diffCV)} en crédito vigente y ${fmt(diffDeveng)} en devengado</b>
+    ${Math.abs(diffCV)<1 && Math.abs(diffDeveng)<1 ? '— cierra exacto ✓' : '— revisar redondeos'}.`;
+}
+const fIncisoSelect = document.getElementById('fInciso');
+[1,2,3,4].forEach(i=>{ const opt=document.createElement('option'); opt.value=i; opt.textContent=incisoNombre[i]; fIncisoSelect.appendChild(opt); });
+document.getElementById('fInciso').addEventListener('change', renderEjecSubpartida);
+document.getElementById('fIncisoSearch').addEventListener('input', renderEjecSubpartida);
+document.getElementById('fClearInciso').addEventListener('click', ()=>{ document.getElementById('fInciso').value=''; document.getElementById('fIncisoSearch').value=''; renderEjecSubpartida(); });
+renderEjecSubpartida();
+
+// ---------------- PROYECCIONES (Necesidad real, hoja "Proyección") ----------------
+const proyeccionRows = [
+  { linea:'Partida 1 · Personal', disp:16419856178.54, proy:38722081386.62, nec:-22302225208.08 },
+  { linea:'Partidas 2 y 3 · Consumo + Servicios (neto $10.833 M Pcia sin asignar)', disp:20046222462.53-10833066000, proy:12541835724.58, nec:-3328679262.05 },
+  { linea:'Ejercicios anteriores · Obra Oncológica + PET + Acelerador', disp:4337151531.34, proy:1649729685.57, nec:2687421845.77 },
+  { linea:'Recursos Propios', disp:9740323863, proy:null, nec:null },
+];
+document.getElementById('proyeccionBody').innerHTML = proyeccionRows.map(r=>`
+  <tr><td>${r.linea}</td><td class="num-cell">${fmt(r.disp)}</td><td class="num-cell">${r.proy!==null?fmt(r.proy):'sin proyección cargada'}</td><td class="num-cell" style="${r.nec!==null && r.nec<0 ? 'color:var(--amber);font-weight:600;' : r.nec!==null ? 'color:var(--teal);font-weight:600;' : ''}">${r.nec!==null?fmt(r.nec):'—'}</td></tr>
+`).join('') + `<tr style="font-weight:600;background:var(--bg);"><td>Necesidad total (Personal + Consumo/Servicios)</td><td></td><td></td><td class="num-cell" style="color:var(--amber);">${fmt(-25630904470.13)}</td></tr>`;
+
+safeChart(document.getElementById('projChart'), {
+  type:'bar',
+  data:{ labels:['Personal','Consumo+Serv.','Obra Onc./PET/Acel.'], datasets:[
+    { label:'Disponible a afectar', data:[16419856178.54, 20046222462.53-10833066000, 4337151531.34], backgroundColor:teal, borderRadius:5, maxBarThickness:40 },
+    { label:'Proyección de gasto/necesidad', data:[38722081386.62, 12541835724.58, 1649729685.57], backgroundColor:amber, borderRadius:5, maxBarThickness:40 }
+  ]},
+  options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11.5}}}, tooltip:{callbacks:{label:c=>' $ '+c.parsed.y.toLocaleString('es-AR')}}}, scales:{y:{ticks:{callback:v=>'$'+(v/1e9).toFixed(0)+'mM'},grid:{color:'#EEF1F2'}}, x:{grid:{display:false}}} }
+});
+
+// ---------------- TABLA SALDOS PENDIENTES (con filtros) ----------------
+const rows = [
+  { periodo:'2022', org:'Nación', concepto:'Saldo pendiente de cobro EJ2022 (Min. Salud / TGN)', monto:2236746138, estado:'pagado' },
+  { periodo:'2023', org:'Nación', concepto:'Saldo pendiente de cobro EJ2023 (Anticipo 2024)', monto:716377408, estado:'pagado' },
+  { periodo:'2023', org:'Provincia', concepto:'Deuda Provincia (30% cuota teórica) + intereses a feb-2025', monto:13673021317, estado:'revisar' },
+  { periodo:'2024', org:'Provincia', concepto:'Deuda Provincia (30% cuota teórica) + intereses a feb-2025', monto:49121324699, estado:'revisar' },
+  { periodo:'2025', org:'Nación', concepto:'Pendiente de cobro por resolución (PresFINANCIERONACION2025)', monto:5848544735, estado:'pendiente' },
+  { periodo:'2025', org:'Nación', concepto:'Saldo giros Nación por resolución/expediente (hoja "@-Prov")', monto:13117548114, estado:'pendiente' },
+  { periodo:'2026', org:'Nación', concepto:'Autorizado por TGN, no acreditado al 15/09 (Previsiones Pendientes)', monto:23426638232, estado:'pendiente' },
+  { periodo:'2026', org:'Nación', concepto:'Presupuesto aprobado — RESOL-2026-374-APN-MS (original)', monto:128343252243, estado:'pagado' },
+  { periodo:'2026', org:'Nación', concepto:'Crédito vigente Nación tras 2 ampliaciones (+$8.130 M y +$21.647 M)', monto:158120327242, estado:'revisar' },
+  { periodo:'2026', org:'Provincia', concepto:'Crédito vigente Provincia según Ejecución Presupuestaria (HNK-2026)', monto:10833066000, estado:'revisar' },
+  { periodo:'2026', org:'Provincia', concepto:'Presupuesto total aprobado (cuota teórica 2026) 🔎 no coincide con el crédito vigente de arriba', monto:55004250961, estado:'revisar' },
+  { periodo:'2026', org:'Hospital', concepto:'Crédito vigente TOTAL — 6 fuentes de financiamiento (Ejecución Presupuestaria al 21/09)', monto:229409251547, estado:'revisar' },
+];
+const badge = e => e==='pendiente' ? '<span class="status pendiente">Pendiente de cobro</span>'
+  : e==='revisar' ? '<span class="status revisar">🔎 A validar</span>'
+  : '<span class="status pagado">Cobrado</span>';
+const orgSelect = document.getElementById('fOrg');
+[...new Set(rows.map(r=>r.org))].forEach(o=>{ const opt=document.createElement('option'); opt.value=o; opt.textContent=o; orgSelect.appendChild(opt); });
+const perSelect = document.getElementById('fPer');
+[...new Set(rows.map(r=>r.periodo))].sort().forEach(p=>{ const opt=document.createElement('option'); opt.value=p; opt.textContent=p; perSelect.appendChild(opt); });
+function renderTable(){
+  const org = document.getElementById('fOrg').value, per = document.getElementById('fPer').value, est = document.getElementById('fEst').value;
+  const filtered = rows.filter(r => (!org || r.org===org) && (!per || r.periodo===per) && (!est || r.estado===est));
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = filtered.length ? filtered.map(r=>`
+    <tr><td>${r.periodo}</td><td>${r.org}</td><td>${r.concepto}</td><td class="num-cell">${fmt(r.monto)}</td><td>${badge(r.estado)}</td></tr>
+  `).join('') : `<tr><td colspan="5" class="no-results">Ningún registro coincide con los filtros seleccionados.</td></tr>`;
+  const total = filtered.reduce((a,r)=>a+r.monto,0);
+  document.getElementById('filterSummary').innerHTML = `Mostrando <strong>${filtered.length}</strong> de ${rows.length} registros · Total de la selección: <strong>${fmt(total)}</strong>`;
+}
+['fOrg','fPer','fEst'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
+document.getElementById('fClear').addEventListener('click', () => {
+  document.getElementById('fOrg').value=''; document.getElementById('fPer').value=''; document.getElementById('fEst').value='';
+  renderTable();
+});
+renderTable();
+
+// ---------------- CUENTAS A PAGAR ----------------
+const cpVencenSemana = [{"prov": "20 DE JUNIO S.R.L.", "num": 600008763, "monto": 258720.0, "venc": "2026-09-23", "oc": "2026-00000449", "partida": "2.9.5.7", "presup": "HNK-2026"}, {"prov": "SIFAR ARGENTINA S.A", "num": 200005574, "monto": 24967003.2, "venc": "2026-09-23", "oc": "2026-00000337", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "PI S.R.L", "num": 900014902, "monto": 7189600.0, "venc": "2026-09-23", "oc": "2026-00001118", "partida": "3.3.6.1", "presup": "HNK-2026"}, {"prov": "NASER EMMANUEL MAXIMILIANO", "num": 400001258, "monto": 9089900.0, "venc": "2026-09-23", "oc": "2026-00001133", "partida": "2.3.4.1", "presup": "HNK-2026"}, {"prov": "INHAR INGENIERIA HOSPITALARIA S.A.", "num": 1300000646, "monto": 8289811.83, "venc": "2026-09-23", "oc": "2025-00001607", "partida": "3.3.3.1", "presup": "HNK-2026"}, {"prov": "SENSIMAT S.A", "num": 500013513, "monto": 2522000.0, "venc": "2026-09-23", "oc": "2026-00000122", "partida": "2.9.5.3", "presup": "HNK-2026"}, {"prov": "IMPLANTES QUIRURGICOS S.A.", "num": 600000100, "monto": 1185000.0, "venc": "2026-09-23", "oc": "2026-00001033", "partida": "2.9.5.4", "presup": "HNK-2026"}, {"prov": "EURO SWISS S.A.", "num": 1400026044, "monto": 108860.0, "venc": "2026-09-23", "oc": "2026-00000483", "partida": "2.9.5.1", "presup": "HNK-2025"}, {"prov": "DIBAX PHARMA SRL", "num": 300002384, "monto": 9077143.53, "venc": "2026-09-23", "oc": "2026-00001005", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "CASAL FABIAN HORACIO", "num": 200018987, "monto": 12944759.0, "venc": "2026-09-23", "oc": "2026-00000688", "partida": "3.2.4.1", "presup": "HNK-2026"}, {"prov": "INHAR INGENIERIA HOSPITALARIA S.A.", "num": 1300000639, "monto": 16756248.6, "venc": "2026-09-23", "oc": "2026-00000011", "partida": "3.3.3.2", "presup": "HNK-2026"}, {"prov": "LABORATORIOS JAYOR S.R.L.", "num": 200021747, "monto": 862800.0, "venc": "2026-09-24", "oc": "2026-00000283", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "RODOLFO EDUARDO FRISARE S.A", "num": 400011319, "monto": 14943000.0, "venc": "2026-09-24", "oc": "2026-00001144", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "PROVEX SOLUCIONES INTEGRALES", "num": 100000030, "monto": 122220.0, "venc": "2026-09-24", "oc": "2026-00000620", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "MG INSUMOS S.A.", "num": 400032146, "monto": 1053920.0, "venc": "2026-09-24", "oc": "2026-00001142", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "MENDOZA BIOMEDICOS S.A", "num": 200022324, "monto": 623960.0, "venc": "2026-09-24", "oc": "2025-00000771", "partida": "2.9.5.1", "presup": "HNK-2025"}, {"prov": "MENDOZA BIOMEDICOS S.A", "num": 200022323, "monto": 374376.0, "venc": "2026-09-24", "oc": "2025-00000944", "partida": "2.9.5.1", "presup": "HNK-2025"}, {"prov": "LABORATORIOS JAYOR S.R.L.", "num": 200021855, "monto": 6541740.48, "venc": "2026-09-24", "oc": "2026-00000244", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "LABORATORIOS JAYOR S.R.L.", "num": 200021737, "monto": 1306800.0, "venc": "2026-09-24", "oc": "2026-00000693", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "MEDPHARMA S.A.", "num": 200006198, "monto": 370315.28, "venc": "2026-09-24", "oc": "2026-00000344", "partida": "2.5.2.2", "presup": "HNK-2026"}, {"prov": "DONNAX GROUP S.A.", "num": 500018566, "monto": 18600000.0, "venc": "2026-09-24", "oc": "2026-00001045", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170127, "monto": 147062.0, "venc": "2026-09-24", "oc": "2026-00000623", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170126, "monto": 2043360.0, "venc": "2026-09-24", "oc": "2026-00000443", "partida": "2.5.2.2", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170025, "monto": 2727272.6, "venc": "2026-09-24", "oc": "2026-00001139", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "CORREO ANDREANI SA", "num": 419600000074, "monto": 2323200.0, "venc": "2026-09-24", "oc": "2026-00001123", "partida": "3.1.5.1", "presup": "HNK-2026"}, {"prov": "CORREO ANDREANI SA", "num": 419600000073, "monto": 4101150.48, "venc": "2026-09-24", "oc": "2026-00001123", "partida": "3.1.5.1", "presup": "HNK-2026"}, {"prov": "BARRACA ACHER ARGENTINA S.R.L", "num": 500007706, "monto": 21922000.0, "venc": "2026-09-24", "oc": "2026-00000272", "partida": "2.9.5.3", "presup": "HNK-2026"}, {"prov": "ABLE S.A.", "num": 500002885, "monto": 7281000.0, "venc": "2026-09-24", "oc": "2026-00000281", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "DONNAX GROUP S.A.", "num": 500018743, "monto": 45075000.0, "venc": "2026-09-24", "oc": "2026-00001045", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "TECNONUCLEAR S.A", "num": 300011409, "monto": 85823.67, "venc": "2026-09-25", "oc": "2025-00000742", "partida": "2.5.1.5", "presup": "HNK-2025"}, {"prov": "TECNONUCLEAR S.A", "num": 300011408, "monto": 6051697.0, "venc": "2026-09-25", "oc": "2025-00000671", "partida": "2.5.1.5", "presup": "HNK-2025"}, {"prov": "PROVEX SOLUCIONES INTEGRALES", "num": 100000032, "monto": 207200.0, "venc": "2026-09-25", "oc": "2026-00000620", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170324, "monto": 4743340.0, "venc": "2026-09-25", "oc": "2026-00000087", "partida": "2.5.2.1", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170323, "monto": 1094400.0, "venc": "2026-09-25", "oc": "2026-00000217", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DCD PRODUCTS S.R.L.", "num": 2600004670, "monto": 1674109.7, "venc": "2026-09-25", "oc": "2026-00001067", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "CIRUGIA DE AVANZADA SRL", "num": 300004520, "monto": 7750591.0, "venc": "2026-09-25", "oc": "2026-00000920", "partida": "2.9.5.6", "presup": "HNK-2026"}, {"prov": "BHAURAC SA", "num": 300015173, "monto": 584000.0, "venc": "2026-09-25", "oc": "2026-00000247", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "ASTATEC S.A", "num": 300002385, "monto": 9454788.75, "venc": "2026-09-25", "oc": "2026-00000954", "partida": "3.3.3.1", "presup": "HNK-2025"}, {"prov": "20 DE JUNIO S.R.L.", "num": 600008780, "monto": 2359400.0, "venc": "2026-09-25", "oc": "2026-00000990", "partida": "2.9.5.2", "presup": "HNK-2026"}, {"prov": "DNM FARMA S.A", "num": 1100170322, "monto": 9249441.3, "venc": "2026-09-25", "oc": "2026-00001127", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "EURO SWISS S.A.", "num": 1400026173, "monto": 3199000.0, "venc": "2026-09-26", "oc": "2026-00000229", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "SOUTH AMERICA IMPLANTS SA", "num": 100037508, "monto": 3022549.45, "venc": "2026-09-26", "oc": "2026-00000865", "partida": "2.9.5.6", "presup": "HNK-2026"}, {"prov": "LABORATORIOS RICHET S.A.", "num": 11300001566, "monto": 741000.0, "venc": "2026-09-26", "oc": "2026-00001141", "partida": "2.5.2.5 - 2.5.2.4", "presup": "HNK-2026"}, {"prov": "LABORATORIOS IGALTEX SRL", "num": 600042051, "monto": 3157232.0, "venc": "2026-09-26", "oc": "2026-00000822", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "LABORATORIOS IGALTEX SRL", "num": 600042028, "monto": 374600.0, "venc": "2026-09-26", "oc": "2026-00000220", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "KINETICAL SRL", "num": 400006255, "monto": 14916000.0, "venc": "2026-09-26", "oc": "2026-00001007", "partida": "2.9.5.6", "presup": "HNK-2026"}, {"prov": "GRIENSU S.A", "num": 1500007654, "monto": 11595226.76, "venc": "2026-09-26", "oc": "2026-00001038", "partida": "3.3.3.1", "presup": "HNK-2026"}, {"prov": "DROGUERIA VARADERO SA", "num": 1700019717, "monto": 1185300.0, "venc": "2026-09-26", "oc": "2026-00000280", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "CORPO MEDICA S.A.", "num": 600024691, "monto": 2467150.0, "venc": "2026-09-26", "oc": "2026-00000170", "partida": "3.3.3.1", "presup": "HNK-2026"}, {"prov": "DROGUERIA COMARSA S.A", "num": 4700016541, "monto": 40402.8, "venc": "2026-09-26", "oc": "2026-00000243", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DROGUERIA COMARSA S.A", "num": 4700016481, "monto": 341228.8, "venc": "2026-09-26", "oc": "2026-00001016", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DROGUERIA COMARSA S.A", "num": 2100092224, "monto": 5837912.52, "venc": "2026-09-26", "oc": "2026-00000339", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "DROGUERIA COMARSA S.A", "num": 2100092223, "monto": 217239.2, "venc": "2026-09-26", "oc": "2026-00001016", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "CORPO MEDICA S.A.", "num": 600024692, "monto": 3765650.0, "venc": "2026-09-26", "oc": "2026-00000170", "partida": "3.3.3.1", "presup": "HNK-2026"}, {"prov": "DROGUERIA COMARSA S.A", "num": 5200000032, "monto": 6733.8, "venc": "2026-09-26", "oc": "2026-00000243", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000138, "monto": 1294700.0, "venc": "2026-09-26", "oc": "2024-00002452", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "DISTRIBUIDORA ELITE S.R.L.", "num": 200002548, "monto": 9234000.0, "venc": "2026-09-27", "oc": "2026-00001160", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "DROGUERIA LINO S.R.L", "num": 300014655, "monto": 19495.0, "venc": "2026-09-27", "oc": "2026-00001010", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "EURO SWISS S.A.", "num": 1400026181, "monto": 158850.0, "venc": "2026-09-27", "oc": "2026-00000308", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "EURO SWISS S.A.", "num": 1400026216, "monto": 4570000.0, "venc": "2026-09-27", "oc": "2026-00000229", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "FRESENIUS KABI S.A", "num": 4700052010, "monto": 11542712.04, "venc": "2026-09-27", "oc": "2026-00000146", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "LABORATORIOS RICHET S.A.", "num": 11300001569, "monto": 17795000.0, "venc": "2026-09-27", "oc": "2026-00001134", "partida": "2.5.2.1", "presup": "HNK-2026"}, {"prov": "GRIENSU S.A", "num": 1500007624, "monto": 3823962.03, "venc": "2026-09-27", "oc": "2026-00000006", "partida": "3.3.3.1", "presup": "HNK-2026"}, {"prov": "DISTRIBUIDORA ELITE S.R.L.", "num": 200002547, "monto": 7497000.0, "venc": "2026-09-27", "oc": "2026-00001131", "partida": "2.9.5.1", "presup": "HNK-2026"}, {"prov": "NICOLAS KOSC SOC ANON", "num": 1300350786, "monto": 834971.38, "venc": "2026-09-27", "oc": "", "partida": "2.5.6.1", "presup": "HNK-2026"}, {"prov": "NORGREEN S.A.", "num": 300019470, "monto": 8791000.0, "venc": "2026-09-27", "oc": "2026-00000226", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "ROBLES DANIEL HECTOR", "num": 300000950, "monto": 7316928.0, "venc": "2026-09-27", "oc": "2026-00001145", "partida": "2.5.2.2", "presup": "HNK-2026"}, {"prov": "GEMATEC S R L", "num": 400026043, "monto": 12819716.5, "venc": "2026-09-27", "oc": "2026-00000938", "partida": "2.5.1.3", "presup": "HNK-2026"}, {"prov": "CIRUGIA J.F. S.A.", "num": 1000001629, "monto": 2786840.0, "venc": "2026-09-27", "oc": "2026-00001157", "partida": "2.9.5.3", "presup": "HNK-2026"}, {"prov": "AIR LIQUIDE ARGENTINA S.A.", "num": 20700108887, "monto": 3050652.0, "venc": "2026-09-27", "oc": "2026-00000599", "partida": "2.5.1.2", "presup": "HNK-2026"}, {"prov": "AIR LIQUIDE ARGENTINA S.A.", "num": 20700108888, "monto": 3050652.0, "venc": "2026-09-27", "oc": "2026-00000599", "partida": "2.5.1.2", "presup": "HNK-2026"}, {"prov": "AIR LIQUIDE ARGENTINA S.A.", "num": 20700108886, "monto": 3050652.0, "venc": "2026-09-27", "oc": "2026-00000599", "partida": "2.5.1.2", "presup": "HNK-2026"}, {"prov": "AIR LIQUIDE ARGENTINA S.A.", "num": 20700108885, "monto": 3050652.0, "venc": "2026-09-27", "oc": "2026-00000599", "partida": "2.5.1.2", "presup": "HNK-2026"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000215, "monto": 604428.0, "venc": "2026-09-27", "oc": "2024-00003964", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000214, "monto": 2394708.0, "venc": "2026-09-27", "oc": "2024-00003964", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000192, "monto": 318873.6, "venc": "2026-09-27", "oc": "2024-00001194", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000165, "monto": 68655921.51, "venc": "2026-09-27", "oc": "2026-00000334", "partida": "3.4.9.1", "presup": "HNK-2026"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000150, "monto": 2482368.0, "venc": "2026-09-27", "oc": "2024-00003637", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000149, "monto": 1118620.8, "venc": "2026-09-27", "oc": "2024-00002452", "partida": "2.5.1.3", "presup": "HNK-2024"}, {"prov": "ABBOTT LABORATORIES ARGENTINA SA", "num": 1800000105, "monto": 27671732.0, "venc": "2026-09-27", "oc": "2026-00000334", "partida": "2.5.1.3", "presup": "HNK-2026"}, {"prov": "20 DE JUNIO S.R.L.", "num": 600008784, "monto": 324000.0, "venc": "2026-09-27", "oc": "2025-00001175", "partida": "2.9.5.1", "presup": "HNK-2025"}, {"prov": "ROBLES DANIEL HECTOR", "num": 300000959, "monto": 32670.0, "venc": "2026-09-27", "oc": "2026-00000369", "partida": "2.5.2.5", "presup": "HNK-2026"}, {"prov": "BIOARS S.A", "num": 300017920, "monto": 914618.21, "venc": "2026-09-27", "oc": "2026-00000377", "partida": "2.5.1.3", "presup": "HNK-2026"}, {"prov": "ROBLES DANIEL HECTOR", "num": 300000960, "monto": 3567936.32, "venc": "2026-09-27", "oc": "2026-00000338", "partida": "2.5.2.5", "presup": "HNK-2026"}];
+const cpTopProveedores = [{"prov": "ABBOTT LABORATORIES ARGENTINA SA", "monto": 1518825785.21, "n": 66, "atraso": 62.1, "pct": 11.32}, {"prov": "BECTON DICKINSON ARGENTINA SRL", "monto": 1456802991.47, "n": 17, "atraso": 48.3, "pct": 10.86}, {"prov": "SOLFACAR S.A.", "monto": 679724862.69, "n": 11, "atraso": 84.4, "pct": 5.07}, {"prov": "FRESENIUS KABI S.A", "monto": 527798235.53, "n": 21, "atraso": 64.5, "pct": 3.93}, {"prov": "CORPO MEDICA S.A.", "monto": 415335856.54, "n": 10, "atraso": 20.8, "pct": 3.1}, {"prov": "DATAWISE SA", "monto": 403485600.0, "n": 1, "atraso": 19.0, "pct": 3.01}, {"prov": "AGIMED S.R.L.", "monto": 367287210.98, "n": 11, "atraso": 34.9, "pct": 2.74}, {"prov": "CIRUGIA J.F. S.A.", "monto": 343537141.96, "n": 16, "atraso": 31.2, "pct": 2.56}, {"prov": "BIOMERIEUX ARGENTINA S.A.", "monto": 312982750.3, "n": 17, "atraso": 59.1, "pct": 2.33}, {"prov": "DATACLOUD", "monto": 293100000.0, "n": 6, "atraso": 33.5, "pct": 2.18}, {"prov": "GEMATEC S R L", "monto": 267677338.0, "n": 7, "atraso": 68.0, "pct": 1.99}, {"prov": "CLIMACON SRL", "monto": 247190000.0, "n": 6, "atraso": 36.4, "pct": 1.84}, {"prov": "ABLE S.A.", "monto": 240160478.0, "n": 32, "atraso": 57.4, "pct": 1.79}, {"prov": "F.O.C. MEDICAL S.A.", "monto": 232917780.05, "n": 22, "atraso": 74.1, "pct": 1.74}, {"prov": "BG ANALIZADORES S.A.", "monto": 223351502.0, "n": 5, "atraso": 119.8, "pct": 1.66}, {"prov": "DISTRIBUIDORA ELITE S.R.L.", "monto": 185469340.0, "n": 13, "atraso": 31.0, "pct": 1.38}, {"prov": "SUCESION DE CROCCE ARMANDO HECTOR", "monto": 182423219.0, "n": 34, "atraso": 57.1, "pct": 1.36}, {"prov": "BIODIAGNOSTICO S.A.", "monto": 173714142.04, "n": 34, "atraso": 37.4, "pct": 1.29}, {"prov": "DONNAX GROUP S.A.", "monto": 157657000.0, "n": 6, "atraso": 78.3, "pct": 1.17}, {"prov": "SENSIMAT S.A", "monto": 152986000.0, "n": 16, "atraso": 52.8, "pct": 1.14}, {"prov": "DNM FARMA S.A", "monto": 142207717.7, "n": 33, "atraso": 30.6, "pct": 1.06}, {"prov": "MEVATERAPIA S.A.", "monto": 138199488.0, "n": 7, "atraso": 46.2, "pct": 1.03}, {"prov": "BERNARDO LEW E HIJO S.R.L.", "monto": 134583686.38, "n": 7, "atraso": 80.2, "pct": 1.0}, {"prov": "20 DE JUNIO S.R.L.", "monto": 134577194.55, "n": 28, "atraso": 26.1, "pct": 1.0}, {"prov": "INVAP SOCIEDAD DEL ESTADO", "monto": 113088411.51, "n": 2, "atraso": 127.0, "pct": 0.84}, {"prov": "UNIFARMA S.A", "monto": 109676250.0, "n": 4, "atraso": 19.0, "pct": 0.82}, {"prov": "MED BAY S.A.", "monto": 107300000.0, "n": 7, "atraso": 9.0, "pct": 0.8}, {"prov": "TERUMO BCT LATIN AMERICA S.A", "monto": 104132249.64, "n": 14, "atraso": 75.4, "pct": 0.78}, {"prov": "AIR LIQUIDE ARGENTINA S.A.", "monto": 103538804.6, "n": 16, "atraso": 64.0, "pct": 0.77}, {"prov": "OMNIMEDICA S.A", "monto": 99690000.0, "n": 4, "atraso": 43.0, "pct": 0.74}, {"prov": "SUIZO ARGENTINA SOCIEDAD ANONIMA", "monto": 96542840.0, "n": 4, "atraso": 35.0, "pct": 0.72}, {"prov": "ANGIOCOR S.A.", "monto": 89270500.0, "n": 3, "atraso": 15.0, "pct": 0.67}, {"prov": "ASCENSORES SERVAS S.A.", "monto": 88200000.0, "n": 3, "atraso": 24.5, "pct": 0.66}, {"prov": "PASCUZZO SERGIO EDUARDO", "monto": 85040182.8, "n": 2, "atraso": 70.5, "pct": 0.63}, {"prov": "MTG GROUP S.R.L", "monto": 83422580.1, "n": 3, "atraso": 18.0, "pct": 0.62}, {"prov": "EURO SWISS S.A.", "monto": 82446108.0, "n": 24, "atraso": 24.1, "pct": 0.61}, {"prov": "WM ARGENTINA SA", "monto": 80181948.0, "n": 8, "atraso": 49.7, "pct": 0.6}, {"prov": "CIRUGIA ARGENTINA S.A.", "monto": 79953880.0, "n": 4, "atraso": 43.8, "pct": 0.6}, {"prov": "PHILIPS ARGENTINA S.A.", "monto": 75257035.0, "n": 1, "atraso": null, "pct": 0.56}, {"prov": "INHAR INGENIERIA HOSPITALARIA S.A.", "monto": 68111844.06, "n": 6, "atraso": 31.0, "pct": 0.51}, {"prov": "FELSAN S.R.L.", "monto": 68002212.96, "n": 9, "atraso": 51.7, "pct": 0.51}, {"prov": "PROMEDON S.A", "monto": 65778542.38, "n": 5, "atraso": 59.5, "pct": 0.49}, {"prov": "GRUPO CALIPSO S.A.", "monto": 64999999.8, "n": 1, "atraso": 1.0, "pct": 0.48}, {"prov": "MEDIKAR S.A", "monto": 62426000.0, "n": 1, "atraso": 30.0, "pct": 0.47}, {"prov": "BIOARS S.A", "monto": 59476249.19, "n": 7, "atraso": 90.0, "pct": 0.44}, {"prov": "CHIRUGIA S.A", "monto": 59343552.0, "n": 2, "atraso": 76.0, "pct": 0.44}, {"prov": "CANON MEDICAL SYSTEMS ARGENTINA S.A.", "monto": 58965918.39, "n": 3, "atraso": 47.0, "pct": 0.44}, {"prov": "KAPSA ARGENTINA S.A.", "monto": 53599461.0, "n": 3, "atraso": 10.0, "pct": 0.4}, {"prov": "CIRUGIA ALEMANA INSUMOS MEDICOS S.A.", "monto": 52144890.0, "n": 13, "atraso": 38.7, "pct": 0.39}, {"prov": "MG INSUMOS S.A.", "monto": 50859299.18, "n": 11, "atraso": 3.2, "pct": 0.38}, {"prov": "AYC_CAP SRL", "monto": 50561736.0, "n": 2, "atraso": null, "pct": 0.38}, {"prov": "MULTI-TRADE SRL", "monto": 45394900.0, "n": 7, "atraso": 29.2, "pct": 0.34}, {"prov": "GRIENSU S.A", "monto": 45059130.81, "n": 7, "atraso": 47.0, "pct": 0.34}, {"prov": "NORGREEN S.A.", "monto": 44688000.0, "n": 7, "atraso": 52.7, "pct": 0.33}, {"prov": "DROGUERIA COMARSA S.A", "monto": 44333951.0, "n": 24, "atraso": 66.9, "pct": 0.33}, {"prov": "LABORATORIOS JAYOR S.R.L.", "monto": 43143358.71, "n": 23, "atraso": 26.5, "pct": 0.32}, {"prov": "BLUEDRAFT SA", "monto": 43000000.0, "n": 5, "atraso": 54.5, "pct": 0.32}, {"prov": "RASKIN ALEJANDRO PABLO", "monto": 41813518.74, "n": 9, "atraso": 27.2, "pct": 0.31}, {"prov": "ADOX S.A.", "monto": 41391731.0, "n": 17, "atraso": 55.1, "pct": 0.31}, {"prov": "IMATIONTY SA", "monto": 41302063.25, "n": 8, "atraso": 64.0, "pct": 0.31}, {"prov": "BIOSUD S A", "monto": 40989052.5, "n": 3, "atraso": 24.0, "pct": 0.31}, {"prov": "NASER EMMANUEL MAXIMILIANO", "monto": 40772337.74, "n": 5, "atraso": null, "pct": 0.3}, {"prov": "ROBLES DANIEL HECTOR", "monto": 40312824.96, "n": 10, "atraso": 11.0, "pct": 0.3}, {"prov": "BIOSYSTEMS SA", "monto": 39168274.45, "n": 4, "atraso": 73.3, "pct": 0.29}, {"prov": "MSD ARGENTINA S R L", "monto": 38745403.75, "n": 1, "atraso": 37.0, "pct": 0.29}, {"prov": "RODOLFO EDUARDO FRISARE S.A", "monto": 38611226.0, "n": 3, "atraso": 9.0, "pct": 0.29}, {"prov": "LABORATORIOS RICHET S.A.", "monto": 38541200.0, "n": 6, "atraso": 26.5, "pct": 0.29}, {"prov": "TECNOIMAGEN S.A.", "monto": 37534342.98, "n": 9, "atraso": 27.2, "pct": 0.28}, {"prov": "BIOTROM S.A.", "monto": 37370000.0, "n": 6, "atraso": 19.2, "pct": 0.28}, {"prov": "KLONAL S.R.L.", "monto": 37087000.0, "n": 4, "atraso": 54.8, "pct": 0.28}, {"prov": "DI TORO HNOS S.A.", "monto": 35664040.0, "n": 1, "atraso": 73.0, "pct": 0.27}, {"prov": "ALFAMEDICA MEDICINA INTEGRAL S.R.L.", "monto": 35155380.0, "n": 3, "atraso": 28.0, "pct": 0.26}, {"prov": "RENALIFE S.A.", "monto": 34144000.0, "n": 1, "atraso": 129.0, "pct": 0.25}, {"prov": "FEMANI MEDICAL S.A.", "monto": 32716800.0, "n": 1, "atraso": 95.0, "pct": 0.24}, {"prov": "INVITROGEN ARGENTINA S.A.", "monto": 32552037.1, "n": 6, "atraso": 21.6, "pct": 0.24}, {"prov": "QUIMICA EROVNE SA", "monto": 32329400.0, "n": 9, "atraso": 63.6, "pct": 0.24}, {"prov": "KINETICAL SRL", "monto": 32282460.0, "n": 3, "atraso": 22.0, "pct": 0.24}, {"prov": "PI S.R.L", "monto": 29909524.0, "n": 5, "atraso": 1.0, "pct": 0.22}, {"prov": "RABERT Y PADIN SRL", "monto": 28200000.0, "n": 3, "atraso": 36.0, "pct": 0.21}, {"prov": "METASYSTEMS LATINOAMERICA S.A.S", "monto": 28011703.31, "n": 2, "atraso": 92.5, "pct": 0.21}, {"prov": "DROGUERIA VARADERO SA", "monto": 26190455.84, "n": 15, "atraso": 26.7, "pct": 0.2}, {"prov": "DEBENE S.A", "monto": 26155602.0, "n": 2, "atraso": 171.0, "pct": 0.19}, {"prov": "CASAL FABIAN HORACIO", "monto": 25889518.0, "n": 2, "atraso": 29.0, "pct": 0.19}, {"prov": "DIBAX PHARMA SRL", "monto": 25829487.06, "n": 3, "atraso": 1.0, "pct": 0.19}, {"prov": "PAÑALES LIBERTY S.A.", "monto": 25303460.0, "n": 8, "atraso": 32.9, "pct": 0.19}, {"prov": "SIFAR ARGENTINA S.A", "monto": 24967003.2, "n": 1, "atraso": null, "pct": 0.19}, {"prov": "BIOSYS SA", "monto": 24655690.0, "n": 1, "atraso": null, "pct": 0.18}, {"prov": "TECNOLAB S.A", "monto": 24134641.83, "n": 7, "atraso": 49.3, "pct": 0.18}, {"prov": "DROGUERIA MARTORANI SA", "monto": 24085892.22, "n": 6, "atraso": 48.5, "pct": 0.18}, {"prov": "INDUSTRIAS HOGNER S.A.C.I.F.A.", "monto": 23127029.4, "n": 4, "atraso": 41.3, "pct": 0.17}, {"prov": "ORL MED S.A.", "monto": 22811600.0, "n": 4, "atraso": null, "pct": 0.17}, {"prov": "IPMAG S.A.", "monto": 22780000.0, "n": 4, "atraso": 64.2, "pct": 0.17}, {"prov": "PUENTE MONTAJES S.R.L.", "monto": 22552180.0, "n": 2, "atraso": 35.5, "pct": 0.17}, {"prov": "NEW TECH SOLUTIONS MULTIMEDIA SA", "monto": 22284881.78, "n": 1, "atraso": null, "pct": 0.17}, {"prov": "BARRACA ACHER ARGENTINA S.R.L", "monto": 21922000.0, "n": 1, "atraso": null, "pct": 0.16}, {"prov": "DCD PRODUCTS S.R.L.", "monto": 21333875.45, "n": 9, "atraso": 48.7, "pct": 0.16}, {"prov": "JG CORPORATE S.R.L.", "monto": 21060000.0, "n": 3, "atraso": 27.0, "pct": 0.16}, {"prov": "LA RECOVA DEL CRUCE S.R.L.", "monto": 20767000.0, "n": 1, "atraso": 38.0, "pct": 0.15}, {"prov": "BAIRES FLY SA", "monto": 19773600.0, "n": 1, "atraso": 23.0, "pct": 0.15}, {"prov": "BETA MEDICAL S.R.L.", "monto": 19550700.0, "n": 8, "atraso": null, "pct": 0.15}, {"prov": "AMERICAN FIURE S.A.", "monto": 18432800.0, "n": 5, "atraso": 37.5, "pct": 0.14}, {"prov": "MEDIPACK S.A.", "monto": 18229392.0, "n": 2, "atraso": 39.5, "pct": 0.14}, {"prov": "STRYKER CORPORATION SUCURSAL ARGENTINA", "monto": 18000000.0, "n": 2, "atraso": 68.5, "pct": 0.13}, {"prov": "PRAXAIR ARGENTINA SOCIEDAD DE RESPONSABILIDAD LIMITADA", "monto": 17919642.51, "n": 3, "atraso": 54.5, "pct": 0.13}, {"prov": "DEVEIKIS EDGARDO OMAR", "monto": 17858840.0, "n": 3, "atraso": 28.7, "pct": 0.13}, {"prov": "VM CONSULTORIA S.A.S.", "monto": 17550000.0, "n": 1, "atraso": 38.0, "pct": 0.13}, {"prov": "CAÑUMIR OSVALDO JAVIER", "monto": 17289000.0, "n": 1, "atraso": 137.0, "pct": 0.13}, {"prov": "OPTIMIZANDO PROCESOS S.A.", "monto": 17050000.0, "n": 5, "atraso": 64.0, "pct": 0.13}, {"prov": "ESTERISER S.R.L.", "monto": 16320000.0, "n": 3, "atraso": 75.0, "pct": 0.12}, {"prov": "DEMITEC S.R.L", "monto": 15521986.1, "n": 5, "atraso": 62.8, "pct": 0.12}, {"prov": "ARGENTINA MEDICAL PRODUCTS SRL", "monto": 15493800.0, "n": 1, "atraso": 130.0, "pct": 0.12}, {"prov": "LATIN CONTROL SOFTWARE SA", "monto": 14902665.45, "n": 3, "atraso": 35.0, "pct": 0.11}, {"prov": "ROBOTICA SANITARIA SA", "monto": 14817651.0, "n": 2, "atraso": 83.0, "pct": 0.11}, {"prov": "ELECTRON PLAST S.A.", "monto": 14656680.0, "n": 1, "atraso": 99.0, "pct": 0.11}, {"prov": "MED SRL", "monto": 14488000.0, "n": 1, "atraso": 26.0, "pct": 0.11}, {"prov": "FERRETERIA PLATENSE SCABUZZO E HIJOS SRL", "monto": 14453541.4, "n": 3, "atraso": 48.0, "pct": 0.11}, {"prov": "E X S A S R L", "monto": 14275844.0, "n": 2, "atraso": 97.0, "pct": 0.11}, {"prov": "HEMOMEDICA S.R.L.", "monto": 14198532.0, "n": 2, "atraso": null, "pct": 0.11}, {"prov": "ALTECH MED S.R.L.", "monto": 13613380.06, "n": 6, "atraso": 33.2, "pct": 0.1}, {"prov": "SOLGEN S.A", "monto": 12900000.0, "n": 1, "atraso": 74.0, "pct": 0.1}, {"prov": "PHARMA EXPRESS S.A", "monto": 12796500.0, "n": 3, "atraso": null, "pct": 0.1}, {"prov": "BYMED S.R.L.", "monto": 12646280.0, "n": 3, "atraso": 35.0, "pct": 0.09}, {"prov": "TECNICAS MINIMO INVASIVAS SA", "monto": 12600000.0, "n": 1, "atraso": 58.0, "pct": 0.09}, {"prov": "DROGUERIA DIMAT SA", "monto": 12002630.0, "n": 1, "atraso": 85.0, "pct": 0.09}, {"prov": "SIST MEDICAL S.R.L.", "monto": 11429987.79, "n": 12, "atraso": 26.9, "pct": 0.09}, {"prov": "DENVER FARMA S.A", "monto": 11328700.0, "n": 3, "atraso": null, "pct": 0.08}, {"prov": "R.C. RADIOLOGIA CASTELAR S.R.L.", "monto": 11250000.0, "n": 3, "atraso": 41.0, "pct": 0.08}, {"prov": "TECNONUCLEAR S.A", "monto": 11140127.67, "n": 3, "atraso": null, "pct": 0.08}, {"prov": "EMECLAR S.A", "monto": 10983932.32, "n": 2, "atraso": 34.0, "pct": 0.08}, {"prov": "FARMED SA", "monto": 10952988.0, "n": 3, "atraso": 29.0, "pct": 0.08}, {"prov": "GLAMAMED S.A.", "monto": 10324084.14, "n": 19, "atraso": 31.2, "pct": 0.08}, {"prov": "DATA ENERGY SRL", "monto": 10219000.0, "n": 2, "atraso": 52.0, "pct": 0.08}, {"prov": "DA COSTA MARQUEZ HERNAN JORGE", "monto": 10149461.0, "n": 5, "atraso": null, "pct": 0.08}, {"prov": "MEDPHARMA S.A.", "monto": 10079199.12, "n": 5, "atraso": 8.0, "pct": 0.08}, {"prov": "UNIC COMPANY S.R.L", "monto": 9918250.0, "n": 3, "atraso": 91.0, "pct": 0.07}, {"prov": "CARDIOLAB SOCIEDAD ANONIMA", "monto": 9655800.0, "n": 1, "atraso": 40.0, "pct": 0.07}, {"prov": "ASTATEC S.A", "monto": 9454788.75, "n": 1, "atraso": null, "pct": 0.07}, {"prov": "CROSMED S A", "monto": 9450669.0, "n": 2, "atraso": null, "pct": 0.07}, {"prov": "VAGMAR S.A.", "monto": 9433100.0, "n": 3, "atraso": 33.0, "pct": 0.07}, {"prov": "SOUTH AMERICA IMPLANTS SA", "monto": 8967132.24, "n": 4, "atraso": 22.0, "pct": 0.07}, {"prov": "ALCAT SA", "monto": 8838900.0, "n": 1, "atraso": 19.0, "pct": 0.07}, {"prov": "LABORATORIOS IGALTEX SRL", "monto": 8796738.8, "n": 5, "atraso": 52.0, "pct": 0.07}, {"prov": "CIRUGIA DE AVANZADA SRL", "monto": 8595591.0, "n": 2, "atraso": null, "pct": 0.06}, {"prov": "MAX CONTINENTAL S.A.", "monto": 8467200.0, "n": 2, "atraso": 26.0, "pct": 0.06}, {"prov": "MAIZTEGUI SANTIAGO", "monto": 8450000.0, "n": 5, "atraso": 85.0, "pct": 0.06}, {"prov": "ULTRAEQUIP S.A.", "monto": 8073191.0, "n": 1, "atraso": 67.0, "pct": 0.06}, {"prov": "TECNOCLIMP INGENIERIA SRL", "monto": 8069923.66, "n": 1, "atraso": null, "pct": 0.06}, {"prov": "FLOSAN S.R.L.", "monto": 7923866.6, "n": 3, "atraso": 23.3, "pct": 0.06}, {"prov": "PRISAL GROUP S.A.", "monto": 7724064.0, "n": 1, "atraso": 79.0, "pct": 0.06}, {"prov": "AGFA S.A.", "monto": 7417300.0, "n": 1, "atraso": null, "pct": 0.06}, {"prov": "SURBO S.A.", "monto": 7184456.0, "n": 1, "atraso": null, "pct": 0.05}, {"prov": "SCHNEEBERGER FEDERICO", "monto": 6796000.0, "n": 2, "atraso": 12.0, "pct": 0.05}, {"prov": "TECNOLOGY S.R.L.", "monto": 6690000.0, "n": 1, "atraso": 16.0, "pct": 0.05}, {"prov": "CORREO ANDREANI SA", "monto": 6424350.48, "n": 2, "atraso": null, "pct": 0.05}, {"prov": "RAGRA S.R.L.", "monto": 6402414.0, "n": 1, "atraso": null, "pct": 0.05}, {"prov": "DROGUERIA LUMA S.A.", "monto": 6301781.0, "n": 5, "atraso": 23.0, "pct": 0.05}, {"prov": "TEMPO LIBERO SRL", "monto": 6129360.0, "n": 3, "atraso": 16.0, "pct": 0.05}, {"prov": "ERNESTO VAN ROSSUM Y CIA SRL", "monto": 5991932.0, "n": 2, "atraso": 72.0, "pct": 0.04}, {"prov": "BIO-LAP S.A.", "monto": 5938143.68, "n": 2, "atraso": 5.0, "pct": 0.04}, {"prov": "NICOLAS KOSC SOC ANON", "monto": 5873737.77, "n": 6, "atraso": 43.6, "pct": 0.04}, {"prov": "DEL VECCHIO JUAN JOSE ", "monto": 5737550.0, "n": 1, "atraso": 115.0, "pct": 0.04}, {"prov": "LENOR SRL", "monto": 5717239.3, "n": 2, "atraso": 23.0, "pct": 0.04}, {"prov": "SOLUCIONES ANALITICAS S.A.", "monto": 5532100.0, "n": 1, "atraso": null, "pct": 0.04}, {"prov": "COVERLINE S.A.", "monto": 5140000.0, "n": 1, "atraso": 32.0, "pct": 0.04}, {"prov": "CICOMSA S.A", "monto": 4966091.26, "n": 3, "atraso": 28.0, "pct": 0.04}, {"prov": "ADEA ADMINISTRADORA DE ARCHIVOS S.A.", "monto": 4720250.5, "n": 1, "atraso": 82.0, "pct": 0.04}, {"prov": "ANDINO CONSTRUCCIONES SRL", "monto": 4502000.0, "n": 2, "atraso": 64.5, "pct": 0.03}, {"prov": "SEISEME SA", "monto": 4497953.0, "n": 2, "atraso": 42.0, "pct": 0.03}, {"prov": "JOHNSON & JOHNSON MEDICAL S.A.", "monto": 4362105.66, "n": 3, "atraso": 4.0, "pct": 0.03}, {"prov": "ALPE MEDICAL INSUMOS DESCARTABLES", "monto": 4351912.0, "n": 1, "atraso": 53.0, "pct": 0.03}, {"prov": "NIPRO MEDICAL CORPORATION", "monto": 4350000.0, "n": 2, "atraso": 98.5, "pct": 0.03}, {"prov": "CROMOION S.R.L", "monto": 4321482.0, "n": 1, "atraso": 79.0, "pct": 0.03}, {"prov": "QUIM INSUMOS MEDICOS SRL", "monto": 3890000.0, "n": 1, "atraso": null, "pct": 0.03}, {"prov": "INTECH COMPUTACION S.R.L.", "monto": 3873584.0, "n": 2, "atraso": 18.0, "pct": 0.03}, {"prov": "BENEDETTI SAIC", "monto": 3866240.0, "n": 1, "atraso": null, "pct": 0.03}, {"prov": "VSA ALTA COMPLEJIDAD SA", "monto": 3853920.0, "n": 3, "atraso": 49.5, "pct": 0.03}, {"prov": "ROSINOV", "monto": 3805450.0, "n": 1, "atraso": null, "pct": 0.03}, {"prov": "AIR PRODUCTS S.R.L.", "monto": 3758496.0, "n": 1, "atraso": 78.0, "pct": 0.03}, {"prov": "HERNANDEZ LEONARDO FABIAN", "monto": 3300000.0, "n": 2, "atraso": 45.0, "pct": 0.02}, {"prov": "LA JOIE SRL", "monto": 3184020.0, "n": 1, "atraso": null, "pct": 0.02}, {"prov": "CARDIOPACK ARGENTINA S.A.", "monto": 3083855.61, "n": 4, "atraso": 1.0, "pct": 0.02}, {"prov": "SECURITON ARGENTINA SA", "monto": 2800000.0, "n": 2, "atraso": 12.0, "pct": 0.02}, {"prov": "KIMS SRL", "monto": 2582440.0, "n": 2, "atraso": 98.5, "pct": 0.02}, {"prov": "SONDAS Y CATETERES S.R.L", "monto": 2487952.0, "n": 2, "atraso": 55.0, "pct": 0.02}, {"prov": "PROPATO HNOS S.A.I.C.", "monto": 2486045.3, "n": 3, "atraso": 10.0, "pct": 0.02}, {"prov": "FOC S.R.L", "monto": 2423025.0, "n": 1, "atraso": 8.0, "pct": 0.02}, {"prov": "IMPLANTES QUIRURGICOS S.A.", "monto": 2287050.0, "n": 2, "atraso": 25.0, "pct": 0.02}, {"prov": "TERRAGENE S.A.", "monto": 1982222.0, "n": 1, "atraso": 32.0, "pct": 0.01}, {"prov": "CENTRO DE SERVICIOS HOSPITALARIOS S.A.", "monto": 1915009.4, "n": 1, "atraso": 4.0, "pct": 0.01}, {"prov": "CARDIOMEDIC S.A.", "monto": 1772100.0, "n": 2, "atraso": 24.0, "pct": 0.01}, {"prov": "TECNON SRL", "monto": 1715175.0, "n": 1, "atraso": 26.0, "pct": 0.01}, {"prov": "DROGUERIA LIBERTAD SA", "monto": 1710480.0, "n": 1, "atraso": 36.0, "pct": 0.01}, {"prov": "PRICAI S.A.", "monto": 1469712.06, "n": 1, "atraso": null, "pct": 0.01}, {"prov": "GSS SRL", "monto": 1446279.92, "n": 4, "atraso": 47.0, "pct": 0.01}, {"prov": "DROGUERIA 20 DE JUNIO SA", "monto": 1407240.0, "n": 1, "atraso": 54.0, "pct": 0.01}, {"prov": "BHAURAC SA", "monto": 1314000.0, "n": 3, "atraso": 80.0, "pct": 0.01}, {"prov": "CENTRO OPTICO CASIN SA", "monto": 1081740.0, "n": 1, "atraso": 114.0, "pct": 0.01}, {"prov": "MENDOZA BIOMEDICOS S.A", "monto": 998336.0, "n": 2, "atraso": null, "pct": 0.01}, {"prov": "NUEVA GALENICA S.R.L.", "monto": 960000.0, "n": 1, "atraso": 80.0, "pct": 0.01}, {"prov": "DROGUERIA CALI SA", "monto": 940500.0, "n": 1, "atraso": null, "pct": 0.01}, {"prov": "TRADE CARGO SOLUTIONS S.A.", "monto": 919749.5, "n": 1, "atraso": null, "pct": 0.01}, {"prov": "AGUA Y SANEAMIENTOS ARGENTINOS SOCIEDAD ANONIMA", "monto": 854036.4, "n": 3, "atraso": 40.0, "pct": 0.01}, {"prov": "SERAFIN JESICA SOLEDAD", "monto": 780000.0, "n": 1, "atraso": null, "pct": 0.01}, {"prov": "STORING INSUMOS MEDICOS S.R.L.", "monto": 676200.0, "n": 1, "atraso": 2.0, "pct": 0.01}, {"prov": "KFF S.A.", "monto": 660000.0, "n": 1, "atraso": 4.0, "pct": 0.0}, {"prov": "CIBIC CENTRO DE DIAGNOSTICO MEDICO DE ALTA COMPLEJIDAD S A", "monto": 647293.0, "n": 1, "atraso": 11.0, "pct": 0.0}, {"prov": "PROVEX SOLUCIONES INTEGRALES", "monto": 588420.0, "n": 3, "atraso": null, "pct": 0.0}, {"prov": "GP SOCIEDAD DE BEBIDAS S.A.", "monto": 510000.0, "n": 3, "atraso": 17.0, "pct": 0.0}, {"prov": "QUIMICA CORDOBA S.A", "monto": 424238.53, "n": 2, "atraso": 10.0, "pct": 0.0}, {"prov": "CORREO OFICIAL DE LA REPUBLICA ARGENTINA S.A.", "monto": 61830.0, "n": 1, "atraso": null, "pct": 0.0}, {"prov": "INAPYR S.R.L.", "monto": 24684.0, "n": 1, "atraso": 82.0, "pct": 0.0}, {"prov": "DROGUERIA LINO S.R.L", "monto": 19495.0, "n": 1, "atraso": null, "pct": 0.0}, {"prov": "UNIVERSIDAD NACIONAL ARTURO JAURETCHE", "monto": 13365.0, "n": 1, "atraso": null, "pct": 0.0}];
+
+const cpCategorias = [
+  { cat:'Bienes de Consumo', monto:10753090000, n:929 },
+  { cat:'Servicios No Personales', monto:2532376000, n:192 },
+  { cat:'Bienes de Uso', monto:133557300, n:8 }
+];
+const cpAntiguedad = [
+  { b:'1-15 días', monto:876876419.81, n:121 },
+  { b:'16-30 días', monto:2208834480.88, n:146 },
+  { b:'31-60 días', monto:2397384241.23, n:251 },
+  { b:'61-90 días', monto:1080993598.42, n:126 },
+  { b:'+90 días', monto:2211718146.25, n:99 }
+];
+const devengadoPorInciso = { 'Bienes de Consumo':25850224316.07, 'Servicios No Personales':30527033883.7, 'Bienes de Uso':4338958967.89 };
+document.getElementById('deudaVsIncisoBody').innerHTML = cpCategorias.map(c=>`
+  <tr><td>${c.cat}</td><td class="num-cell">${fmt(c.monto)}</td><td class="num-cell">${fmt(devengadoPorInciso[c.cat])}</td><td class="num-cell">${(c.monto/devengadoPorInciso[c.cat]*100).toFixed(1)}%</td></tr>
+`).join('');
+
+safeChart(document.getElementById('deudaCategoriaChart'), {
+  type:'doughnut',
+  data:{ labels:cpCategorias.map(c=>c.cat), datasets:[{ data:cpCategorias.map(c=>c.monto), backgroundColor:[teal, gold, navy], borderWidth:0 }] },
+  options:{ plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, padding:12 } },
+    tooltip:{ callbacks:{ label:ctx => `${ctx.label}: ${fmt(ctx.raw)} (${cpCategorias[ctx.dataIndex].n} facturas)` } } }, cutout:'60%' }
+});
+
+safeChart(document.getElementById('antiguedadChart'), {
+  type:'bar',
+  data:{ labels:cpAntiguedad.map(a=>a.b), datasets:[{ label:'Monto vencido', data:cpAntiguedad.map(a=>a.monto), backgroundColor:amber, borderRadius:5, maxBarThickness:44 }] },
+  options:{ plugins:{ legend:{ display:false },
+    tooltip:{ callbacks:{ label:ctx => `${fmt(ctx.raw)} (${cpAntiguedad[ctx.dataIndex].n} facturas)` } } },
+    scales:{ y:{ ticks:{ callback:v=>'$'+(v/1e6).toFixed(0)+'M' }, grid:{ color:'#EEF1F3' } }, x:{ grid:{ display:false } } } }
+});
+
+const fProvSelect = document.getElementById('fProv');
+[...new Set(cpVencenSemana.map(r=>r.prov))].sort().forEach(p=>{ const opt=document.createElement('option'); opt.value=p; opt.textContent=p; fProvSelect.appendChild(opt); });
+const fPresupSelect = document.getElementById('fPresup');
+[...new Set(cpVencenSemana.map(r=>r.presup))].sort().forEach(p=>{ const opt=document.createElement('option'); opt.value=p; opt.textContent=p; fPresupSelect.appendChild(opt); });
+
+const hoyCP = new Date('2026-09-22T00:00:00');
+function diasRestantes(vencStr){
+  const v = new Date(vencStr+'T00:00:00');
+  return Math.round((v - hoyCP)/86400000);
+}
+function diasBadge(d){
+  const color = d<=1 ? 'var(--amber)' : d<=3 ? 'var(--gold)' : 'var(--teal)';
+  const label = d<=0 ? 'Hoy' : d===1 ? 'Mañana' : `${d} días`;
+  return `<span style="display:inline-block;min-width:62px;text-align:center;font-weight:700;font-size:11.5px;color:#fff;background:${color};border-radius:10px;padding:2px 8px;">${label}</span>`;
+}
+// Facturas tildadas como pagadas: persiste en localStorage por clave "prov|num"
+function loadPaidFacturas(){
+  try { return new Set(JSON.parse(localStorage.getItem('hec_facturas_pagadas') || '[]')); }
+  catch(e){ return new Set(); }
+}
+function savePaidFacturas(set){
+  try { localStorage.setItem('hec_facturas_pagadas', JSON.stringify([...set])); } catch(e){}
+}
+let paidFacturas = loadPaidFacturas();
+function facturaKey(r){ return r.prov + '|' + r.num; }
+function toggleFacturaPagada(key){
+  if (paidFacturas.has(key)) paidFacturas.delete(key); else paidFacturas.add(key);
+  savePaidFacturas(paidFacturas);
+  renderCPTable();
+}
+function renderCPTable(){
+  const prov = document.getElementById('fProv').value, presup = document.getElementById('fPresup').value;
+  const q = (document.getElementById('fCPSearch').value || '').trim().toLowerCase();
+  const filtered = cpVencenSemana.filter(r => (!prov || r.prov===prov) && (!presup || r.presup===presup)
+      && (!q || r.prov.toLowerCase().includes(q) || String(r.num).toLowerCase().includes(q) || (r.oc && String(r.oc).toLowerCase().includes(q))))
+    .slice().sort((a,b)=> a.venc.localeCompare(b.venc));
+  const tbody = document.getElementById('cpTableBody');
+  tbody.innerHTML = filtered.length ? filtered.map(r=>{
+    const key = facturaKey(r);
+    const pagada = paidFacturas.has(key);
+    return `<tr class="${pagada ? 'factura-pagada' : ''}">
+      <td style="text-align:center;"><input type="checkbox" class="chk-pagada" ${pagada?'checked':''} onchange="toggleFacturaPagada('${key.replace(/'/g,"\\'")}')"></td>
+      <td>${diasBadge(diasRestantes(r.venc))}</td><td>${r.prov}</td><td>${r.num}</td><td>${r.venc.split('-').reverse().join('/')}</td><td class="num-cell">${fmt(r.monto)}</td><td>${r.oc || '—'}</td><td>${r.partida}</td><td>${r.presup}</td></tr>`;
+  }).join('') : `<tr><td colspan="9" class="no-results">Ninguna factura coincide con los filtros seleccionados.</td></tr>`;
+  const total = filtered.reduce((a,r)=>a+r.monto,0);
+  const pagadasArr = filtered.filter(r=>paidFacturas.has(facturaKey(r)));
+  const pendientesArr = filtered.filter(r=>!paidFacturas.has(facturaKey(r)));
+  const totalPagado = pagadasArr.reduce((a,r)=>a+r.monto,0);
+  const totalPendiente = pendientesArr.reduce((a,r)=>a+r.monto,0);
+  document.getElementById('cpFilterSummary').innerHTML = `Mostrando <strong>${filtered.length}</strong> de ${cpVencenSemana.length} facturas · Total de la selección: <strong>${fmt(total)}</strong>`;
+  document.getElementById('cpPagoSummary').innerHTML = `✓ <strong style="color:var(--teal)">${pagadasArr.length} pagadas</strong> (${fmt(totalPagado)}) · pendiente real de la selección: <strong style="color:var(--amber)">${fmt(totalPendiente)}</strong> (${pendientesArr.length} facturas)`;
+  // KPI y alerta hero: recalculados sobre el TOTAL de la semana (no solo la selección filtrada), restando lo tildado
+  const allPagadas = cpVencenSemana.filter(r=>paidFacturas.has(facturaKey(r)));
+  const allPendientes = cpVencenSemana.filter(r=>!paidFacturas.has(facturaKey(r)));
+  const pendMonto = allPendientes.reduce((a,r)=>a+r.monto,0);
+  const provPend = new Set(allPendientes.map(r=>r.prov)).size;
+  const kNum = document.getElementById('kpiVencenSemanaNum'), kFoot = document.getElementById('kpiVencenSemanaFoot');
+  if (kNum) kNum.textContent = fmt(pendMonto);
+  if (kFoot) kFoot.textContent = `${allPendientes.length} facturas pendientes · ${provPend} proveedores${allPagadas.length? ' · '+allPagadas.length+' ya pagadas esta semana':''}`;
+  const headline = document.getElementById('cpAlertHeadline');
+  if (headline) headline.textContent = `${allPendientes.length} facturas pendientes de pago entre el 22 y el 28/09 — ${fmt(pendMonto)}`;
+  const badge = document.getElementById('navBadgeCP');
+  if (badge) badge.textContent = allPendientes.length;
+}
+['fProv','fPresup'].forEach(id => document.getElementById(id).addEventListener('change', renderCPTable));
+document.getElementById('fCPSearch').addEventListener('input', renderCPTable);
+document.getElementById('fClearCP').addEventListener('click', () => {
+  document.getElementById('fProv').value=''; document.getElementById('fPresup').value=''; document.getElementById('fCPSearch').value='';
+  renderCPTable();
+});
+document.getElementById('fResetPagos').addEventListener('click', () => {
+  if (!confirm('¿Restablecer todas las facturas tildadas como pagadas esta semana?')) return;
+  paidFacturas = new Set();
+  savePaidFacturas(paidFacturas);
+  renderCPTable();
+});
+renderCPTable();
+
+const cpDeudaTotal = 13419020294.07;
+function renderTopProv(){
+  const q = (document.getElementById('fTopProvSearch').value || '').trim().toLowerCase();
+  const filtered = cpTopProveedores.filter(p => !q || p.prov.toLowerCase().includes(q));
+  document.getElementById('topProvBody').innerHTML = filtered.length ? filtered.map(p=>`
+    <tr><td>${p.prov}</td><td class="num-cell">${fmt(p.monto)}</td><td class="num-cell">${p.n}</td><td class="num-cell">${p.pct.toFixed(2)}%</td><td class="num-cell">${p.atraso!==null ? p.atraso.toFixed(0)+' días' : '—'}</td></tr>
+  `).join('') : `<tr><td colspan="5" class="no-results">Ningún proveedor coincide con la búsqueda.</td></tr>`;
+  const totalMonto = filtered.reduce((a,p)=>a+p.monto,0), totalN = filtered.reduce((a,p)=>a+p.n,0);
+  document.getElementById('topProvSummary').innerHTML = `Mostrando <strong>${filtered.length}</strong> de ${cpTopProveedores.length} proveedores · <strong>${totalN}</strong> facturas · Total: <strong>${fmt(totalMonto)}</strong>`;
+}
+document.getElementById('fTopProvSearch').addEventListener('input', renderTopProv);
+document.getElementById('fClearTopProv').addEventListener('click', ()=>{ document.getElementById('fTopProvSearch').value=''; renderTopProv(); });
+renderTopProv();
+
+// ---------------- EXPORTAR BASE DE DATOS (EXCEL) ----------------
+function exportExcelBase(){
+  if (typeof XLSX === 'undefined'){
+    alert('No se pudo cargar la librería de exportación (posible bloqueo de red). Probá de nuevo más tarde o revisá tu conexión.');
+    return;
+  }
+  const wb = XLSX.utils.book_new();
+  const addSheet = (name, data) => {
+    if (!data || !data.length) return;
+    const ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, name.substring(0,31));
+  };
+  addSheet('Saldos', rows);
+  addSheet('Cuentas a Pagar - Semana', cpVencenSemana);
+  addSheet('Top Proveedores', cpTopProveedores);
+  addSheet('Antiguedad Deuda', cpAntiguedad);
+  addSheet('Ejecucion x Fuente', ejecFuentes);
+  addSheet('Ejecucion x Inciso', ejecPartidas);
+  addSheet('Ejecucion x Subpartida', ejecSubpartidas);
+  addSheet('EEPM Detalle Subpartida', ejecDetalleSub);
+  addSheet('EEPM x Trimestre', typeof ejecTrimestral !== 'undefined' ? ejecTrimestral : []);
+  addSheet('Cronograma Nacion vs Tesoreria', cruceRows);
+  addSheet('Proyecciones', proyeccionRows);
+  const fecha = '2026-09-22';
+  XLSX.writeFile(wb, `HEC_Base_Datos_${fecha}.xlsx`);
+}
+
+</script>
+</body>
+</html>
