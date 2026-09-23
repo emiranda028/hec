@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Trabajar en Saladillo · Empleos cerca tuyo</title>
+<meta name="description" content="Trabajar en Saladillo — La bolsa de empleo local de Saladillo, Roque Pérez, 25 de Mayo y Tapalqué. Buscá trabajo, subí tu CV gratis o publicá tu búsqueda laboral."/>
+<meta name="theme-color" content="#0B3B35"/>
+<link rel="canonical" href="https://trabajarensaladillo.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="es_AR"/>
+<meta property="og:site_name" content="Trabajar en Saladillo"/>
+<meta property="og:title" content="Trabajar en Saladillo · Tu próximo trabajo está acá cerca"/>
+<meta property="og:description" content="Empleos reales en Saladillo y la región. Subí tu CV gratis y recibí un análisis al instante."/>
+<meta property="og:url" content="https://trabajarensaladillo.com/"/>
+<meta property="og:image" content="https://trabajarensaladillo.com/img/saladillo-estacion.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230B3B35'/><path d='M22 66 Q50 20 78 66' stroke='%23FFC23D' stroke-width='10' fill='none' stroke-linecap='round'/><circle cx='26' cy='36' r='9' fill='%2313B89B'/><circle cx='74' cy='36' r='9' fill='%23fff'/></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="preload" as="image" href="img/saladillo-estacion.jpg"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Trabajar en Saladillo","url":"https://trabajarensaladillo.com/","email":"trabajarensaladillo@gmail.com","telephone":"+54 9 2345 418034","areaServed":["Saladillo","Roque Pérez","25 de Mayo","Tapalqué"],"founder":{"@type":"Person","name":"Lic. Yamila E. Miranda"}}
+</script>
+<style>
+/* ═══════════════ TOKENS ═══════════════ */
+:root{
+  --ink:#0A1F1C; --brand:#0B3B35; --brand-2:#0F5A50; --brand-3:#062622;
+  --teal:#13B89B; --teal-dk:#0E9580; --teal-lt:#D5F3EC;
+  --sun:#FFC23D; --sun-dk:#F2A100; --sun-lt:#FFF4D6;
+  --cream:#FAF7F1; --paper:#fff; --line:#E8E3D9; --line-2:#F1EDE5;
+  --muted:#5A6A67; --soft:#8A9794;
+  --danger:#C62828; --danger-lt:#FDECEC;
+  --r-sm:10px; --r:16px; --r-lg:24px; --r-xl:32px;
+  --sh-1:0 1px 2px rgba(10,31,28,.06),0 2px 8px rgba(10,31,28,.05);
+  --sh-2:0 10px 30px -10px rgba(10,31,28,.18),0 2px 6px rgba(10,31,28,.05);
+  --sh-3:0 30px 70px -20px rgba(10,31,28,.35);
+  --nav-h:72px;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+
+/* ═══════════════ RESET ═══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--body);background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:6px}
+::selection{background:var(--sun);color:var(--ink)}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:middle}
+.ic-fill{fill:currentColor;stroke:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ═══════════════ PAGES ═══════════════ */
+.page{display:none}
+.page.active{display:block;animation:pageIn .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ═══════════════ LAYOUT ═══════════════ */
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+.section{padding:clamp(64px,9vw,112px) 0}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-dk)}
+.eyebrow::before{content:'';width:18px;height:2px;border-radius:2px;background:currentColor}
+.h2{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.02;letter-spacing:-.035em;color:var(--ink);margin:.7rem 0 .9rem}
+.h2 em{font-style:normal;color:var(--teal-dk)}
+.lead{font-size:clamp(1rem,1.3vw,1.12rem);color:var(--muted);max-width:560px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem 3rem;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head.center{flex-direction:column;align-items:center;text-align:center}
+.sec-head.center .lead{margin:0 auto}
+
+/* ═══════════════ BUTTONS ═══════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.85rem 1.4rem;border-radius:999px;font-weight:700;font-size:.95rem;line-height:1.2;white-space:nowrap;transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s,background .2s,color .2s,border-color .2s;cursor:pointer;border:1.5px solid transparent}
+.btn:active{transform:scale(.97)}
+.btn .ic{transition:transform .2s}
+.btn:hover .ic-arrow{transform:translateX(3px)}
+.btn-sun{background:var(--sun);color:var(--ink);box-shadow:0 8px 22px -8px rgba(242,161,0,.7)}
+.btn-sun:hover{background:#FFCB57;transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(242,161,0,.8)}
+.btn-dark{background:var(--brand);color:#fff}
+.btn-dark:hover{background:var(--brand-3);transform:translateY(-2px)}
+.btn-teal{background:var(--teal);color:#fff;box-shadow:0 8px 22px -10px rgba(19,184,155,.8)}
+.btn-teal:hover{background:var(--teal-dk);transform:translateY(-2px)}
+.btn-line{background:var(--paper);border-color:var(--line);color:var(--ink)}
+.btn-line:hover{border-color:var(--ink)}
+.btn-glass{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff;backdrop-filter:blur(8px)}
+.btn-glass:hover{background:rgba(255,255,255,.22)}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1EBE5A;transform:translateY(-2px)}
+.btn-lg{padding:1.05rem 1.8rem;font-size:1rem}
+.btn-sm{padding:.55rem 1rem;font-size:.85rem}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.6;cursor:not-allowed;transform:none!important}
+.link-arrow{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;color:var(--teal-dk)}
+.link-arrow:hover .ic{transform:translateX(3px)}
+.link-arrow .ic{transition:transform .2s}
+
+/* ═══════════════ NAV ═══════════════ */
+.nav{position:fixed;inset:0 0 auto 0;z-index:1000;height:var(--nav-h);transition:background .25s,box-shadow .25s,border-color .25s;background:rgba(250,247,241,.82);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(250,247,241,.94);border-bottom-color:var(--line);box-shadow:0 6px 24px -14px rgba(10,31,28,.25)}
+.nav-in{height:100%;display:flex;align-items:center;gap:1.2rem}
+.logo{display:flex;align-items:center;gap:.65rem;cursor:pointer;flex-shrink:0}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:var(--brand);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.logo-txt{font-family:var(--display);font-weight:800;font-size:1.08rem;letter-spacing:-.02em;line-height:1.05}
+.logo-txt small{display:block;font-family:var(--body);font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.logo-txt b{color:var(--teal-dk)}
+.nav-links{display:flex;gap:.15rem;margin-left:auto}
+.nav-tab{padding:.55rem .85rem;border-radius:999px;font-size:.9rem;white-space:nowrap;font-weight:600;color:var(--muted);transition:color .15s,background .15s;position:relative}
+.nav-tab:hover{color:var(--ink);background:rgba(10,31,28,.05)}
+.nav-tab.active{color:var(--ink);background:var(--paper);box-shadow:var(--sh-1)}
+.nav-cta{margin-left:.4rem}
+.nav-burger{display:none;width:44px;height:44px;border-radius:12px;align-items:center;justify-content:center;margin-left:auto;background:var(--paper);border:1px solid var(--line)}
+.nav-burger .ic{width:22px;height:22px}
+.mobile-nav{position:fixed;top:var(--nav-h);left:0;right:0;z-index:999;background:var(--cream);border-bottom:1px solid var(--line);box-shadow:0 20px 40px -20px rgba(10,31,28,.35);padding:.6rem clamp(16px,4vw,32px) 1.2rem;transform:translateY(-12px);opacity:0;visibility:hidden;transition:all .22s ease}
+.mobile-nav.open{transform:none;opacity:1;visibility:visible}
+.mobile-nav .nav-tab{display:flex;width:100%;padding:.95rem .4rem;border-radius:0;border-bottom:1px solid var(--line-2);font-size:1.02rem;color:var(--ink);background:none;box-shadow:none}
+.mobile-nav .nav-tab.active{color:var(--teal-dk)}
+.mobile-nav .btn{margin-top:1rem}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero{padding:calc(var(--nav-h) + 12px) clamp(10px,1.6vw,20px) 0}
+.hero-card{position:relative;border-radius:var(--r-xl);overflow:hidden;min-height:min(720px,calc(100svh - var(--nav-h) - 24px));display:flex;align-items:center;background:var(--brand-3);isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-2}
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity 1.4s ease,transform 8s ease-out}
+.hero-bg img.active{opacity:1;transform:scale(1)}
+.hero-card::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(95deg,rgba(6,38,34,.94) 0%,rgba(6,38,34,.82) 38%,rgba(6,38,34,.35) 70%,rgba(6,38,34,.2) 100%),linear-gradient(0deg,rgba(6,38,34,.6),transparent 40%)}
+.hero-in{width:100%;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:2.5rem;align-items:end;padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px)}
+.hero-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem .45rem .5rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.82rem;font-weight:600;backdrop-filter:blur(8px);margin-bottom:1.4rem}
+.hero-chip .dot{width:24px;height:24px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center}
+.hero-chip .dot .ic{width:14px;height:14px}
+.hero-h1{font-family:var(--display);color:#fff;font-weight:800;font-size:clamp(2.6rem,6.6vw,5.4rem);line-height:.96;letter-spacing:-.045em;margin-bottom:1.3rem}
+.hero-h1 .hl{color:var(--sun);position:relative;white-space:nowrap}
+.hero-h1 .hl svg{position:absolute;left:0;right:0;bottom:-.12em;width:100%;height:.28em}
+.hero-p{color:rgba(255,255,255,.82);font-size:clamp(1.02rem,1.5vw,1.2rem);max-width:540px;margin-bottom:2rem}
+.hsearch{display:flex;align-items:center;gap:.4rem;background:#fff;border-radius:999px;padding:.45rem;box-shadow:0 24px 50px -18px rgba(0,0,0,.55);max-width:640px}
+.hsearch-f{display:flex;align-items:center;gap:.55rem;flex:1;min-width:0;padding:0 .9rem;color:var(--muted)}
+.hsearch-f input,.hsearch-f select{border:none;outline:none;background:transparent;width:100%;min-width:0;padding:.75rem 0;font-size:.97rem;color:var(--ink);appearance:none;-webkit-appearance:none}
+.hsearch-f select{cursor:pointer;color:var(--ink)}
+.hsearch-sep{width:1px;height:28px;background:var(--line)}
+.hsearch .btn{padding:.95rem 1.5rem}
+.hero-quick{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1.1rem;color:rgba(255,255,255,.7);font-size:.85rem}
+.hero-quick button{padding:.35rem .8rem;border-radius:999px;border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.82rem;font-weight:600;transition:background .15s}
+.hero-quick button:hover{background:rgba(255,255,255,.14)}
+.hero-side{display:flex;flex-direction:column;gap:.9rem;align-items:stretch}
+.live{background:rgba(255,255,255,.96);border-radius:var(--r-lg);padding:1.2rem 1.2rem 1rem;box-shadow:var(--sh-3);backdrop-filter:blur(10px)}
+.live-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.live-t{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:.9rem}
+.pulse{width:9px;height:9px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.live-n{font-family:var(--display);font-weight:800;font-size:2.2rem;line-height:1;letter-spacing:-.03em}
+.live-n small{font-family:var(--body);font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:0;margin-left:.3rem}
+.live-list{display:flex;flex-direction:column;gap:.1rem;margin-top:.7rem}
+.live-item{display:flex;align-items:center;gap:.7rem;padding:.55rem .5rem;border-radius:12px;cursor:pointer;transition:background .15s;text-align:left;width:100%}
+.live-item:hover{background:var(--cream)}
+.live-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.live-item b{display:block;font-size:.86rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px}
+.live-item span{font-size:.75rem;color:var(--muted)}
+.live-empty{font-size:.85rem;color:var(--muted);padding:.4rem 0}
+.hero-photo-meta{display:flex;align-items:center;justify-content:space-between;color:rgba(255,255,255,.8);font-size:.78rem;font-weight:600}
+.hero-dots{display:flex;gap:.4rem}
+.hpd{width:26px;height:4px;border-radius:4px;background:rgba(255,255,255,.35);transition:background .2s,width .3s}
+.hpd.active{background:var(--sun);width:40px}
+
+/* ═══════════════ STATS ═══════════════ */
+.stats{margin-top:clamp(-40px,-3vw,-24px);position:relative;z-index:2}
+.stats-in{display:grid;grid-template-columns:repeat(4,1fr);background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-2);max-width:1040px;margin:0 auto}
+.stat{padding:1.5rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.stat+.stat{border-left:1px solid var(--line-2)}
+.stat-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+.stat-ic .ic{width:22px;height:22px}
+.stat-n{font-family:var(--display);font-weight:800;font-size:1.9rem;line-height:1;letter-spacing:-.03em}
+.stat-l{font-size:.8rem;color:var(--muted);font-weight:600;margin-top:.2rem;line-height:1.25}
+
+/* ═══════════════ PATHS ═══════════════ */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.path{position:relative;border-radius:var(--r-xl);padding:clamp(28px,4vw,48px);overflow:hidden;display:flex;flex-direction:column;min-height:420px;isolation:isolate}
+.path-a{background:var(--brand);color:#fff}
+.path-b{background:var(--sun);color:var(--ink)}
+.path::after{content:'';position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;bottom:-200px;z-index:-1}
+.path-a::after{background:radial-gradient(circle,rgba(19,184,155,.45),transparent 65%)}
+.path-b::after{background:radial-gradient(circle,rgba(255,255,255,.55),transparent 65%)}
+.path-tag{display:inline-flex;align-self:flex-start;align-items:center;gap:.45rem;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.04em;margin-bottom:1.4rem}
+.path-a .path-tag{background:rgba(255,255,255,.1);color:var(--teal)}
+.path-b .path-tag{background:rgba(10,31,28,.08)}
+.path h3{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1;letter-spacing:-.035em;margin-bottom:.9rem}
+.path p{opacity:.8;max-width:420px;margin-bottom:1.5rem}
+.path ul{display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem}
+.path li{display:flex;gap:.6rem;align-items:flex-start;font-weight:600;font-size:.95rem}
+.path li .ic{margin-top:.2rem;width:18px;height:18px}
+.path-a li .ic{color:var(--teal)}
+.path .btns{margin-top:auto;display:flex;gap:.6rem;flex-wrap:wrap}
+
+/* ═══════════════ JOBS ═══════════════ */
+.jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.job-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.35rem;cursor:pointer;display:flex;flex-direction:column;gap:1rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .2s;position:relative}
+.job-card:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:transparent}
+.job-card.dest{border-color:var(--sun);box-shadow:0 0 0 3px var(--sun-lt)}
+.jc-top{display:flex;gap:.9rem;align-items:flex-start}
+.jc-logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex-shrink:0}
+.jc-logo .ic{width:24px;height:24px}
+.jc-title{font-family:var(--display);font-weight:700;font-size:1.18rem;line-height:1.15;letter-spacing:-.02em;margin-bottom:.25rem}
+.jc-company{font-size:.86rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
+.jc-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:999px;font-size:.75rem;font-weight:700;background:var(--cream);color:var(--ink);border:1px solid var(--line-2)}
+.tag .ic{width:13px;height:13px}
+.tag.dest{background:var(--sun-lt);border-color:#FFE3A1;color:#7A4B00}
+.tag.urg{background:var(--danger-lt);border-color:#F8C9C9;color:var(--danger)}
+.tag.new{background:var(--teal-lt);border-color:#B5E9DD;color:#0B6B5B}
+.jc-bottom{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:auto;padding-top:1rem;border-top:1px dashed var(--line)}
+.jc-salary{font-weight:800;font-size:.95rem}
+.jc-salary small{display:block;font-size:.7rem;color:var(--soft);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.jc-go{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;transition:background .2s,transform .2s}
+.job-card:hover .jc-go{background:var(--teal);transform:rotate(-45deg)}
+.jobs-empty{grid-column:1/-1;text-align:center;padding:3.5rem 1.5rem;color:var(--muted);background:var(--paper);border:1.5px dashed var(--line);border-radius:var(--r-lg)}
+.jobs-empty-ic{width:60px;height:60px;border-radius:18px;background:var(--cream);display:grid;place-items:center;margin:0 auto 1rem;color:var(--teal-dk)}
+.jobs-empty-ic .ic{width:28px;height:28px}
+.jobs-empty h4{font-family:var(--display);font-size:1.3rem;color:var(--ink);margin-bottom:.3rem;letter-spacing:-.02em}
+.jobs-empty a{color:var(--teal-dk);font-weight:700}
+.skel{background:linear-gradient(90deg,var(--line-2) 0%,#fff 50%,var(--line-2) 100%);background-size:200% 100%;animation:skel 1.2s infinite;border-radius:var(--r-lg);height:190px;border:1px solid var(--line)}
+@keyframes skel{to{background-position:-200% 0}}
+
+/* ═══════════════ RUBROS ═══════════════ */
+.bento{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:260px 260px;gap:1rem}
+.cat-card{position:relative;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;isolation:isolate;background:var(--brand-2);color:#fff;display:flex;align-items:flex-end;padding:1.4rem;text-align:left}
+.cat-card:first-child{grid-row:span 2}
+.cat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.cat-card::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(6,38,34,0) 30%,rgba(6,38,34,.88) 100%)}
+.cat-card:hover img{transform:scale(1.07)}
+.cat-card .cc-k{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sun)}
+.cat-card .cc-t{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,2.4vw,2rem);line-height:1;letter-spacing:-.03em;margin-top:.3rem}
+.cat-card .cc-go{position:absolute;top:1rem;right:1rem;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:grid;place-items:center;transition:background .2s,transform .3s}
+.cat-card:hover .cc-go{background:var(--sun);color:var(--ink);transform:rotate(-45deg)}
+.cat-card.cc-all{background:var(--teal);}
+.cat-card.cc-all::before{display:none}
+.cat-card.cc-all .cc-k{color:var(--brand)}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .95rem .55rem .6rem;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-weight:600;font-size:.88rem;transition:border-color .15s,transform .15s,background .15s;cursor:pointer}
+.chip:hover{border-color:var(--ink);transform:translateY(-1px)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip .chip-ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.chip .chip-ic .ic{width:15px;height:15px}
+.chip .n{font-size:.72rem;font-weight:800;padding:.1rem .45rem;border-radius:999px;background:var(--cream);color:var(--muted)}
+.chip.active .n{background:rgba(255,255,255,.18);color:#fff}
+
+/* ═══════════════ CV PROMO ═══════════════ */
+.promo{background:var(--brand);color:#fff;border-radius:var(--r-xl);padding:clamp(32px,5vw,72px);display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;position:relative;overflow:hidden;isolation:isolate}
+.promo::before{content:'';position:absolute;width:600px;height:600px;left:-200px;top:-300px;border-radius:50%;background:radial-gradient(circle,rgba(19,184,155,.35),transparent 65%);z-index:-1}
+.promo .eyebrow{color:var(--teal)}
+.promo .h2{color:#fff}
+.promo .h2 em{color:var(--sun)}
+.promo .lead{color:rgba(255,255,255,.75)}
+.promo-list{display:grid;grid-template-columns:1fr 1fr;gap:.8rem 1.4rem;margin:1.8rem 0 2.2rem}
+.promo-list div{display:flex;gap:.6rem;align-items:flex-start;font-weight:600;font-size:.92rem}
+.promo-list .ic{color:var(--teal);margin-top:.15rem}
+.mock{background:#fff;color:var(--ink);border-radius:var(--r-lg);padding:1.6rem;box-shadow:var(--sh-3);transform:rotate(1.5deg);position:relative}
+.mock-h{display:flex;align-items:center;gap:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid var(--line-2);margin-bottom:1.1rem}
+.mock-ring{position:relative;width:92px;height:92px;flex-shrink:0}
+.mock-ring svg{transform:rotate(-90deg)}
+.mock-ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:1.9rem;font-weight:800;letter-spacing:-.03em}
+.mock-lvl{display:inline-block;padding:.25rem .7rem;border-radius:999px;background:var(--teal-lt);color:#0B6B5B;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+.mock-t{font-family:var(--display);font-weight:700;font-size:1.2rem;line-height:1.15;letter-spacing:-.02em}
+.mock-bars{display:flex;flex-direction:column;gap:.7rem}
+.mb-row{display:grid;grid-template-columns:130px 1fr 34px;align-items:center;gap:.7rem;font-size:.82rem;font-weight:600}
+.mb-row i{height:8px;border-radius:8px;background:var(--line-2);overflow:hidden;position:relative}
+.mb-row i::after{content:'';position:absolute;inset:0;width:var(--w);border-radius:8px;background:linear-gradient(90deg,var(--teal),var(--brand-2))}
+.mb-row span{text-align:right;color:var(--muted)}
+.mock-tip{margin-top:1.2rem;background:var(--sun-lt);border-radius:14px;padding:.8rem 1rem;font-size:.84rem;font-weight:600;display:flex;gap:.6rem}
+.mock-tip .ic{color:var(--sun-dk);margin-top:.15rem}
+.mock-badge{position:absolute;top:-16px;left:-16px;background:var(--sun);color:var(--ink);font-weight:800;font-size:.8rem;padding:.5rem .9rem;border-radius:999px;box-shadow:var(--sh-2);transform:rotate(-6deg)}
+
+/* ═══════════════ HOW ═══════════════ */
+.tabs{display:inline-flex;background:var(--paper);border:1px solid var(--line);padding:.3rem;border-radius:999px;margin-bottom:2.4rem}
+.tab{padding:.65rem 1.3rem;border-radius:999px;font-weight:700;font-size:.92rem;color:var(--muted);transition:all .2s}
+.tab.active{background:var(--ink);color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;counter-reset:s}
+.steps[hidden]{display:none}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:2rem 1.6rem;position:relative;overflow:hidden}
+.step::before{counter-increment:s;content:'0' counter(s);position:absolute;right:1.2rem;top:.6rem;font-family:var(--display);font-weight:800;font-size:4.4rem;letter-spacing:-.05em;color:var(--line-2);line-height:1}
+.step-ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;margin-bottom:1.4rem;background:var(--teal-lt);color:var(--teal-dk);position:relative}
+.step-ic .ic{width:26px;height:26px}
+.step h4{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:.4rem;position:relative}
+.step p{color:var(--muted);font-size:.93rem;position:relative}
+
+/* ═══════════════ SERVICES ═══════════════ */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.svc{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.8rem;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;cursor:pointer}
+.svc:hover{transform:translateY(-4px);box-shadow:var(--sh-2)}
+.svc-ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:1.3rem}
+.svc-ic .ic{width:24px;height:24px}
+.svc h4{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:.4rem}
+.svc p{color:var(--muted);font-size:.92rem;margin-bottom:1.4rem;flex:1}
+.svc-f{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:1.1rem;border-top:1px solid var(--line-2)}
+.svc-price{font-family:var(--display);font-weight:800;font-size:1.4rem;letter-spacing:-.02em}
+.svc-price small{font-family:var(--body);font-size:.75rem;color:var(--muted);font-weight:600}
+
+/* ═══════════════ TEAM ═══════════════ */
+.team{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,80px);align-items:center}
+.team-photo{position:relative;border-radius:var(--r-xl);overflow:hidden;aspect-ratio:4/5;background:var(--brand-2)}
+.team-photo img{width:100%;height:100%;object-fit:cover}
+.team-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(6,38,34,.85))}
+.team-id{position:absolute;left:1.3rem;right:1.3rem;bottom:1.3rem;z-index:1;display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.96);border-radius:var(--r);padding:1rem 1.1rem;box-shadow:var(--sh-2)}
+.team-av{width:56px;height:56px;border-radius:50%;background:var(--brand);color:var(--sun);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.3rem;flex-shrink:0}
+.team-id b{display:block;font-family:var(--display);font-size:1.15rem;letter-spacing:-.02em;line-height:1.15}
+.team-id span{font-size:.82rem;color:var(--muted);font-weight:600}
+.team-pts{display:flex;flex-direction:column;gap:1rem;margin-top:1.8rem}
+.team-pt{display:flex;gap:1rem;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem}
+.team-pt .i{width:42px;height:42px;border-radius:12px;background:var(--teal-lt);color:var(--teal-dk);display:grid;place-items:center;flex-shrink:0}
+.team-pt b{display:block;font-size:.98rem}
+.team-pt span{font-size:.88rem;color:var(--muted)}
+
+/* ═══════════════ FAQ ═══════════════ */
+.faq{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:.7rem}
+.faq details{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);transition:box-shadow .2s}
+.faq details[open]{box-shadow:var(--sh-2);border-color:transparent}
+.faq summary{list-style:none;cursor:pointer;padding:1.2rem 1.4rem;font-weight:700;font-size:1.02rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ic{transition:transform .25s;color:var(--muted)}
+.faq details[open] summary .ic{transform:rotate(180deg)}
+.faq .a{padding:0 1.4rem 1.3rem;color:var(--muted);font-size:.95rem}
+.faq .a a{color:var(--teal-dk);font-weight:700}
+
+/* ═══════════════ CTA ═══════════════ */
+.cta{position:relative;border-radius:var(--r-xl);overflow:hidden;padding:clamp(48px,8vw,100px) clamp(24px,5vw,64px);text-align:center;color:#fff;isolation:isolate}
+.cta img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cta::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(6,38,34,.92),rgba(11,59,53,.78))}
+.cta h2{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.8rem);line-height:1;letter-spacing:-.04em;margin-bottom:1rem}
+.cta h2 em{font-style:normal;color:var(--sun)}
+.cta p{color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 2rem;font-size:1.08rem}
+.cta .btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ PAGE HEADER ═══════════════ */
+.phead{padding:calc(var(--nav-h) + 12px) clamp(10px,1.6vw,20px) 0}
+.phead-in{background:var(--brand);color:#fff;border-radius:var(--r-xl);padding:clamp(40px,6vw,72px) clamp(20px,5vw,64px);position:relative;overflow:hidden;isolation:isolate}
+.phead-in::before{content:'';position:absolute;width:520px;height:520px;right:-160px;top:-240px;border-radius:50%;background:radial-gradient(circle,rgba(19,184,155,.4),transparent 65%);z-index:-1}
+.phead-in::after{content:'';position:absolute;width:360px;height:360px;left:-120px;bottom:-240px;border-radius:50%;background:radial-gradient(circle,rgba(255,194,61,.25),transparent 65%);z-index:-1}
+.phead .eyebrow{color:var(--teal)}
+.phead h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,5.4vw,4rem);line-height:1;letter-spacing:-.04em;margin:.7rem 0 .9rem;max-width:820px}
+.phead h1 em{font-style:normal;color:var(--sun)}
+.phead p{color:rgba(255,255,255,.78);max-width:620px;font-size:1.08rem}
+.phead .steps-mini{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.6rem}
+.phead .steps-mini span{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem .45rem .45rem;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:.84rem;font-weight:600}
+.phead .steps-mini i{width:24px;height:24px;border-radius:50%;background:var(--sun);color:var(--ink);font-style:normal;font-weight:800;font-size:.75rem;display:grid;place-items:center}
+
+/* ═══════════════ EMPLEOS PAGE ═══════════════ */
+.search-bar{display:flex;align-items:center;gap:.4rem;background:#fff;border-radius:var(--r);padding:.45rem;box-shadow:var(--sh-3);margin-top:2rem;max-width:880px}
+.search-bar .hsearch-f{padding:0 .8rem}
+.search-bar .btn{border-radius:12px;padding:.9rem 1.4rem}
+.jobs-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.jobs-count{font-weight:700;color:var(--muted);font-size:.92rem}
+.jobs-count b{color:var(--ink)}
+.chips-scroll{display:flex;gap:.5rem;overflow-x:auto;padding:.2rem .1rem 1rem;margin-bottom:.6rem;scrollbar-width:thin}
+.chips-scroll .chip{flex-shrink:0}
+.alert-card{margin-top:2.5rem;background:var(--sun);border-radius:var(--r-lg);padding:1.6rem 1.8rem;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap}
+.alert-card b{font-family:var(--display);font-size:1.35rem;letter-spacing:-.02em;display:block;line-height:1.15}
+.alert-card span{font-size:.92rem;opacity:.8}
+
+/* ═══════════════ FORMS ═══════════════ */
+.two-col{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr);gap:clamp(20px,3vw,40px);align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3.4vw,40px);box-shadow:var(--sh-1)}
+.panel+.panel{margin-top:1rem}
+.panel-h{display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem}
+.panel-h .num{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.88rem;flex-shrink:0}
+.panel-h h3{font-family:var(--display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em;line-height:1.1}
+.panel-h p{font-size:.85rem;color:var(--muted)}
+.aside{position:sticky;top:calc(var(--nav-h) + 20px);display:flex;flex-direction:column;gap:1rem}
+.aside-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.6rem}
+.aside-card.dark{background:var(--brand);color:#fff;border-color:var(--brand)}
+.aside-card h4{font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;margin-bottom:1rem}
+.aside-list{display:flex;flex-direction:column;gap:.85rem}
+.aside-list div{display:flex;gap:.7rem;font-size:.9rem;align-items:flex-start}
+.aside-list .ic{color:var(--teal);margin-top:.2rem}
+.aside-card.dark p{color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:1.1rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.fg-full{grid-column:1/-1}
+.fg label{font-size:.84rem;font-weight:700}
+.fg label i{font-style:normal;color:var(--danger)}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--line);border-radius:12px;padding:.85rem 1rem;font-size:.97rem;background:var(--cream);transition:border-color .15s,box-shadow .15s,background .15s;width:100%}
+.fg select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235A6A67' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.6rem;cursor:pointer}
+.fg input:hover,.fg select:hover,.fg textarea:hover{border-color:#D6CFC2}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px rgba(19,184,155,.15)}
+.fg textarea{resize:vertical;min-height:130px}
+.form-error{display:none;background:var(--danger-lt);border:1px solid #F5C2C2;color:var(--danger);padding:.8rem 1rem;border-radius:12px;font-size:.88rem;font-weight:600;margin-bottom:1rem}
+.form-error a{text-decoration:underline}
+.tc-box{display:flex;gap:.75rem;align-items:flex-start;background:var(--cream);border:1px solid var(--line-2);border-radius:12px;padding:.9rem 1rem;margin:.4rem 0 1.2rem}
+.tc-box input{width:20px;height:20px;accent-color:var(--brand);flex-shrink:0;margin-top:1px;cursor:pointer}
+.tc-box label{font-size:.85rem;color:var(--muted);cursor:pointer}
+.tc-box a{color:var(--ink);font-weight:700;text-decoration:underline}
+.success{display:none;text-align:center;padding:2.6rem 1.5rem;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg)}
+.success-ic{width:72px;height:72px;border-radius:50%;background:var(--teal-lt);color:var(--teal-dk);display:grid;place-items:center;margin:0 auto 1.2rem;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.success-ic .ic{width:36px;height:36px}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+.success h3{font-family:var(--display);font-weight:800;font-size:1.8rem;letter-spacing:-.03em;margin-bottom:.4rem}
+.success p{color:var(--muted);max-width:420px;margin:0 auto 1.4rem}
+
+/* CV drop */
+.cv-drop{border:2px dashed #CFE7E0;border-radius:var(--r-lg);padding:2.6rem 1.5rem;text-align:center;background:linear-gradient(180deg,#F4FBF9,#fff);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.cv-drop:hover,.cv-drop.over{border-color:var(--teal);background:#EFFAF7}
+.cv-drop.over{transform:scale(1.01)}
+.cv-drop.has{border-style:solid;border-color:var(--teal)}
+.cv-drop-ic{width:68px;height:68px;border-radius:20px;background:var(--brand);color:var(--sun);display:grid;place-items:center;margin:0 auto 1.1rem;box-shadow:0 12px 26px -12px rgba(11,59,53,.7)}
+.cv-drop-ic .ic{width:30px;height:30px}
+.cv-drop-t{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:.3rem;word-break:break-word}
+.cv-drop-s{font-size:.86rem;color:var(--muted)}
+.cv-drop .btn{margin-top:1.2rem}
+.cv-formats{display:flex;justify-content:center;gap:.4rem;margin-top:1rem}
+.cv-formats span{font-size:.7rem;font-weight:800;letter-spacing:.06em;padding:.25rem .55rem;border-radius:6px;background:var(--cream);border:1px solid var(--line);color:var(--muted)}
+.cv-progress{display:none;margin-top:1.2rem}
+.cv-progress-top{display:flex;justify-content:space-between;font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.5rem}
+.cv-progress-bar{height:8px;background:var(--line-2);border-radius:8px;overflow:hidden}
+.cv-progress-fill{height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,var(--teal),var(--sun));transition:width .3s}
+
+/* Results */
+.results-box{display:none;margin-top:1.6rem;padding-top:1.6rem;border-top:1px solid var(--line-2);animation:pageIn .5s ease}
+.res-head{display:flex;align-items:center;gap:1.4rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.score-ring{position:relative;width:120px;height:120px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-bg{fill:none;stroke:var(--line-2);stroke-width:10}
+.score-ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.7,.2,1)}
+.score-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num{font-family:var(--display);font-size:2.4rem;font-weight:800;line-height:1;letter-spacing:-.04em}
+.score-label{font-size:.72rem;font-weight:700;color:var(--soft)}
+.res-lvl{display:inline-block;padding:.3rem .8rem;border-radius:999px;font-size:.74rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.4rem}
+.res-title{font-family:var(--display);font-weight:800;font-size:1.5rem;letter-spacing:-.03em;line-height:1.1}
+.sections-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.4rem}
+.sec-item{background:var(--cream);border-radius:12px;padding:.8rem .95rem}
+.sec-item-name{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;margin-bottom:.45rem}
+.sec-item-name span{color:var(--muted)}
+.sec-bar{height:6px;background:#fff;border-radius:6px;overflow:hidden}
+.sec-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--brand-2));transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.results-lists{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.rl{border:1px solid var(--line-2);border-radius:14px;padding:1rem 1.1rem}
+.rl-title{font-weight:800;font-size:.88rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.rl-item{font-size:.87rem;color:var(--muted);padding:.4rem 0;display:flex;gap:.55rem;border-top:1px solid var(--line-2)}
+.rl-item:first-of-type{border-top:none}
+.rl-item::before{content:'';width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:.1rem;background:var(--teal-lt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230E9580' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/11px no-repeat}
+.rl-item.bad::before{background:var(--sun-lt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C07F00' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") center/11px no-repeat}
+.result-msg{background:var(--brand);color:#fff;border-radius:14px;padding:1.1rem 1.3rem;margin-top:1.2rem;font-size:.93rem}
+.result-cta{margin-top:.8rem;width:100%}
+.nl{text-align:center;padding:.6rem 0 1rem}
+.nl-ic{width:64px;height:64px;border-radius:18px;background:var(--sun-lt);color:var(--sun-dk);display:grid;place-items:center;margin:0 auto 1rem}
+.nl-ic .ic{width:30px;height:30px}
+.nl h4{font-family:var(--display);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;margin-bottom:.4rem}
+.nl p{color:var(--muted);font-size:.92rem;max-width:440px;margin:0 auto}
+
+/* Plans */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.9rem}
+.plan-pill{position:relative;border:1.5px solid var(--line);border-radius:16px;padding:1rem .9rem;cursor:pointer;transition:border-color .15s,background .15s,transform .15s;background:var(--paper);text-align:left}
+.plan-pill:hover{border-color:#CFC7B8}
+.plan-pill.selected{border-color:var(--ink);background:var(--cream);box-shadow:0 0 0 3px rgba(10,31,28,.06)}
+.plan-pill::after{content:'';position:absolute;top:.9rem;right:.9rem;width:18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+.plan-pill.selected::after{border:5px solid var(--ink)}
+.pp-name{font-weight:800;font-size:.98rem}
+.pp-price{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.02em;margin-top:.2rem}
+.pp-note{font-size:.72rem;color:var(--muted);font-weight:600}
+.plan-desc{font-size:.87rem;color:var(--ink);padding:.85rem 1rem;background:var(--teal-lt);border-radius:12px;margin-bottom:1.6rem;display:flex;gap:.6rem;align-items:flex-start}
+.plan-desc .ic{color:var(--teal-dk);margin-top:.15rem}
+
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.price-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.8rem 1.5rem;display:flex;flex-direction:column;position:relative;transition:transform .25s,box-shadow .25s}
+.price-card:hover{transform:translateY(-4px);box-shadow:var(--sh-2)}
+.price-card.featured{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:var(--sh-3)}
+.price-card.featured::before{content:'Más elegido';position:absolute;top:-12px;left:1.5rem;background:var(--sun);color:var(--ink);font-size:.72rem;font-weight:800;padding:.3rem .8rem;border-radius:999px;letter-spacing:.04em}
+.pc-name{font-weight:800;font-size:1rem;margin-bottom:.8rem}
+.pc-price{font-family:var(--display);font-weight:800;font-size:2.3rem;line-height:1;letter-spacing:-.04em;margin-bottom:.5rem}
+.pc-price span{font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:0}
+.featured .pc-price span,.featured .pc-desc,.featured .pc-item{color:rgba(255,255,255,.75)}
+.pc-desc{font-size:.87rem;color:var(--muted);margin-bottom:1.2rem;min-height:2.8em}
+.pc-items{margin-bottom:1.5rem;flex:1;display:flex;flex-direction:column;gap:.55rem;padding-top:1.2rem;border-top:1px solid var(--line-2)}
+.featured .pc-items{border-color:rgba(255,255,255,.12)}
+.pc-item{font-size:.88rem;color:var(--muted);display:flex;gap:.55rem;align-items:flex-start}
+.pc-item::before{content:'';width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:.1rem;background:var(--teal-lt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230E9580' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/11px no-repeat}
+.pc-btn{width:100%}
+
+/* Legal */
+.legal-content{max-width:760px;font-size:.98rem;color:var(--muted)}
+.legal-content h3{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;color:var(--ink);margin:2rem 0 .5rem}
+.legal-content h3:first-child{margin-top:0}
+.legal-content p{margin-bottom:.8rem}
+.legal-note{margin-top:2rem;padding:1.2rem 1.3rem;background:var(--teal-lt);border-radius:14px;font-size:.9rem;color:var(--ink)}
+
+/* ═══════════════ FOOTER ═══════════════ */
+footer{background:var(--brand-3);color:rgba(255,255,255,.7);margin-top:clamp(64px,9vw,112px);padding:clamp(48px,7vw,80px) 0 2rem;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:2.5rem}
+.f-brand .logo-txt{color:#fff}
+.f-brand .logo-txt small{color:rgba(255,255,255,.5)}
+.f-brand p{margin:1.1rem 0 1.4rem;font-size:.92rem;max-width:320px}
+.f-col h5{color:#fff;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.f-col a{display:flex;align-items:center;gap:.5rem;font-size:.93rem;padding:.3rem 0;transition:color .15s}
+.f-col a:hover{color:var(--sun)}
+.f-bottom{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:rgba(255,255,255,.4)}
+.f-bottom a:hover{color:#fff}
+
+/* ═══════════════ MODAL ═══════════════ */
+.modal-bg{position:fixed;inset:0;z-index:2000;background:rgba(6,38,34,.6);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.modal-bg.open{opacity:1;visibility:visible}
+.modal{background:#fff;border-radius:var(--r-lg);max-width:540px;width:100%;max-height:calc(100dvh - 2rem);overflow-y:auto;padding:clamp(22px,4vw,36px);position:relative;box-shadow:var(--sh-3);transform:translateY(16px) scale(.98);transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.modal-bg.open .modal{transform:none}
+.modal-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:var(--cream);display:grid;place-items:center;transition:background .15s}
+.modal-close:hover{background:var(--line)}
+.modal-title{font-family:var(--display);font-weight:800;font-size:1.5rem;letter-spacing:-.03em;margin-bottom:1.2rem}
+.checkout-service{font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:.3rem;padding-right:3rem}
+.checkout-price{font-family:var(--display);font-weight:800;font-size:2.6rem;letter-spacing:-.04em;line-height:1.05;margin-bottom:1.3rem}
+.checkout-price span{font-family:var(--body);font-size:.85rem;font-weight:600;color:var(--muted);letter-spacing:0}
+.transfer-info{background:var(--brand);color:#fff;border-radius:16px;padding:1.1rem 1.2rem;margin:.4rem 0 1rem;display:flex;gap:1rem;align-items:center}
+.transfer-info .ti-ic{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.1);color:var(--sun);display:grid;place-items:center;flex-shrink:0}
+.ti-title{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.08em}
+.ti-alias{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.02em}
+.ti-sub{font-size:.8rem;color:rgba(255,255,255,.7)}
+.pay-secure{font-size:.8rem;color:var(--muted);text-align:center;margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.pay-success{display:none;text-align:center;padding:1rem 0}
+.pay-success h3{font-family:var(--display);font-weight:800;font-size:1.8rem;letter-spacing:-.03em;margin-bottom:.4rem}
+.pay-success p{color:var(--muted);margin-bottom:1.4rem}
+.pay-success .btn+.btn{margin-top:.6rem}
+.jm-head{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;padding-right:2.6rem}
+.jm-cat{font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:.25rem}
+.jm-title{font-family:var(--display);font-weight:800;font-size:1.7rem;letter-spacing:-.03em;line-height:1.08}
+.jm-company{font-size:.92rem;color:var(--muted);margin-top:.3rem}
+.jm-details{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.3rem}
+.jm-desc{font-size:.95rem;color:#2E3F3C;margin-bottom:1.4rem;padding:1.1rem 1.2rem;background:var(--cream);border-radius:14px;white-space:normal}
+.jm-contact{font-size:.9rem;margin-bottom:1.2rem;display:flex;gap:.6rem;align-items:center;padding:.9rem 1rem;border:1px solid var(--line);border-radius:12px}
+.jm-contact .ic{color:var(--teal-dk)}
+.jm-actions{display:flex;flex-wrap:wrap;gap:.6rem}
+.jm-actions .btn-wa{flex:1 1 260px}
+.jm-actions .btn-line{flex:1 0 auto}
+
+/* ═══════════════ FLOATING ═══════════════ */
+.wa-float{position:fixed;bottom:1.4rem;right:1.4rem;z-index:900;width:60px;height:60px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(37,211,102,.7);transition:transform .2s}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float .ic{width:30px;height:30px}
+.wa-float::before{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:ring 2.4s infinite}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.6);opacity:0}}
+.mbar{display:none}
+
+/* ═══════════════ REVEAL ═══════════════ */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width:1240px){
+  .nav-links .nav-tab[data-page="legal"]{display:none}
+}
+@media (max-width:1080px){
+  .pricing-grid{grid-template-columns:repeat(2,1fr)}
+  .f-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1120px){
+  .nav-links,.nav-cta{display:none}
+  .nav-burger{display:flex}
+}
+@media (max-width:960px){
+  .hero-in{grid-template-columns:1fr;align-items:start}
+  .hero-side{max-width:520px}
+  .stats-in{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:none}
+  .stat:nth-child(n+3){border-top:1px solid var(--line-2)}
+  .paths,.promo,.team,.two-col{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr 1fr;grid-template-rows:280px 200px 200px}
+  .cat-card:first-child{grid-column:span 2;grid-row:auto}
+  .steps,.svc-grid{grid-template-columns:1fr}
+  .aside{position:static}
+  .team-photo{aspect-ratio:16/11}
+  .mock{transform:none;max-width:520px}
+}
+@media (max-width:760px){
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+  .wa-float{display:none}
+  .mbar{display:grid;grid-template-columns:1fr 1fr auto;gap:.5rem;position:fixed;left:0;right:0;bottom:0;z-index:950;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom));background:rgba(250,247,241,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .mbar .btn{padding:.85rem .6rem;font-size:.9rem}
+  .mbar .mbar-wa{width:50px;height:50px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center}
+  .mbar .mbar-wa .ic{width:24px;height:24px}
+  .hsearch,.search-bar{flex-direction:column;align-items:stretch;border-radius:var(--r-lg);padding:.5rem}
+  .hsearch-sep{width:auto;height:1px;margin:0 .8rem}
+  .hsearch .btn,.search-bar .btn{border-radius:14px;margin-top:.2rem}
+  .hero-card{min-height:auto}
+  .hero-in{padding:36px 20px 28px}
+  .hero-h1 .hl{white-space:normal}
+  .live-item b{max-width:none}
+  .form-grid,.sections-grid,.results-lists,.promo-list{grid-template-columns:1fr}
+  .plan-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .mb-row{grid-template-columns:100px 1fr 30px}
+  .f-grid{grid-template-columns:1fr}
+  .stat{padding:1.1rem 1rem;gap:.7rem}
+  .stat-ic{width:40px;height:40px}
+  .stat-n{font-size:1.55rem}
+  .bento{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:200px}
+  .cat-card:first-child{grid-column:auto}
+}
+@media (max-width:400px){
+  .logo-txt{font-size:.98rem}
+  .stats-in{grid-template-columns:1fr}
+  .stat+.stat{border-left:none;border-top:1px solid var(--line-2)}
+}
+</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.12.2/mammoth.browser.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════ ICON SPRITE ═══════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v4M3 19h4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+  <symbol id="i-hardhat" viewBox="0 0 24 24"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></symbol>
+  <symbol id="i-health" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12H9l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.6a1 1 0 0 0-.2-.6l-3.5-4.4A1 1 0 0 0 17.5 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2.7-3.4A2 2 0 0 0 13.7 6H7.4a2 2 0 0 0-1.7 1L3.5 10.6A4 4 0 0 0 3 12.6V16c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+  <symbol id="i-wheat" viewBox="0 0 24 24"><path d="M2 22 16 8"/><path d="M3.5 12.5 5 11l1.5 1.5a3.5 3.5 0 0 1 0 5L5 19l-1.5-1.5a3.5 3.5 0 0 1 0-5z"/><path d="M7.5 8.5 9 7l1.5 1.5a3.5 3.5 0 0 1 0 5L9 15l-1.5-1.5a3.5 3.5 0 0 1 0-5z"/><path d="M11.5 4.5 13 3l1.5 1.5a3.5 3.5 0 0 1 0 5L13 11l-1.5-1.5a3.5 3.5 0 0 1 0-5z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4z"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></symbol>
+  <symbol id="i-grad" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-factory" viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1M12 18h1M7 18h1"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l9 5H3z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.6a10 10 0 0 1 14 0M8.5 16.1a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 20 0M12 20h.01"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+  <symbol id="i-logo" viewBox="0 0 44 40"><circle cx="9" cy="10" r="4.5" fill="#13B89B" stroke="none"/><path d="M4.5 20 Q9 15.5 13.5 20" stroke="#13B89B" stroke-width="2.4"/><circle cx="35" cy="10" r="4.5" fill="#fff" stroke="none"/><path d="M30.5 20 Q35 15.5 39.5 20" stroke="#fff" stroke-width="2.4"/><path d="M5 31 Q22 8 39 31" stroke="#FFC23D" stroke-width="3.6"/></symbol>
+</svg>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" data-page="inicio" href="#inicio" aria-label="Trabajar en Saladillo — inicio">
+      <span class="logo-mark"><svg width="28" height="26" class="ic" style="width:28px;height:26px"><use href="#i-logo"/></svg></span>
+      <span class="logo-txt">Trabajar en <b>Saladillo</b><small>Bolsa de empleo local</small></span>
+    </a>
+    <div class="nav-links">
+      <button class="nav-tab active" data-page="inicio">Inicio</button>
+      <button class="nav-tab" data-page="empleos">Empleos</button>
+      <button class="nav-tab" data-page="candidatos">Subir CV</button>
+      <button class="nav-tab" data-page="empresas">Publicar empleo</button>
+      <button class="nav-tab" data-page="servicios">Servicios</button>
+      <button class="nav-tab" data-page="legal">Aviso legal</button>
+    </div>
+    <button class="btn btn-sun btn-sm nav-cta" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Subir mi CV gratis</button>
+    <button class="nav-burger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav"><svg class="ic"><use href="#i-menu"/></svg></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <button class="nav-tab active" data-page="inicio">Inicio</button>
+  <button class="nav-tab" data-page="empleos">Ver empleos</button>
+  <button class="nav-tab" data-page="candidatos">Subir mi CV</button>
+  <button class="nav-tab" data-page="empresas">Publicar empleo</button>
+  <button class="nav-tab" data-page="servicios">Servicios</button>
+  <button class="nav-tab" data-page="legal">Aviso legal</button>
+  <a class="btn btn-wa btn-block" href="https://wa.me/5492345418034?text=Hola%20Trabajar%20en%20Saladillo!" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>Escribinos por WhatsApp</a>
+</div>
+
+<main>
+
+<!-- ═════════════════════ INICIO ═════════════════════ -->
+<div class="page active" id="page-inicio">
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-bg" id="heroCarousel">
+        <img src="img/saladillo-estacion.jpg" class="active" alt="Cartel de la estación de tren de Saladillo" fetchpriority="high"/>
+        <img src="img/saladillo-plaza.jpg" alt="Plaza central de Saladillo" loading="lazy"/>
+        <img src="img/saladillo-otono.jpg" alt="Calle histórica de Saladillo en otoño" loading="lazy"/>
+      </div>
+      <div class="hero-in">
+        <div>
+          <div class="hero-chip"><span class="dot"><svg class="ic"><use href="#i-pin"/></svg></span>Saladillo · Roque Pérez · 25 de Mayo · Tapalqué</div>
+          <h1 class="hero-h1">Tu próximo trabajo está <span class="hl">acá cerca.<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 14 C 80 4, 200 2, 297 10" stroke="#FFC23D" stroke-width="5" fill="none" stroke-linecap="round" opacity=".55"/></svg></span></h1>
+          <p class="hero-p">La bolsa de empleo de nuestra región. Buscá entre ofertas reales de comercios y empresas locales, o subí tu CV gratis y recibí un análisis al instante.</p>
+          <form class="hsearch" id="heroSearch" role="search">
+            <label class="hsearch-f"><svg class="ic"><use href="#i-search"/></svg><span class="sr-only">Puesto o empresa</span><input type="text" id="heroQ" placeholder="¿Qué trabajo buscás?" autocomplete="off"/></label>
+            <span class="hsearch-sep"></span>
+            <label class="hsearch-f" style="flex:.8"><svg class="ic"><use href="#i-brief"/></svg><span class="sr-only">Rubro</span>
+              <select id="heroCat" class="cat-select"><option value="">Todos los rubros</option></select>
+            </label>
+            <button type="submit" class="btn btn-sun"><svg class="ic"><use href="#i-search"/></svg>Buscar empleo</button>
+          </form>
+          <div class="hero-quick">
+            <span>Populares:</span>
+            <button type="button" data-cat="comercio">Comercio</button>
+            <button type="button" data-cat="gastronomia">Gastronomía</button>
+            <button type="button" data-cat="agro">Agro</button>
+            <button type="button" data-cat="salud">Salud</button>
+            <button type="button" data-cat="cuidado">Cuidado</button>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="live" aria-live="polite">
+            <div class="live-h">
+              <div class="live-t"><span class="pulse"></span>Búsquedas activas</div>
+              <button class="link-arrow" data-page="empleos" style="font-size:.82rem">Ver todas<svg class="ic"><use href="#i-arrow"/></svg></button>
+            </div>
+            <div class="live-n"><span id="statJobs" data-count="0">0</span><small>empleos publicados ahora</small></div>
+            <div class="live-list" id="heroLive"><div class="skel" style="height:120px;margin-top:.4rem"></div></div>
+          </div>
+          <div class="hero-photo-meta">
+            <span id="heroCaption">📍 Estación Saladillo</span>
+            <div class="hero-dots">
+              <button class="hpd active" data-slide="0" aria-label="Foto 1"></button>
+              <button class="hpd" data-slide="1" aria-label="Foto 2"></button>
+              <button class="hpd" data-slide="2" aria-label="Foto 3"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap stats">
+    <div class="stats-in">
+      <div class="stat"><div class="stat-ic" style="background:var(--teal-lt);color:var(--teal-dk)"><svg class="ic"><use href="#i-brief"/></svg></div><div><div class="stat-n" id="sbJobs" data-count="0">0</div><div class="stat-l">Empleos publicados</div></div></div>
+      <div class="stat"><div class="stat-ic" style="background:var(--sun-lt);color:var(--sun-dk)"><svg class="ic"><use href="#i-pin"/></svg></div><div><div class="stat-n" data-count="4">0</div><div class="stat-l">Localidades cubiertas</div></div></div>
+      <div class="stat"><div class="stat-ic" style="background:#E8EEFF;color:#3B5BDB"><svg class="ic"><use href="#i-sparkles"/></svg></div><div><div class="stat-n" data-count="15" data-suffix="+">0</div><div class="stat-l">Rubros activos</div></div></div>
+      <div class="stat"><div class="stat-ic" style="background:#FDECEC;color:#C62828"><svg class="ic"><use href="#i-heart"/></svg></div><div><div class="stat-n">100%</div><div class="stat-l">Gratis para candidatos</div></div></div>
+    </div>
+  </div>
+
+  <!-- DOS CAMINOS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head center rv">
+        <span class="eyebrow">Empezá acá</span>
+        <h2 class="h2">¿Buscás trabajo o <em>buscás personal?</em></h2>
+        <p class="lead">Una sola plataforma para que la gente de la región y los negocios locales se encuentren. Sin vueltas.</p>
+      </div>
+      <div class="paths">
+        <div class="path path-a rv">
+          <span class="path-tag"><svg class="ic"><use href="#i-users"/></svg>PARA CANDIDATOS</span>
+          <h3>Conseguí trabajo cerca de casa</h3>
+          <p>Subí tu CV una sola vez y te tenemos en cuenta para cada búsqueda que llega.</p>
+          <ul>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>100% gratis, sin crear cuenta</li>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>Análisis de tu CV en segundos</li>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>Te contactamos por WhatsApp</li>
+          </ul>
+          <div class="btns">
+            <button class="btn btn-sun btn-lg" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Subir mi CV</button>
+            <button class="btn btn-glass btn-lg" data-page="empleos">Ver empleos<svg class="ic ic-arrow"><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+        <div class="path path-b rv">
+          <span class="path-tag"><svg class="ic"><use href="#i-building"/></svg>PARA EMPRESAS Y COMERCIOS</span>
+          <h3>Encontrá a la persona indicada</h3>
+          <p>Publicá tu búsqueda y llegá a candidatos reales de Saladillo y la zona. La publicación básica es gratis.</p>
+          <ul>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>Publicación gratis por 30 días</li>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>Perfiles revisados por profesionales</li>
+            <li><svg class="ic"><use href="#i-check-c"/></svg>Opción de selección llave en mano</li>
+          </ul>
+          <div class="btns">
+            <button class="btn btn-dark btn-lg" data-page="empresas"><svg class="ic"><use href="#i-mega"/></svg>Publicar empleo</button>
+            <button class="btn btn-line btn-lg" data-page="servicios" style="background:transparent;border-color:rgba(10,31,28,.25)">Ver planes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMPLEOS DESTACADOS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <span class="eyebrow">En este momento</span>
+          <h2 class="h2">Últimas búsquedas <em>laborales</em></h2>
+          <p class="lead">Ofertas publicadas por comercios y empresas de Saladillo y la región.</p>
+        </div>
+        <button class="btn btn-line" data-page="empleos">Ver todos los empleos<svg class="ic ic-arrow"><use href="#i-arrow"/></svg></button>
+      </div>
+      <div id="homeJobsGrid" class="jobs-grid">
+        <div class="skel"></div><div class="skel"></div><div class="skel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUBROS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <span class="eyebrow">Explorá por rubro</span>
+          <h2 class="h2">Encontrá tu lugar <em>en la región</em></h2>
+        </div>
+        <p class="lead" style="max-width:420px">Desde el campo hasta el comercio del centro: elegí un rubro y mirá qué hay disponible hoy.</p>
+      </div>
+      <div class="bento rv">
+        <button class="cat-card" data-cat="agro">
+          <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=900&h=1000&fit=crop&q=70" alt="" loading="lazy" onerror="this.remove()"/>
+          <span class="cc-go"><svg class="ic"><use href="#i-arrow-ur"/></svg></span>
+          <span><span class="cc-k" data-cat-count="agro">Agro · Campo</span><span class="cc-t" style="display:block">Trabajo rural</span></span>
+        </button>
+        <button class="cat-card" data-cat="comercio">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&h=500&fit=crop&q=70" alt="" loading="lazy" onerror="this.remove()"/>
+          <span class="cc-go"><svg class="ic"><use href="#i-arrow-ur"/></svg></span>
+          <span><span class="cc-k" data-cat-count="comercio">Comercio</span><span class="cc-t" style="display:block">Ventas y atención</span></span>
+        </button>
+        <button class="cat-card" data-cat="educacion">
+          <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=700&h=500&fit=crop&q=70" alt="" loading="lazy" onerror="this.remove()"/>
+          <span class="cc-go"><svg class="ic"><use href="#i-arrow-ur"/></svg></span>
+          <span><span class="cc-k" data-cat-count="educacion">Educación</span><span class="cc-t" style="display:block">Docencia y clases</span></span>
+        </button>
+        <button class="cat-card" data-cat="gastronomia">
+          <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700&h=500&fit=crop&q=70" alt="" loading="lazy" onerror="this.remove()"/>
+          <span class="cc-go"><svg class="ic"><use href="#i-arrow-ur"/></svg></span>
+          <span><span class="cc-k" data-cat-count="gastronomia">Gastronomía</span><span class="cc-t" style="display:block">Cocina y salón</span></span>
+        </button>
+        <button class="cat-card cc-all" data-cat="">
+          <span class="cc-go"><svg class="ic"><use href="#i-arrow-ur"/></svg></span>
+          <span><span class="cc-k">+15 rubros</span><span class="cc-t" style="display:block">Ver todos los empleos</span></span>
+        </button>
+      </div>
+      <div class="chips rv" id="rubroChips"></div>
+    </div>
+  </section>
+
+  <!-- CV PROMO -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="promo rv">
+        <div>
+          <span class="eyebrow">Gratis · Resultado inmediato</span>
+          <h2 class="h2">¿Tu CV está listo para <em>que te llamen?</em></h2>
+          <p class="lead">Subilo y en segundos te mostramos un puntaje, tus fortalezas y qué conviene mejorar. Además, queda en nuestra base para las próximas búsquedas.</p>
+          <div class="promo-list">
+            <div><svg class="ic"><use href="#i-zap"/></svg>Análisis en segundos</div>
+            <div><svg class="ic"><use href="#i-lock"/></svg>Datos protegidos (Ley 25.326)</div>
+            <div><svg class="ic"><use href="#i-file"/></svg>PDF, Word o TXT</div>
+            <div><svg class="ic"><use href="#i-users"/></svg>Revisado por profesionales</div>
+          </div>
+          <button class="btn btn-sun btn-lg" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Analizar mi CV gratis</button>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <span class="mock-badge">Ejemplo de resultado</span>
+          <div class="mock-h">
+            <div class="mock-ring">
+              <svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="38" fill="none" stroke="#F1EDE5" stroke-width="9"/><circle cx="46" cy="46" r="38" fill="none" stroke="#13B89B" stroke-width="9" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="43"/></svg>
+              <b>82</b>
+            </div>
+            <div><span class="mock-lvl">Excelente</span><div class="mock-t">Tu CV está muy bien estructurado</div></div>
+          </div>
+          <div class="mock-bars">
+            <div class="mb-row">Contacto<i style="--w:95%"></i><span>95</span></div>
+            <div class="mb-row">Experiencia<i style="--w:86%"></i><span>86</span></div>
+            <div class="mb-row">Educación<i style="--w:78%"></i><span>78</span></div>
+            <div class="mb-row">Habilidades<i style="--w:64%"></i><span>64</span></div>
+          </div>
+          <div class="mock-tip"><svg class="ic"><use href="#i-sparkles"/></svg>Sumá logros medibles para destacar todavía más.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head center rv">
+        <span class="eyebrow">Cómo funciona</span>
+        <h2 class="h2">Tres pasos, <em>cero burocracia</em></h2>
+      </div>
+      <div style="text-align:center" class="rv">
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true" data-how="cand">Busco trabajo</button>
+          <button class="tab" role="tab" aria-selected="false" data-how="emp">Busco personal</button>
+        </div>
+      </div>
+      <div class="steps rv" id="how-cand">
+        <div class="step"><div class="step-ic"><svg class="ic"><use href="#i-upload"/></svg></div><h4>Subí tu CV gratis</h4><p>Cargá tu CV en PDF o Word y recibí el análisis en segundos. Sin registro previo.</p></div>
+        <div class="step"><div class="step-ic"><svg class="ic"><use href="#i-search"/></svg></div><h4>Explorá empleos locales</h4><p>Filtrá por rubro y localidad. Todas las búsquedas son reales y de la región.</p></div>
+        <div class="step"><div class="step-ic"><svg class="ic"><use href="#i-wa"/></svg></div><h4>Conectate y trabajá</h4><p>Te contactamos directamente para conectarte con el empleador. Sin intermediarios raros.</p></div>
+      </div>
+      <div class="steps" id="how-emp" hidden>
+        <div class="step"><div class="step-ic" style="background:var(--sun-lt);color:var(--sun-dk)"><svg class="ic"><use href="#i-mega"/></svg></div><h4>Publicá tu búsqueda</h4><p>Completá un formulario simple en 2 minutos. La publicación básica es gratis.</p></div>
+        <div class="step"><div class="step-ic" style="background:var(--sun-lt);color:var(--sun-dk)"><svg class="ic"><use href="#i-users"/></svg></div><h4>Recibí candidatos</h4><p>Tu aviso llega a personas de Saladillo y la zona que están buscando trabajo.</p></div>
+        <div class="step"><div class="step-ic" style="background:var(--sun-lt);color:var(--sun-dk)"><svg class="ic"><use href="#i-target"/></svg></div><h4>Elegí a la persona ideal</h4><p>Si querés, hacemos la selección por vos: filtramos, entrevistamos y te presentamos una terna.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS TEASER -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <span class="eyebrow">Servicios profesionales</span>
+          <h2 class="h2">Un empujón extra <em>cuando lo necesitás</em></h2>
+        </div>
+        <button class="btn btn-line" data-page="servicios">Ver todos los servicios<svg class="ic ic-arrow"><use href="#i-arrow"/></svg></button>
+      </div>
+      <div class="svc-grid">
+        <div class="svc rv" data-checkout="Revisión Profesional de CV|15000">
+          <div class="svc-ic" style="background:var(--teal-lt);color:var(--teal-dk)"><svg class="ic"><use href="#i-pencil"/></svg></div>
+          <h4>Mejora profesional de CV</h4>
+          <p>Revisamos, corregimos y reescribimos tu CV para que destaque ante cualquier empleador.</p>
+          <div class="svc-f"><div class="svc-price">$15.000 <small>único</small></div><span class="link-arrow">Contratar<svg class="ic"><use href="#i-arrow"/></svg></span></div>
+        </div>
+        <div class="svc rv" data-checkout="Colocación Laboral Activa|80000">
+          <div class="svc-ic" style="background:#EFE9FE;color:#6D28D9"><svg class="ic"><use href="#i-target"/></svg></div>
+          <h4>Colocación laboral</h4>
+          <p>Acompañamiento activo: matching con empleadores, preparación para entrevistas y seguimiento.</p>
+          <div class="svc-f"><div class="svc-price">$80.000 <small>único</small></div><span class="link-arrow">Contratar<svg class="ic"><use href="#i-arrow"/></svg></span></div>
+        </div>
+        <div class="svc rv" data-checkout="Asesoría RRHH Mensual|45000">
+          <div class="svc-ic" style="background:var(--sun-lt);color:var(--sun-dk)"><svg class="ic"><use href="#i-building"/></svg></div>
+          <h4>Asesoría RRHH para empresas</h4>
+          <p>Procesos de selección, descripción de puestos y consultoría laboral a medida de tu negocio.</p>
+          <div class="svc-f"><div class="svc-price">$45.000 <small>/mes</small></div><span class="link-arrow">Contratar<svg class="ic"><use href="#i-arrow"/></svg></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap team">
+      <div class="team-photo rv">
+        <img src="img/saladillo-plaza.jpg" alt="Plaza de Saladillo" loading="lazy"/>
+        <div class="team-id">
+          <div class="team-av">YM</div>
+          <div><b>Lic. Yamila E. Miranda</b><span>Lic. en Relaciones del Trabajo</span></div>
+        </div>
+      </div>
+      <div class="rv">
+        <span class="eyebrow">Quiénes somos</span>
+        <h2 class="h2">Personas reales, <em>de acá</em>, detrás de cada búsqueda</h2>
+        <p class="lead">Somos profesionales en Relaciones del Trabajo con vocación por el empleo local. Administramos cada publicación y cada CV a mano: revisamos, mejoramos y conectamos.</p>
+        <div class="team-pts">
+          <div class="team-pt"><div class="i"><svg class="ic"><use href="#i-users"/></svg></div><div><b>Revisión humana, no solo un algoritmo</b><span>Cada perfil y cada búsqueda la mira una profesional.</span></div></div>
+          <div class="team-pt"><div class="i"><svg class="ic"><use href="#i-shield"/></svg></div><div><b>Tus datos, protegidos</b><span>Cumplimos la Ley 25.326 de Protección de Datos Personales.</span></div></div>
+          <div class="team-pt"><div class="i"><svg class="ic"><use href="#i-wa"/></svg></div><div><b>Contacto directo por WhatsApp</b><span>Hablás con nosotras, sin plataformas intermedias.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head center rv">
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2 class="h2">Lo que más <em>nos preguntan</em></h2>
+      </div>
+      <div class="faq rv">
+        <details open><summary>¿Tiene algún costo subir mi CV?<svg class="ic"><use href="#i-chev"/></svg></summary><div class="a">No. Subir tu CV, recibir el análisis y postularte a los empleos es 100% gratis para candidatos. Solo los servicios profesionales opcionales (como la reescritura de CV) tienen costo.</div></details>
+        <details><summary>¿Tengo que crear una cuenta?<svg class="ic"><use href="#i-chev"/></svg></summary><div class="a">No hace falta. Subís tu CV, completás nombre y teléfono y listo. Te contactamos por WhatsApp cuando aparece algo para vos.</div></details>
+        <details><summary>¿Qué pasa con mis datos personales?<svg class="ic"><use href="#i-chev"/></svg></summary><div class="a">Se usan únicamente para búsquedas laborales y no se venden ni se comparten con fines ajenos a la plataforma. Podés pedir que los borremos cuando quieras escribiendo a <a href="mailto:trabajarensaladillo@gmail.com">trabajarensaladillo@gmail.com</a>.</div></details>
+        <details><summary>Tengo un comercio, ¿cómo publico una búsqueda?<svg class="ic"><use href="#i-chev"/></svg></summary><div class="a">Entrá a <a href="#empresas" data-page="empresas">Publicar empleo</a>, completá el formulario y listo. La publicación básica es gratis y queda visible 30 días. Si preferís, también podés mandarnos los datos por WhatsApp.</div></details>
+        <details><summary>¿Solo hay trabajos en Saladillo?<svg class="ic"><use href="#i-chev"/></svg></summary><div class="a">Trabajamos con Saladillo, Roque Pérez, 25 de Mayo y Tapalqué. Cada oferta indica su localidad para que puedas filtrar la que te queda cerca.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap">
+    <div class="cta rv">
+      <img src="img/saladillo-otono.jpg" alt="" loading="lazy"/>
+      <h2>Tu próximo paso <em>empieza hoy.</em></h2>
+      <p>Ya sea que busques trabajo o quieras sumar al mejor talento local, estamos acá para ayudarte.</p>
+      <div class="btns">
+        <button class="btn btn-sun btn-lg" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Subir mi CV gratis</button>
+        <button class="btn btn-glass btn-lg" data-page="empresas">Publicar un empleo<svg class="ic ic-arrow"><use href="#i-arrow"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /inicio -->
+
+<!-- ═════════════════════ EMPLEOS ═════════════════════ -->
+<div class="page" id="page-empleos">
+  <header class="phead">
+    <div class="phead-in">
+      <span class="eyebrow">Bolsa de empleo</span>
+      <h1>Empleos en Saladillo <em>y la región</em></h1>
+      <p>Búsquedas reales publicadas por comercios, empresas y particulares de la zona. Actualizado todos los días.</p>
+      <form class="search-bar" id="jobsSearch" role="search">
+        <label class="hsearch-f"><svg class="ic"><use href="#i-search"/></svg><span class="sr-only">Buscar</span><input type="text" id="searchQ" placeholder="Puesto, empresa o palabra clave" autocomplete="off"/></label>
+        <span class="hsearch-sep"></span>
+        <label class="hsearch-f" style="flex:.7"><svg class="ic"><use href="#i-brief"/></svg><span class="sr-only">Rubro</span><select id="searchCat" class="cat-select"><option value="">Todos los rubros</option></select></label>
+        <span class="hsearch-sep"></span>
+        <label class="hsearch-f" style="flex:.6"><svg class="ic"><use href="#i-pin"/></svg><span class="sr-only">Localidad</span>
+          <select id="searchLoc"><option value="">Toda la región</option><option>Saladillo</option><option>Roque Pérez</option><option>25 de Mayo</option><option>Tapalqué</option><option>Otra</option></select>
+        </label>
+        <button type="submit" class="btn btn-sun"><svg class="ic"><use href="#i-search"/></svg>Buscar</button>
+      </form>
+    </div>
+  </header>
+  <section class="section" style="padding-top:clamp(32px,4vw,48px)">
+    <div class="wrap">
+      <div class="chips-scroll" id="jobChips"></div>
+      <div class="jobs-toolbar">
+        <div class="jobs-count" id="jobsCount">Cargando empleos…</div>
+        <button class="link-arrow" id="clearFilters" style="display:none">Limpiar filtros<svg class="ic"><use href="#i-x"/></svg></button>
+      </div>
+      <div id="jobsGrid" class="jobs-grid"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+      <div class="alert-card">
+        <div><b>¿No encontraste lo que buscabas?</b><span>Dejanos tu CV y te avisamos cuando aparezca una búsqueda para vos.</span></div>
+        <button class="btn btn-dark" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Dejar mi CV</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═════════════════════ CANDIDATOS ═════════════════════ -->
+<div class="page" id="page-candidatos">
+  <header class="phead">
+    <div class="phead-in">
+      <span class="eyebrow">Para candidatos · 100% gratis</span>
+      <h1>Subí tu CV y <em>encontrá trabajo</em></h1>
+      <p>Recibí un análisis gratuito al instante y quedá en nuestra base para todas las búsquedas de la región. Sin registro.</p>
+      <div class="steps-mini"><span><i>1</i>Subí tu CV</span><span><i>2</i>Mirá tu análisis</span><span><i>3</i>Dejanos tus datos</span></div>
+    </div>
+  </header>
+  <section class="section" style="padding-top:clamp(28px,4vw,48px)">
+    <div class="wrap two-col">
+      <div>
+        <div class="panel">
+          <div class="panel-h"><span class="num">1</span><div><h3>Subí tu CV</h3><p>Lo analizamos en tu navegador en segundos.</p></div></div>
+          <div class="cv-drop" id="cvDrop" role="button" tabindex="0" aria-label="Subir CV">
+            <div class="cv-drop-ic"><svg class="ic"><use href="#i-upload"/></svg></div>
+            <div class="cv-drop-t" id="cvDropText">Arrastrá tu CV acá</div>
+            <div class="cv-drop-s">o hacé click para elegirlo desde tu celular o compu · Máx. 10MB</div>
+            <span class="btn btn-dark btn-sm"><svg class="ic"><use href="#i-file"/></svg>Elegir archivo</span>
+            <div class="cv-formats"><span>PDF</span><span>DOCX</span><span>TXT</span></div>
+            <input type="file" id="cvFile" accept=".pdf,.doc,.docx,.txt" hidden/>
+          </div>
+          <div class="cv-progress" id="cvProgress">
+            <div class="cv-progress-top"><span id="cvProgressLabel">Analizando...</span><span id="cvProgressPct">0%</span></div>
+            <div class="cv-progress-bar"><div class="cv-progress-fill" id="cvProgressFill"></div></div>
+          </div>
+          <div id="resultsBox" class="results-box">
+            <div id="sectionScores"></div>
+            <div id="resultLists"></div>
+            <div id="resultMsg"></div>
+          </div>
+        </div>
+
+        <div class="panel" id="cvSimpleForm">
+          <div class="panel-h"><span class="num">2</span><div><h3>Tus datos</h3><p>Para poder contactarte cuando haya una búsqueda para vos.</p></div></div>
+          <div class="form-error" id="cvFormError" role="alert"></div>
+          <div class="form-grid">
+            <div class="fg"><label for="cvNombre">Nombre completo <i>*</i></label><input type="text" id="cvNombre" placeholder="Tu nombre y apellido" autocomplete="name"/></div>
+            <div class="fg"><label for="cvTel">Teléfono / WhatsApp <i>*</i></label><input type="tel" id="cvTel" placeholder="Ej: 2345 418034" autocomplete="tel"/></div>
+            <div class="fg"><label for="cvEmail">Email</label><input type="email" id="cvEmail" placeholder="tu@email.com" autocomplete="email"/></div>
+            <div class="fg"><label for="cvLoc">Localidad</label>
+              <select id="cvLoc"><option value="">Elegí...</option><option>Saladillo</option><option>Roque Pérez</option><option>25 de Mayo</option><option>Tapalqué</option><option>Otra</option></select>
+            </div>
+            <div class="fg fg-full"><label for="cvRubro">Rubro principal</label>
+              <select id="cvRubro">
+                <option value="">Elegí...</option>
+                <option>Comercio</option><option>Gastronomía</option><option>Construcción</option><option>Salud</option>
+                <option>Transporte</option><option>Remises y Transporte privado</option><option>Agro / Campo</option>
+                <option>Administración</option><option>Educación y Docencia</option><option>Clases particulares</option>
+                <option>Limpieza y servicios domésticos</option><option>Cuidado personal y doméstico</option>
+                <option>Seguridad</option><option>Industria / Frigorífico</option><option>Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="tc-box">
+            <input type="checkbox" id="cvTc"/>
+            <label for="cvTc">Acepto el <a href="#legal" data-page="legal">aviso legal</a> y autorizo el uso de mis datos para búsquedas laborales (Ley 25.326).</label>
+          </div>
+          <button class="btn btn-sun btn-lg btn-block" id="btnCvSubmit"><svg class="ic"><use href="#i-check-c"/></svg>Enviar mis datos</button>
+        </div>
+
+        <div class="success" id="cvSuccessMsg">
+          <div class="success-ic"><svg class="ic"><use href="#i-check"/></svg></div>
+          <h3>¡Recibido!</h3>
+          <p>Tu CV ya está con nuestro equipo. Te contactamos a la brevedad cuando aparezca una búsqueda para vos.</p>
+          <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+            <a href="https://wa.me/5492345418034" target="_blank" rel="noopener" class="btn btn-wa"><svg class="ic"><use href="#i-wa"/></svg>Escribir por WhatsApp</a>
+            <button class="btn btn-line" data-page="empleos">Ver empleos<svg class="ic ic-arrow"><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="aside">
+        <div class="aside-card">
+          <h4>¿Por qué dejar tu CV acá?</h4>
+          <div class="aside-list">
+            <div><svg class="ic"><use href="#i-check-c"/></svg><span>Lo lee una <b>Lic. en Relaciones del Trabajo</b>, no solo una máquina.</span></div>
+            <div><svg class="ic"><use href="#i-check-c"/></svg><span>Te tenemos en cuenta para <b>todas las búsquedas</b> de la región.</span></div>
+            <div><svg class="ic"><use href="#i-check-c"/></svg><span>Te avisamos <b>por WhatsApp</b>. Sin mails perdidos.</span></div>
+            <div><svg class="ic"><use href="#i-lock"/></svg><span>Tus datos están protegidos por la <b>Ley 25.326</b>.</span></div>
+          </div>
+        </div>
+        <div class="aside-card dark">
+          <h4>¿Querés un CV que no pase desapercibido?</h4>
+          <p>Lo reescribimos desde cero y te preparamos para la entrevista.</p>
+          <button class="btn btn-sun btn-block" data-checkout="CV Premium + Coaching|35000">CV Premium · $35.000</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ═════════════════════ EMPRESAS ═════════════════════ -->
+<div class="page" id="page-empresas">
+  <header class="phead">
+    <div class="phead-in">
+      <span class="eyebrow">Para empleadores</span>
+      <h1>Publicá tu búsqueda y <em>encontrá a tu equipo</em></h1>
+      <p>Llegá a candidatos reales de Saladillo y la región. La publicación básica es gratuita y la revisamos en pocas horas.</p>
+    </div>
+  </header>
+  <section class="section" style="padding-top:clamp(28px,4vw,48px)">
+    <div class="wrap two-col">
+      <div>
+        <div class="panel" id="empFormPanel">
+          <div class="panel-h"><span class="num">1</span><div><h3>Elegí tu plan</h3><p>Podés empezar gratis y destacar tu aviso cuando quieras.</p></div></div>
+          <div class="plan-grid" id="planGrid">
+            <button type="button" class="plan-pill selected" data-plan="basico"><div class="pp-name">Básico</div><div class="pp-price">Gratis</div><div class="pp-note">30 días</div></button>
+            <button type="button" class="plan-pill" data-plan="destacado"><div class="pp-name">Destacado</div><div class="pp-price">$8.000</div><div class="pp-note">60 días · arriba de todo</div></button>
+            <button type="button" class="plan-pill" data-plan="seleccion"><div class="pp-name">Selección</div><div class="pp-price">$60.000</div><div class="pp-note">Lo hacemos por vos</div></button>
+          </div>
+          <div class="plan-desc"><svg class="ic"><use href="#i-sparkles"/></svg><span id="planDesc">Publicación gratuita visible por 30 días. Recibís los postulantes directamente.</span></div>
+
+          <div class="panel-h" style="margin-top:.6rem"><span class="num">2</span><div><h3>Datos del puesto</h3><p>Cuanto más claro, más y mejores postulantes.</p></div></div>
+          <div class="form-error" id="empFormError" role="alert"></div>
+          <div class="form-grid">
+            <div class="fg"><label for="ePuesto">Puesto a cubrir <i>*</i></label><input type="text" id="ePuesto" placeholder="Ej: Repositor/a"/></div>
+            <div class="fg"><label for="eEmpresa">Empresa / Negocio <i>*</i></label><input type="text" id="eEmpresa" placeholder="Nombre del negocio" autocomplete="organization"/></div>
+            <div class="fg"><label for="eLocalidad">Localidad <i>*</i></label>
+              <select id="eLocalidad"><option value="">Elegí...</option><option>Saladillo</option><option>Roque Pérez</option><option>25 de Mayo</option><option>Tapalqué</option><option>Otra</option></select>
+            </div>
+            <div class="fg"><label for="eCategoria">Rubro <i>*</i></label>
+              <select id="eCategoria" class="cat-select"><option value="">Elegí...</option></select>
+            </div>
+            <div class="fg"><label for="eTipo">Tipo de contrato</label>
+              <select id="eTipo"><option value="full">Tiempo completo</option><option value="part">Medio tiempo</option><option value="temp">Temporal</option><option value="free">Freelance</option></select>
+            </div>
+            <div class="fg"><label for="eSalario">Remuneración <span style="color:var(--soft);font-weight:600">(opcional)</span></label><input type="text" id="eSalario" placeholder="Ej: $350.000"/></div>
+            <div class="fg fg-full"><label for="eContacto">Contacto para postulaciones <i>*</i></label><input type="text" id="eContacto" placeholder="WhatsApp, email o dirección"/></div>
+            <div class="fg fg-full"><label for="eDesc">Descripción del puesto <i>*</i></label><textarea id="eDesc" rows="5" placeholder="Contá las tareas, requisitos, horarios y condiciones..."></textarea></div>
+          </div>
+          <div class="tc-box">
+            <input type="checkbox" id="eTc"/>
+            <label for="eTc">Acepto el <a href="#legal" data-page="legal">aviso legal</a> y confirmo que los datos son verídicos.</label>
+          </div>
+          <button class="btn btn-sun btn-lg btn-block" id="btnEmpleo"><svg class="ic"><use href="#i-mega"/></svg>Publicar empleo</button>
+        </div>
+        <div class="success" id="empleoSuccess">
+          <div class="success-ic"><svg class="ic"><use href="#i-check"/></svg></div>
+          <h3>¡Empleo publicado!</h3>
+          <p>Lo revisamos en las próximas horas y quedará visible para los candidatos.</p>
+          <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-dark" id="btnOtroEmpleo">Publicar otro</button>
+            <button class="btn btn-line" data-page="empleos">Ver empleos</button>
+          </div>
+        </div>
+      </div>
+      <aside class="aside">
+        <div class="aside-card">
+          <h4>Por qué publicar acá</h4>
+          <div class="aside-list">
+            <div><svg class="ic"><use href="#i-pin"/></svg><span>Candidatos <b>de la zona</b>: menos rotación, más compromiso.</span></div>
+            <div><svg class="ic"><use href="#i-users"/></svg><span>Base de CVs <b>revisados por profesionales</b>.</span></div>
+            <div><svg class="ic"><use href="#i-zap"/></svg><span>Publicás en <b>2 minutos</b>, sin crear cuenta.</span></div>
+            <div><svg class="ic"><use href="#i-target"/></svg><span>Opción de <b>selección completa</b> con terna finalista.</span></div>
+          </div>
+        </div>
+        <div class="aside-card dark">
+          <h4>¿Preferís hablarlo?</h4>
+          <p>Mandanos los datos del puesto por WhatsApp y lo publicamos por vos.</p>
+          <a class="btn btn-wa btn-block" href="https://wa.me/5492345418034?text=Hola!%20Quiero%20publicar%20una%20b%C3%BAsqueda%20laboral" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>Escribir por WhatsApp</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ═════════════════════ SERVICIOS ═════════════════════ -->
+<div class="page" id="page-servicios">
+  <header class="phead">
+    <div class="phead-in">
+      <span class="eyebrow">Servicios profesionales</span>
+      <h1>Orientación laboral <em>con respaldo profesional</em></h1>
+      <p>Servicios pensados para candidatos que quieren destacar y para empresas que quieren contratar mejor.</p>
+    </div>
+  </header>
+  <section class="section" style="padding-top:clamp(40px,5vw,64px)">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Para candidatos</span><h2 class="h2">Mejorá tus chances</h2></div>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="pc-name">Análisis de CV</div>
+          <div class="pc-price">Gratis</div>
+          <div class="pc-desc">Análisis automático inmediato de tu CV con recomendaciones.</div>
+          <ul class="pc-items"><li class="pc-item">Puntaje del 1 al 100</li><li class="pc-item">Fortalezas y mejoras</li><li class="pc-item">Resultado inmediato</li></ul>
+          <button class="btn btn-line pc-btn" data-page="candidatos">Analizar ahora</button>
+        </div>
+        <div class="price-card featured">
+          <div class="pc-name">Revisión Profesional</div>
+          <div class="pc-price">$15.000<span> /único</span></div>
+          <div class="pc-desc">Nuestro equipo revisa y corrige tu CV en detalle.</div>
+          <ul class="pc-items"><li class="pc-item">Revisión completa</li><li class="pc-item">Correcciones y mejoras</li><li class="pc-item">Entrega en 48 hs</li></ul>
+          <button class="btn btn-sun pc-btn" data-checkout="Revisión Profesional de CV|15000">Contratar</button>
+        </div>
+        <div class="price-card">
+          <div class="pc-name">CV Premium</div>
+          <div class="pc-price">$35.000<span> /único</span></div>
+          <div class="pc-desc">Reescritura completa y sesión de coaching laboral.</div>
+          <ul class="pc-items"><li class="pc-item">CV reescrito desde cero</li><li class="pc-item">Sesión de coaching</li><li class="pc-item">Carta de presentación</li></ul>
+          <button class="btn btn-dark pc-btn" data-checkout="CV Premium + Coaching|35000">Contratar</button>
+        </div>
+        <div class="price-card">
+          <div class="pc-name">Colocación Laboral</div>
+          <div class="pc-price">$80.000<span> /único</span></div>
+          <div class="pc-desc">Acompañamiento activo hasta conseguir el trabajo.</div>
+          <ul class="pc-items"><li class="pc-item">Matching con empleadores</li><li class="pc-item">Preparación para entrevistas</li><li class="pc-item">Seguimiento completo</li></ul>
+          <button class="btn btn-dark pc-btn" data-checkout="Colocación Laboral Activa|80000">Contratar</button>
+        </div>
+      </div>
+
+      <div class="sec-head" style="margin-top:clamp(56px,7vw,88px)">
+        <div><span class="eyebrow">Para empresas</span><h2 class="h2">Contratá mejor, más rápido</h2></div>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="pc-name">Publicación Básica</div>
+          <div class="pc-price">Gratis</div>
+          <div class="pc-desc">Publicá tu empleo y recibí postulantes.</div>
+          <ul class="pc-items"><li class="pc-item">Visible 30 días</li><li class="pc-item">Categoría estándar</li></ul>
+          <button class="btn btn-line pc-btn" data-page="empresas">Publicar ahora</button>
+        </div>
+        <div class="price-card featured">
+          <div class="pc-name">Destacado</div>
+          <div class="pc-price">$8.000<span> /60 días</span></div>
+          <div class="pc-desc">Mayor visibilidad y más postulantes calificados.</div>
+          <ul class="pc-items"><li class="pc-item">Posición destacada</li><li class="pc-item">Visible 60 días</li><li class="pc-item">Badge especial</li></ul>
+          <button class="btn btn-sun pc-btn" data-checkout="Publicación Destacada|8000">Contratar</button>
+        </div>
+        <div class="price-card">
+          <div class="pc-name">Proceso de Selección</div>
+          <div class="pc-price">$60.000<span> /proceso</span></div>
+          <div class="pc-desc">Selección completa con entrevistas y terna finalista.</div>
+          <ul class="pc-items"><li class="pc-item">Publicación y filtrado</li><li class="pc-item">Entrevistas</li><li class="pc-item">Terna finalista</li></ul>
+          <button class="btn btn-dark pc-btn" data-checkout="Proceso de Selección Completo|60000">Contratar</button>
+        </div>
+        <div class="price-card">
+          <div class="pc-name">Asesoría RRHH</div>
+          <div class="pc-price">$45.000<span> /mes</span></div>
+          <div class="pc-desc">Consultoría de RRHH mensual para tu empresa.</div>
+          <ul class="pc-items"><li class="pc-item">Consultoría mensual</li><li class="pc-item">Descripción de puestos</li><li class="pc-item">Soporte continuo</li></ul>
+          <button class="btn btn-dark pc-btn" data-checkout="Asesoría RRHH Mensual|45000">Contratar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═════════════════════ LEGAL ═════════════════════ -->
+<div class="page" id="page-legal">
+  <header class="phead">
+    <div class="phead-in">
+      <span class="eyebrow">Información legal</span>
+      <h1>Aviso legal y <em>política de privacidad</em></h1>
+    </div>
+  </header>
+  <section class="section" style="padding-top:clamp(40px,5vw,64px)">
+    <div class="wrap">
+      <div class="panel legal-content">
+        <h3>1. Responsable del tratamiento de datos</h3>
+        <p>Trabajar en Saladillo es una plataforma de intermediación laboral administrada por Lic. Yamila E. Miranda (Lic. en Relaciones del Trabajo). Los datos personales ingresados son tratados conforme a la Ley 25.326 de Protección de Datos Personales de la República Argentina.</p>
+        <h3>2. Datos que recopilamos</h3>
+        <p>Recopilamos nombre, teléfono, email, localidad, rubro laboral y el contenido del CV cuando el candidato lo sube voluntariamente. Para empleadores: nombre de empresa, puesto y datos de contacto.</p>
+        <h3>3. Finalidad del tratamiento</h3>
+        <p>Los datos se utilizan exclusivamente para facilitar la búsqueda de empleo y la conexión entre candidatos y empleadores en Saladillo y la región. No se comparten con terceros ni se utilizan con fines comerciales ajenos a esta plataforma.</p>
+        <h3>4. Derechos del titular</h3>
+        <p>Toda persona tiene derecho a acceder, rectificar, actualizar y suprimir sus datos personales. Para ejercer estos derechos, contactar a: <a href="mailto:trabajarensaladillo@gmail.com" style="color:var(--teal-dk);font-weight:700">trabajarensaladillo@gmail.com</a></p>
+        <h3>5. Actualizaciones</h3>
+        <p>Última actualización: 2026. Trabajar en Saladillo — trabajarensaladillo.com</p>
+        <div class="legal-note"><strong>Art. 288 CCyCN:</strong> Al aceptar este aviso legal, el usuario presta su consentimiento informado para el tratamiento de sus datos personales con fines de intermediación laboral.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a class="logo" data-page="inicio" href="#inicio">
+          <span class="logo-mark" style="background:rgba(255,255,255,.06)"><svg class="ic" style="width:28px;height:26px"><use href="#i-logo"/></svg></span>
+          <span class="logo-txt">Trabajar en <b style="color:var(--teal)">Saladillo</b><small>Bolsa de empleo local</small></span>
+        </a>
+        <p>La plataforma de empleo que conecta a la gente de Saladillo y la región con oportunidades reales, cerca de casa.</p>
+        <a class="btn btn-wa btn-sm" href="https://wa.me/5492345418034?text=Hola%20Trabajar%20en%20Saladillo!" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>2345-418034</a>
+      </div>
+      <div class="f-col">
+        <h5>Candidatos</h5>
+        <a href="#empleos" data-page="empleos">Ver empleos</a>
+        <a href="#candidatos" data-page="candidatos">Subir mi CV</a>
+        <a href="#servicios" data-page="servicios">Mejorar mi CV</a>
+      </div>
+      <div class="f-col">
+        <h5>Empresas</h5>
+        <a href="#empresas" data-page="empresas">Publicar empleo</a>
+        <a href="#servicios" data-page="servicios">Planes y servicios</a>
+        <a href="#legal" data-page="legal">Aviso legal</a>
+      </div>
+      <div class="f-col">
+        <h5>Contacto</h5>
+        <a href="mailto:trabajarensaladillo@gmail.com"><svg class="ic"><use href="#i-mail"/></svg>trabajarensaladillo@gmail.com</a>
+        <a href="https://wa.me/5492345418034" target="_blank" rel="noopener"><svg class="ic"><use href="#i-phone"/></svg>WhatsApp 2345-418034</a>
+        <a href="#inicio" data-page="inicio"><svg class="ic"><use href="#i-pin"/></svg>Saladillo, Buenos Aires</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span id="year">2026</span> Trabajar en Saladillo · Lic. Yamila E. Miranda y equipo · Relaciones del Trabajo</span>
+      <a href="https://trabajarensaladillo.com/admin/" target="_blank" rel="noopener">Panel de administración</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING -->
+<a class="wa-float" href="https://wa.me/5492345418034?text=Hola%20Trabajar%20en%20Saladillo!" target="_blank" rel="noopener" aria-label="Escribirnos por WhatsApp"><svg class="ic"><use href="#i-wa"/></svg></a>
+<div class="mbar">
+  <button class="btn btn-line" data-page="empleos"><svg class="ic"><use href="#i-search"/></svg>Empleos</button>
+  <button class="btn btn-sun" data-page="candidatos"><svg class="ic"><use href="#i-upload"/></svg>Subir CV</button>
+  <a class="mbar-wa" href="https://wa.me/5492345418034?text=Hola%20Trabajar%20en%20Saladillo!" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="ic"><use href="#i-wa"/></svg></a>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-bg" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="ckService">
+  <div class="modal">
+    <button class="modal-close" data-close="checkoutModal" aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button>
+    <div id="checkoutBody">
+      <div class="checkout-service" id="ckService"></div>
+      <div class="checkout-price" id="ckPrice"></div>
+      <div class="form-error" id="ckFormError" role="alert"></div>
+      <div class="form-grid">
+        <div class="fg"><label for="ckNombre">Tu nombre <i>*</i></label><input type="text" id="ckNombre" placeholder="Nombre y apellido" autocomplete="name"/></div>
+        <div class="fg"><label for="ckTel">Teléfono / WhatsApp <i>*</i></label><input type="tel" id="ckTel" placeholder="2345 418034" autocomplete="tel"/></div>
+        <div class="fg fg-full"><label for="ckEmail">Email <span style="color:var(--soft);font-weight:600">(opcional)</span></label><input type="email" id="ckEmail" placeholder="tu@email.com" autocomplete="email"/></div>
+      </div>
+      <div class="transfer-info">
+        <div class="ti-ic"><svg class="ic"><use href="#i-bank"/></svg></div>
+        <div><div class="ti-title">Pagás por transferencia</div><div class="ti-alias">Alias: yamiranda</div><div class="ti-sub">Transferí y confirmá por WhatsApp. Coordinamos el servicio.</div></div>
+      </div>
+      <div class="tc-box">
+        <input type="checkbox" id="ckTc"/>
+        <label for="ckTc">Acepto el <a href="#legal" data-page="legal">aviso legal</a>.</label>
+      </div>
+      <button class="btn btn-sun btn-lg btn-block" id="btnPagar"><svg class="ic"><use href="#i-check-c"/></svg>Confirmar solicitud</button>
+      <div class="pay-secure"><svg class="ic"><use href="#i-lock"/></svg>Solo transferencia bancaria · Alias: yamiranda</div>
+    </div>
+    <div class="pay-success" id="paySuccess">
+      <div class="success-ic"><svg class="ic"><use href="#i-check"/></svg></div>
+      <h3>¡Solicitud registrada!</h3>
+      <p>Realizá la transferencia al alias <strong>yamiranda</strong>. En menos de 24 hs nos ponemos en contacto para coordinar el servicio.</p>
+      <a href="https://wa.me/5492345418034?text=Hola%2C%20realic%C3%A9%20la%20transferencia%20por%20el%20servicio" target="_blank" rel="noopener" class="btn btn-wa btn-block"><svg class="ic"><use href="#i-wa"/></svg>Confirmar por WhatsApp</a>
+      <button class="btn btn-line btn-block" data-close="checkoutModal">Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- JOB MODAL -->
+<div class="modal-bg" id="jobModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" data-close="jobModal" aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button>
+    <div id="jobModalBody"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// ── CONSTANTS ──────────────────────────────────────────────────────────
+const API = 'https://trabajarensaladillo.com/api.php';
+const SITE = 'https://trabajarensaladillo.com/';
+const WA  = 'https://wa.me/5492345418034';
+const PAGES = ['inicio','empleos','candidatos','empresas','servicios','legal'];
+
+// Rubros: clave → [nombre, icono, fondo, color]
+const CATS = {
+  comercio:    ['Comercio','bag','#D5F3EC','#0B6B5B'],
+  gastronomia: ['Gastronomía','utensils','#FFEBD6','#B45309'],
+  construccion:['Construcción','hardhat','#E6ECF2','#334155'],
+  salud:       ['Salud','health','#FDE4E4','#B91C1C'],
+  transporte:  ['Transporte','truck','#EDE7FE','#6D28D9'],
+  remises:     ['Remises y Transporte privado','car','#DDE8FF','#1D4ED8'],
+  agro:        ['Agro / Campo','wheat','#E3F5D8','#3F6212'],
+  admin:       ['Administración','clip','#EEF0F2','#374151'],
+  educacion:   ['Educación y Docencia','grad','#DDE8FF','#1D4ED8'],
+  clases:      ['Clases particulares','pencil','#FFF4D6','#92400E'],
+  limpieza:    ['Limpieza y servicios domésticos','sparkles','#D5F3EC','#0B6B5B'],
+  cuidado:     ['Cuidado personal y doméstico','heart','#FDE7EF','#BE185D'],
+  seguridad:   ['Seguridad','shield','#E6ECF2','#1E3A5F'],
+  industria:   ['Industria / Frigorífico','factory','#EEF0F2','#374151'],
+  otros:       ['Otros','brief','#F1EDE5','#5A6A67'],
+};
+const TIPO_LABEL = {full:'Tiempo completo',part:'Medio tiempo',temp:'Temporal',free:'Freelance'};
+const HERO_CAPTIONS = ['📍 Estación Saladillo','📍 Plaza central de Saladillo','📍 Otoño en Saladillo'];
+
+const $ = id => document.getElementById(id);
+const icon = (name, cls) => `<svg class="ic${cls ? ' ' + cls : ''}"><use href="#i-${name}"/></svg>`;
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function catInfo(k){ return CATS[k] || CATS.otros; }
+function catLabel(k){ return CATS[k] ? CATS[k][0] : 'Empleo'; }
+function fmtSalario(s){
+  if (!s || s === 'A convenir') return 'A convenir';
+  s = String(s).trim();
+  if (/^\d{4,}$/.test(s)) return '$' + Number(s).toLocaleString('es-AR');
+  return /^\$/.test(s) || !/^\d/.test(s) ? s : '$' + s;
+}
+function timeAgo(d){
+  if (!d) return '';
+  const t = new Date(String(d).replace(' ', 'T'));
+  if (isNaN(t)) return '';
+  const days = Math.floor((Date.now() - t.getTime()) / 864e5);
+  if (days <= 0) return 'Hoy';
+  if (days === 1) return 'Ayer';
+  if (days < 30) return 'Hace ' + days + ' días';
+  const m = Math.floor(days / 30);
+  return 'Hace ' + m + (m === 1 ? ' mes' : ' meses');
+}
+function isNew(d){
+  if (!d) return false;
+  const t = new Date(String(d).replace(' ', 'T'));
+  return !isNaN(t) && (Date.now() - t.getTime()) < 3 * 864e5;
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────
+let currentPage = null;
+function showPage(id, opts){
+  opts = opts || {};
+  if (PAGES.indexOf(id) === -1) id = 'inicio';
+  const same = id === currentPage;
+  PAGES.forEach(p => { const el = $('page-' + p); if (el) el.classList.toggle('active', p === id); });
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-page') === id));
+  if (!same || opts.scroll) window.scrollTo({top: 0, behavior: same ? 'smooth' : 'auto'});
+  if (!opts.keepHash) history.replaceState(null, '', '#' + id);
+  currentPage = id;
+  closeMobileMenu();
+  requestAnimationFrame(initReveal);
+}
+
+function closeMobileMenu(){
+  $('mobileNav').classList.remove('open');
+  $('navHamburger').setAttribute('aria-expanded','false');
+}
+function initMobileMenu(){
+  $('navHamburger').addEventListener('click', () => {
+    const open = $('mobileNav').classList.toggle('open');
+    $('navHamburger').setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+
+// Un solo listener para toda la navegación (funciona con elementos creados después).
+document.addEventListener('click', function(e){
+  const closeEl = e.target.closest('[data-close]');
+  if (closeEl){ e.preventDefault(); closeModal(closeEl.getAttribute('data-close')); return; }
+  const navEl = e.target.closest('[data-page]');
+  if (navEl){ e.preventDefault(); if (navEl.closest('.modal-bg')) closeModal(navEl.closest('.modal-bg').id); showPage(navEl.getAttribute('data-page')); return; }
+  const ckEl = e.target.closest('[data-checkout]');
+  if (ckEl){
+    e.preventDefault();
+    const [servicio, precio] = ckEl.getAttribute('data-checkout').split('|');
+    openCheckout(servicio, parseInt(precio, 10) || 0);
+    return;
+  }
+  const catEl = e.target.closest('[data-cat]');
+  if (catEl){
+    e.preventDefault();
+    const cat = catEl.getAttribute('data-cat') || '';
+    const onJobs = currentPage === 'empleos';
+    $('searchCat').value = (onJobs && $('searchCat').value === cat && cat) ? '' : cat;
+    if (!onJobs){ $('searchQ').value = ''; $('searchLoc').value = ''; showPage('empleos'); }
+    filterJobs();
+    return;
+  }
+  const jobEl = e.target.closest('[data-job-id]');
+  if (jobEl){ e.preventDefault(); openJob(jobById(jobEl.getAttribute('data-job-id'))); return; }
+  if (e.target.classList.contains('modal-bg')) closeModal(e.target.id);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ closeModal('jobModal'); closeModal('checkoutModal'); closeMobileMenu(); }
+});
+
+// ── JOBS (siempre desde el backend real: lo que ves acá es lo que se
+//    administra en trabajarensaladillo.com/admin/, nada se inventa acá) ──
+let allJobs = [];
+let jobsLoadFailed = false;
+let pendingJobId = null;
+
+function jobById(id){ return allJobs.find(j => String(j.id) === String(id)); }
+
+async function loadJobs(){
+  try{
+    const r = await fetch(API + '?endpoint=empleos', {signal: AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined});
+    const data = r.ok ? await r.json() : [];
+    allJobs = Array.isArray(data) ? data : [];
+    jobsLoadFailed = false;
+  }catch(e){
+    allJobs = [];
+    jobsLoadFailed = true;
+  }
+  renderJobs(allJobs.slice(0, 6), 'homeJobsGrid', true);
+  filterJobs();
+  renderHeroLive();
+  renderCatChips();
+  $('statJobs').setAttribute('data-count', allJobs.length);
+  $('sbJobs').setAttribute('data-count', allJobs.length);
+  initCounters();
+  if (pendingJobId){ const j = jobById(pendingJobId); pendingJobId = null; if (j) openJob(j); }
+}
+
+function currentFiltered(){
+  const q = ($('searchQ').value || '').toLowerCase().trim();
+  const cat = $('searchCat').value || '';
+  const loc = $('searchLoc').value || '';
+  return allJobs.filter(j => {
+    const hay = ((j.titulo||'') + ' ' + (j.empresa||'') + ' ' + (j.descripcion||'')).toLowerCase();
+    return (!q || hay.includes(q)) && (!cat || j.categoria === cat) && (!loc || j.localidad === loc);
+  });
+}
+
+function filterJobs(){
+  const list = currentFiltered();
+  renderJobs(list, 'jobsGrid');
+  const filtered = $('searchQ').value || $('searchCat').value || $('searchLoc').value;
+  $('clearFilters').style.display = filtered ? 'inline-flex' : 'none';
+  $('jobsCount').innerHTML = jobsLoadFailed ? '' :
+    `<b>${list.length}</b> ${list.length === 1 ? 'empleo encontrado' : 'empleos encontrados'}${filtered ? '' : ' en la región'}`;
+  document.querySelectorAll('#jobChips .chip').forEach(c => c.classList.toggle('active', (c.getAttribute('data-cat')||'') === $('searchCat').value));
+}
+
+function jobCard(j){
+  const [, ic, bg, fg] = catInfo(j.categoria);
+  const dest = Number(j.destacado) ? true : false;
+  const ago = timeAgo(j.created_at);
+  return `<article class="job-card${dest ? ' dest' : ''}" data-job-id="${escapeHtml(j.id)}" tabindex="0" role="button" aria-label="${escapeHtml(j.titulo||'Empleo')}">
+    <div class="jc-top">
+      <div class="jc-logo" style="background:${bg};color:${fg}">${icon(ic)}</div>
+      <div style="min-width:0">
+        <div class="jc-title">${escapeHtml(j.titulo||'')}</div>
+        <div class="jc-company">${escapeHtml(j.empresa||'')}${j.localidad ? ' · ' + icon('pin') + escapeHtml(j.localidad) : ''}</div>
+      </div>
+    </div>
+    <div class="jc-tags">
+      ${dest ? `<span class="tag dest">${icon('star')}Destacado</span>` : ''}
+      ${j.status === 'urgente' ? '<span class="tag urg">Urgente</span>' : ''}
+      ${isNew(j.created_at) ? '<span class="tag new">Nuevo</span>' : ''}
+      <span class="tag">${escapeHtml(TIPO_LABEL[j.tipo] || 'Empleo')}</span>
+      <span class="tag">${escapeHtml(catLabel(j.categoria))}</span>
+    </div>
+    <div class="jc-bottom">
+      <div class="jc-salary"><small>${ago ? escapeHtml(ago) : 'Remuneración'}</small>${escapeHtml(fmtSalario(j.salario))}</div>
+      <span class="jc-go">${icon('arrow-ur')}</span>
+    </div>
+  </article>`;
+}
+
+function renderJobs(jobs, containerId, isHome){
+  const el = $(containerId);
+  if (!el) return;
+  if (!jobs.length){
+    let ic, h, p;
+    if (jobsLoadFailed){
+      ic = 'wifi'; h = 'No pudimos cargar los empleos';
+      p = `Probá recargar la página, o escribinos por <a href="${WA}" target="_blank" rel="noopener">WhatsApp</a>.`;
+    } else if (isHome){
+      ic = 'mega'; h = 'Todavía no hay búsquedas publicadas';
+      p = '¿Tenés un puesto para cubrir? <a href="#empresas" data-page="empresas">Publicalo gratis →</a>';
+    } else {
+      ic = 'search'; h = 'No hay empleos con esos filtros';
+      p = 'Probá con otro rubro o localidad, o <a href="#candidatos" data-page="candidatos">dejanos tu CV</a> y te avisamos.';
+    }
+    el.innerHTML = `<div class="jobs-empty"><div class="jobs-empty-ic">${icon(ic)}</div><h4>${h}</h4><p>${p}</p></div>`;
+    return;
+  }
+  el.innerHTML = jobs.map(jobCard).join('');
+}
+
+function renderHeroLive(){
+  const el = $('heroLive');
+  if (!allJobs.length){
+    el.innerHTML = `<div class="live-empty">${jobsLoadFailed ? 'No pudimos cargar las búsquedas ahora.' : 'Sé el primero en publicar una búsqueda.'}</div>
+      <button class="btn btn-dark btn-sm btn-block" data-page="${jobsLoadFailed ? 'empleos' : 'empresas'}" style="margin-top:.5rem">${jobsLoadFailed ? 'Reintentar' : 'Publicar empleo gratis'}</button>`;
+    return;
+  }
+  el.innerHTML = allJobs.slice(0, 3).map(j => {
+    const [, ic, bg, fg] = catInfo(j.categoria);
+    return `<button class="live-item" data-job-id="${escapeHtml(j.id)}">
+      <span class="live-ic" style="background:${bg};color:${fg}">${icon(ic)}</span>
+      <span style="min-width:0"><b>${escapeHtml(j.titulo||'')}</b><span>${escapeHtml(j.empresa||'')}${j.localidad ? ' · ' + escapeHtml(j.localidad) : ''}</span></span>
+    </button>`;
+  }).join('');
+}
+
+function countByCat(){
+  const c = {};
+  allJobs.forEach(j => { const k = CATS[j.categoria] ? j.categoria : 'otros'; c[k] = (c[k]||0) + 1; });
+  return c;
+}
+function renderCatChips(){
+  const counts = countByCat();
+  const chip = (k) => {
+    const [name, ic, bg, fg] = CATS[k];
+    const n = counts[k] || 0;
+    return `<button class="chip" data-cat="${k}"><span class="chip-ic" style="background:${bg};color:${fg}">${icon(ic)}</span>${name}${n ? `<span class="n">${n}</span>` : ''}</button>`;
+  };
+  // Primero los rubros con más empleos.
+  const keys = Object.keys(CATS).sort((a,b) => (counts[b]||0) - (counts[a]||0));
+  $('rubroChips').innerHTML = keys.map(chip).join('');
+  $('jobChips').innerHTML = `<button class="chip" data-cat=""><span class="chip-ic" style="background:var(--ink);color:#fff">${icon('brief')}</span>Todos${allJobs.length ? `<span class="n">${allJobs.length}</span>` : ''}</button>` +
+    keys.filter(k => counts[k]).map(chip).join('');
+  document.querySelectorAll('[data-cat-count]').forEach(el => {
+    const k = el.getAttribute('data-cat-count'); const n = counts[k] || 0;
+    el.textContent = catLabel(k).split(' ')[0] + (n ? ` · ${n} ${n === 1 ? 'empleo' : 'empleos'}` : '');
+  });
+  filterJobs();
+}
+
+function fillCatSelects(){
+  const opts = Object.keys(CATS).map(k => `<option value="${k}">${CATS[k][0]}</option>`).join('');
+  document.querySelectorAll('.cat-select').forEach(s => s.insertAdjacentHTML('beforeend', opts));
+}
+
+function openJob(j){
+  if (!j) return;
+  const [, ic, bg, fg] = catInfo(j.categoria);
+  const url = SITE + '#empleo-' + encodeURIComponent(j.id);
+  const shareTxt = `Mirá este empleo en Trabajar en Saladillo: ${j.titulo} — ${j.empresa} (${j.localidad}) ${url}`;
+  $('jobModalBody').innerHTML = `
+    <div class="jm-head">
+      <div class="jc-logo" style="background:${bg};color:${fg}">${icon(ic)}</div>
+      <div><div class="jm-cat">${escapeHtml(catLabel(j.categoria))}</div><div class="jm-title">${escapeHtml(j.titulo||'')}</div><div class="jm-company">${escapeHtml(j.empresa||'')}</div></div>
+    </div>
+    <div class="jm-details">
+      ${j.localidad ? `<span class="tag">${icon('pin')}${escapeHtml(j.localidad)}</span>` : ''}
+      ${j.tipo ? `<span class="tag">${icon('clock')}${escapeHtml(TIPO_LABEL[j.tipo]||'')}</span>` : ''}
+      <span class="tag">${icon('wallet')}${escapeHtml(fmtSalario(j.salario))}</span>
+      ${timeAgo(j.created_at) ? `<span class="tag new">Publicado: ${escapeHtml(timeAgo(j.created_at).toLowerCase())}</span>` : ''}
+    </div>
+    <div class="jm-desc">${escapeHtml(j.descripcion||'Sin descripción.').replace(/\n/g,'<br/>')}</div>
+    ${j.contacto ? `<div class="jm-contact">${icon('phone')}<span>Contacto: <strong>${escapeHtml(j.contacto)}</strong></span></div>` : ''}
+    <div class="jm-actions">
+      <a href="${WA}?text=${encodeURIComponent('¡Hola! Vi el empleo de ' + (j.titulo||'') + ' en Trabajar en Saladillo y me interesa postularme.')}" target="_blank" rel="noopener" class="btn btn-wa btn-lg">${icon('wa')}Postularme por WhatsApp</a>
+      <button class="btn btn-line btn-lg" id="jmShare">${icon('share')}Compartir</button>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);text-align:center;margin-top:1rem">¿Todavía no dejaste tu CV? <a href="#candidatos" data-page="candidatos" style="color:var(--teal-dk);font-weight:700">Subilo gratis</a></p>`;
+  $('jmShare').addEventListener('click', async () => {
+    if (navigator.share){ try{ await navigator.share({title: j.titulo, text: shareTxt, url}); }catch(e){} }
+    else window.open('https://wa.me/?text=' + encodeURIComponent(shareTxt), '_blank', 'noopener');
+  });
+  history.replaceState(null, '', '#empleo-' + encodeURIComponent(j.id));
+  openModal('jobModal');
+}
+
+// ── MODALES ──────────────────────────────────────────────────────────────
+let lastFocus = null;
+function openModal(id){
+  lastFocus = document.activeElement;
+  $(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const f = $(id).querySelector('.modal-close'); if (f) f.focus(); }, 50);
+}
+function closeModal(id){
+  const m = $(id);
+  if (!m || !m.classList.contains('open')) return;
+  m.classList.remove('open');
+  document.body.style.overflow = '';
+  if (id === 'jobModal' && /^#empleo-/.test(location.hash)) history.replaceState(null, '', '#' + (currentPage || 'empleos'));
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function closeJobModal(){ closeModal('jobModal'); }
+function closeCheckout(){ closeModal('checkoutModal'); }
+
+// ── CV UPLOAD & ANÁLISIS LOCAL ─────────────────────────────────────────
+let cvFile = null, cvText = '', cvAnalisis = null;
+
+function initCvDrop(){
+  const drop = $('cvDrop'), input = $('cvFile');
+  drop.addEventListener('click', () => input.click());
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); input.click(); } });
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); handleFile(e.dataTransfer.files[0]); });
+  input.addEventListener('change', () => handleFile(input.files[0]));
+}
+
+async function extraerTextoPDF(file){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let texto = '';
+  const maxPaginas = Math.min(pdf.numPages, 12);
+  for (let i = 1; i <= maxPaginas; i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    texto += content.items.map(it => it.str).join(' ') + '\n';
+  }
+  return texto;
+}
+async function extraerTextoDocx(file){
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  return result.value || '';
+}
+
+function handleFile(file){
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024){
+    $('cvDropText').textContent = 'El archivo supera los 10MB';
+    return;
+  }
+  cvFile = file; cvText = ''; cvAnalisis = null;
+  $('cvDropText').textContent = file.name;
+  $('cvDrop').classList.add('has');
+  $('cvProgress').style.display = 'block';
+  $('resultsBox').style.display = 'none';
+  let pct = 0;
+  const fill = $('cvProgressFill'), label = $('cvProgressLabel'), pctEl = $('cvProgressPct');
+  label.textContent = 'Leyendo archivo...';
+  const interval = setInterval(() => {
+    pct = Math.min(pct + Math.random() * 15, 85);
+    fill.style.width = pct + '%';
+    pctEl.textContent = Math.round(pct) + '%';
+  }, 200);
+  const finish = (text, motivoFallo) => {
+    clearInterval(interval);
+    fill.style.width = '100%'; pctEl.textContent = '100%';
+    label.textContent = 'Analizando tu CV...';
+    setTimeout(() => {
+      try{
+        const textoLimpio = (text || '').replace(/\s+/g, ' ').trim();
+        if (!motivoFallo && textoLimpio.length < 40) motivoFallo = 'texto_insuficiente';
+        if (motivoFallo){ showResultsNoLegible(motivoFallo); }
+        else { cvText = textoLimpio; cvAnalisis = analizarCVLocal(textoLimpio); showResults(cvAnalisis); }
+      }
+      catch(err){ showResultsNoLegible('error_lectura'); }
+      label.textContent = 'Análisis listo';
+      setTimeout(() => $('resultsBox').scrollIntoView({behavior:'smooth', block:'start'}), 150);
+    }, 450);
+  };
+
+  const nombre = (file.name || '').toLowerCase();
+  (async () => {
+    try{
+      if (file.type === 'text/plain' || nombre.endsWith('.txt')){
+        finish(await file.text());
+      } else if (nombre.endsWith('.pdf') || file.type === 'application/pdf'){
+        if (typeof pdfjsLib === 'undefined'){ finish('', 'error_lectura'); return; }
+        const textoPdf = await extraerTextoPDF(file);
+        if (textoPdf.replace(/\s+/g, ' ').trim().length < 40){ finish('', 'pdf_sin_texto'); }
+        else { finish(textoPdf); }
+      } else if (nombre.endsWith('.docx')){
+        if (typeof mammoth === 'undefined'){ finish('', 'error_lectura'); return; }
+        finish(await extraerTextoDocx(file));
+      } else if (nombre.endsWith('.doc')){
+        // El formato .doc antiguo (binario) no se puede leer de forma confiable en el navegador.
+        finish('', 'doc_antiguo');
+      } else {
+        finish('', 'formato_no_soportado');
+      }
+    } catch(err){
+      finish('', 'error_lectura');
+    }
+  })();
+}
+
+function analizarCVLocal(texto){
+  const words = texto.split(/\s+/).filter(Boolean).length;
+  const tiene = {
+    contacto:    /(@|tel[eé]|cel|whatsapp|linkedin|dni|email|correo|\d{7,})/i.test(texto),
+    perfil:      /(perfil|objetivo|sobre m[ií]|acerca|resumen|presentaci[oó]n)/i.test(texto),
+    experiencia: /(experiencia|trabaj[eéa]|empleo|cargo|puesto|empresa|[12][09]\d{2}|desde|hasta)/i.test(texto),
+    educacion:   /(educaci[oó]n|estudio|egres|titulo|t[ií]tulo|universidad|secundari|primari|terciario|licencia)/i.test(texto),
+    habilidades: /(habilidad|aptitud|competencia|idioma|ingl[eé]s|computaci[oó]n|office|excel|manejo|carnet|herramienta)/i.test(texto),
+    logros:      /(logro|logr[eé]|alcanz|m[eé]ta|mejor|increment|reduci|implement)/i.test(texto),
+  };
+  let scoreContacto = 30;
+  if (/[\w.-]+@[\w.-]+\.\w{2,}/.test(texto)) scoreContacto += 25;
+  if (/\d{7,}/.test(texto)) scoreContacto += 25;
+  if (/(linkedin|whatsapp)/i.test(texto)) scoreContacto += 20;
+  scoreContacto = Math.min(scoreContacto, 100);
+
+  let scorePerfil = tiene.perfil ? 60 : 15;
+  if (tiene.perfil && words > 200) scorePerfil += 20;
+  if (/(busco|pretendo|objetivo|me especializo)/i.test(texto)) scorePerfil += 20;
+  scorePerfil = Math.min(scorePerfil, 100);
+
+  let scoreExp = tiene.experiencia ? 50 : 10;
+  const anios = (texto.match(/(19|20)\d{2}/g) || []).length;
+  scoreExp += Math.min(anios * 8, 30);
+  if (/(responsabilidad|tarea|funci[oó]n)/i.test(texto)) scoreExp += 20;
+  scoreExp = Math.min(scoreExp, 100);
+
+  let scoreEdu = tiene.educacion ? 55 : 15;
+  if (/(universitari|licenciad|ingenier|contador|m[eé]dic)/i.test(texto)) scoreEdu += 30;
+  else if (/(t[eé]cnico|terciario)/i.test(texto)) scoreEdu += 20;
+  else if (/(secundari|bachiller)/i.test(texto)) scoreEdu += 10;
+  scoreEdu = Math.min(scoreEdu, 100);
+
+  let scoreHab = tiene.habilidades ? 50 : 20;
+  const habCount = (texto.match(/(excel|word|office|ingl[eé]s|portugu[eé]s|conducci[oó]n|carnet|photoshop|python|redes|administraci[oó]n)/gi) || []).length;
+  scoreHab += Math.min(habCount * 10, 40);
+  scoreHab = Math.min(scoreHab, 100);
+
+  let scorePresent = 30;
+  if (words > 150) scorePresent += 20;
+  if (words > 300) scorePresent += 20;
+  if (words > 500) scorePresent += 10;
+  scorePresent += Object.values(tiene).filter(Boolean).length * 5;
+  scorePresent = Math.min(scorePresent, 100);
+
+  const scores = [scoreContacto, scorePerfil, scoreExp, scoreEdu, scoreHab, scorePresent];
+  const pesos  = [0.20, 0.15, 0.30, 0.15, 0.10, 0.10];
+  const scoreGeneral = Math.round(scores.reduce((acc, s, i) => acc + s * pesos[i], 0));
+
+  let nivel, mensaje, cta;
+  if (scoreGeneral >= 78){ nivel='excelente'; mensaje='Tu CV está muy bien estructurado. Con algunos ajustes finales podés destacar aún más ante los empleadores.'; cta='Revisión básica'; }
+  else if (scoreGeneral >= 58){ nivel='bueno'; mensaje='Tu CV tiene una buena base pero hay secciones que pueden mejorarse para aumentar tus chances de ser llamado/a.'; cta='CV Premium'; }
+  else if (scoreGeneral >= 38){ nivel='necesita_mejora'; mensaje='Tu CV necesita trabajo en varias áreas clave. Una revisión profesional puede marcar la diferencia.'; cta='CV Premium'; }
+  else { nivel='reescritura_total'; mensaje='Tu CV necesita una reestructuración completa. Nuestro equipo de profesionales puede ayudarte a armarlo desde cero.'; cta='Colocación laboral'; }
+
+  const fortalezas = [], mejoras = [];
+  if (scoreContacto >= 70) fortalezas.push('Datos de contacto completos y accesibles'); else mejoras.push('Completar datos de contacto (email, teléfono)');
+  if (scorePerfil >= 60) fortalezas.push('Tiene perfil o resumen profesional claro'); else mejoras.push('Agregar un perfil profesional o resumen inicial');
+  if (scoreExp >= 70) fortalezas.push('Experiencia laboral bien documentada'); else if (!tiene.experiencia) mejoras.push('Incluir experiencia laboral o voluntariados'); else mejoras.push('Detallar mejor las tareas y logros en cada empleo');
+  if (scoreEdu >= 70) fortalezas.push('Formación académica claramente indicada'); else mejoras.push('Completar datos de educación con fechas e institución');
+  if (scoreHab >= 60) fortalezas.push('Habilidades y competencias mencionadas'); else mejoras.push('Agregar habilidades técnicas e idiomas');
+  if (tiene.logros) fortalezas.push('Menciona logros concretos y resultados'); else mejoras.push('Incorporar logros medibles (números, porcentajes)');
+  if (words < 150) mejoras.push('El CV es muy corto, desarrollar más cada sección');
+  else if (words > 600) mejoras.push('Resumir el contenido, idealmente 1 página');
+
+  return {
+    score_general: scoreGeneral, nivel,
+    secciones: [
+      {nombre:'Datos de contacto', score:scoreContacto},
+      {nombre:'Perfil / objetivo', score:scorePerfil},
+      {nombre:'Experiencia laboral', score:scoreExp},
+      {nombre:'Educación', score:scoreEdu},
+      {nombre:'Habilidades', score:scoreHab},
+      {nombre:'Presentación general', score:scorePresent},
+    ],
+    fortalezas: fortalezas.slice(0,3), mejoras: mejoras.slice(0,3), mensaje, cta,
+  };
+}
+
+const NIVELES = {
+  excelente:        {label:'Excelente',        color:'#0E9580', bg:'#D5F3EC', titulo:'¡Muy buen CV!'},
+  bueno:            {label:'Bueno',            color:'#0F5A50', bg:'#E3F1EE', titulo:'Buena base, con margen para crecer'},
+  necesita_mejora:  {label:'Necesita mejoras', color:'#C07F00', bg:'#FFF4D6', titulo:'Hay varias cosas para mejorar'},
+  reescritura_total:{label:'Reescribir',       color:'#C62828', bg:'#FDECEC', titulo:'Conviene armarlo de nuevo'},
+};
+
+function showResults(r){
+  $('resultsBox').style.display = 'block';
+  const pct = r.score_general || 0;
+  const c = 2 * Math.PI * 50;
+  const n = NIVELES[r.nivel] || NIVELES.bueno;
+  $('sectionScores').innerHTML = `
+    <div class="res-head">
+      <div class="score-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="score-ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="score-ring-fill" id="ringFill" cx="60" cy="60" r="50" style="stroke:${n.color};stroke-dasharray:${c};stroke-dashoffset:${c}"/>
+        </svg>
+        <div class="score-center"><div class="score-num" style="color:${n.color}">${pct}</div><div class="score-label">de 100</div></div>
+      </div>
+      <div><span class="res-lvl" style="background:${n.bg};color:${n.color}">${n.label}</span><div class="res-title">${n.titulo}</div></div>
+    </div>
+    <div class="sections-grid">
+      ${(r.secciones||[]).map(s => `<div class="sec-item"><div class="sec-item-name">${s.nombre}<span>${s.score}</span></div><div class="sec-bar"><div class="sec-bar-fill" style="width:0" data-w="${s.score}"></div></div></div>`).join('')}
+    </div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const ring = $('ringFill'); if (ring) ring.style.strokeDashoffset = c - (pct/100) * c;
+    document.querySelectorAll('.sec-bar-fill[data-w]').forEach(b => b.style.width = b.getAttribute('data-w') + '%');
+  }));
+  $('resultLists').innerHTML = `
+    <div class="results-lists">
+      <div class="rl"><div class="rl-title">Fortalezas</div>${(r.fortalezas||[]).map(f => `<div class="rl-item">${f}</div>`).join('') || '<div class="rl-item bad">Todavía no detectamos fortalezas claras</div>'}</div>
+      <div class="rl"><div class="rl-title">Para mejorar</div>${(r.mejoras||[]).map(m => `<div class="rl-item bad">${m}</div>`).join('') || '<div class="rl-item">¡Nada importante!</div>'}</div>
+    </div>`;
+  const ctaPrice = {'CV Premium':35000,'Colocación laboral':80000,'Revisión básica':15000}[r.cta] || 15000;
+  $('resultMsg').innerHTML = `
+    <div class="result-msg">${r.mensaje||''} <b>Completá tus datos abajo</b> para que tu CV quede en nuestra base.</div>
+    ${r.cta && r.cta !== 'Revisión básica' ? `<button class="btn btn-sun btn-lg result-cta" data-checkout="${r.cta}|${ctaPrice}">Mejorar mi CV con profesionales${icon('arrow','ic-arrow')}</button>` : ''}`;
+}
+
+// Cuando no se pudo extraer texto real del archivo (PDF escaneado como imagen,
+// .doc antiguo, archivo dañado, formato no soportado): mostramos esto en vez de
+// inventar un puntaje sobre contenido que nunca leímos.
+function showResultsNoLegible(motivo){
+  $('resultsBox').style.display = 'block';
+  const textos = {
+    doc_antiguo: {ic:'file', titulo:'No pudimos leer este formato', detalle:'Los archivos .doc antiguos no se pueden analizar automáticamente. Convertí tu CV a PDF o Word (.docx) y volvé a subirlo. Igual podés enviarnos tus datos: el archivo nos llega.'},
+    pdf_sin_texto: {ic:'file', titulo:'Tu PDF parece una imagen escaneada', detalle:'No encontramos texto seleccionable (pasa con CVs escaneados o sacados con foto). Igual podés enviarlo: una persona de nuestro equipo lo va a leer.'},
+    formato_no_soportado: {ic:'alert', titulo:'Formato no compatible', detalle:'Aceptamos PDF, Word (.docx) y texto plano (.txt). Guardá tu CV en alguno de esos formatos y volvé a intentar.'},
+    texto_insuficiente: {ic:'alert', titulo:'El archivo tiene muy poco contenido', detalle:'No encontramos suficiente texto para hacer un análisis serio. Revisá que el archivo no esté vacío o dañado.'},
+    error_lectura: {ic:'alert', titulo:'Hubo un problema al leer el archivo', detalle:'Puede estar dañado o protegido. Probá exportarlo de nuevo y subilo otra vez.'},
+  };
+  const info = textos[motivo] || textos.error_lectura;
+  $('sectionScores').innerHTML = `<div class="nl"><div class="nl-ic">${icon(info.ic)}</div><h4>${info.titulo}</h4><p>${info.detalle}</p></div>`;
+  $('resultLists').innerHTML = '';
+  $('resultMsg').innerHTML = `
+    <div class="result-msg">¿Preferís que lo revise directamente una persona? Nuestras licenciadas en Relaciones del Trabajo pueden leer y mejorar tu CV.</div>
+    <button class="btn btn-sun btn-lg result-cta" data-checkout="CV Premium|35000">Pedir revisión profesional${icon('arrow','ic-arrow')}</button>`;
+}
+
+function showErr(el, html){ el.style.display = 'block'; el.innerHTML = html; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+function setBtn(btn, loading, html){ btn.disabled = loading; if (html) btn.innerHTML = html; }
+
+async function submitCvSimple(){
+  const nombre = $('cvNombre').value.trim();
+  const tel = $('cvTel').value.trim();
+  const err = $('cvFormError');
+  if (!nombre || !tel){ showErr(err, 'Completá nombre y teléfono para continuar.'); return; }
+  if (!$('cvTc').checked){ showErr(err, 'Aceptá el aviso legal para continuar.'); return; }
+  err.style.display = 'none';
+  const btn = $('btnCvSubmit'), orig = btn.innerHTML;
+  setBtn(btn, true, 'Enviando…');
+  let base64 = null, fileName = null;
+  if (cvFile){
+    try{
+      base64 = await new Promise((res,rej) => { const r = new FileReader(); r.onload = e => res(e.target.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(cvFile); });
+      fileName = cvFile.name;
+    }catch(e){}
+  }
+  const a = cvAnalisis;
+  try{
+    const r = await fetch(API + '?endpoint=candidatos', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        nombre, telefono:tel, email:$('cvEmail').value.trim(), localidad:$('cvLoc').value, rubro:$('cvRubro').value,
+        archivo_base64:base64, archivo_nombre:fileName, texto_cv:(cvText||'').slice(0, 20000),
+        score_ia: a ? a.score_general : null, nivel_ia: a ? a.nivel : null,
+        fortalezas: a ? a.fortalezas.join(' · ') : null, mejoras: a ? a.mejoras.join(' · ') : null, mensaje_ia: a ? a.mensaje : null,
+        tc_aceptado:true, tc_fecha:new Date().toISOString()
+      })
+    });
+    if (!r.ok) throw new Error('API error');
+    $('cvSimpleForm').style.display = 'none';
+    $('cvSuccessMsg').style.display = 'block';
+    $('cvSuccessMsg').scrollIntoView({behavior:'smooth', block:'center'});
+  }catch(e){
+    showErr(err, `No pudimos enviar tus datos. Probá de nuevo, o escribinos directamente por <a href="${WA}" target="_blank" rel="noopener">WhatsApp</a>.`);
+  }
+  setBtn(btn, false, orig);
+}
+
+// ── EMPLOYER FORM ────────────────────────────────────────────────────────
+let currentPlan = 'basico';
+const planDescs = {
+  basico: 'Publicación gratuita visible por 30 días. Recibís los postulantes directamente.',
+  destacado: 'Mayor visibilidad, posición destacada en el listado y badge especial por 60 días.',
+  seleccion: 'Proceso completo: publicamos, filtramos candidatos, hacemos entrevistas y te presentamos la terna finalista.'
+};
+function selectPlan(plan){
+  currentPlan = plan;
+  document.querySelectorAll('.plan-pill').forEach(p => p.classList.toggle('selected', p.getAttribute('data-plan') === plan));
+  $('planDesc').textContent = planDescs[plan] || '';
+}
+
+async function submitEmpleo(){
+  const puesto = $('ePuesto').value.trim(), empresa = $('eEmpresa').value.trim(), localidad = $('eLocalidad').value;
+  const cat = $('eCategoria').value, contacto = $('eContacto').value.trim(), desc = $('eDesc').value.trim();
+  const err = $('empFormError');
+  if (!puesto||!empresa||!localidad||!cat||!contacto||!desc){ showErr(err, 'Completá todos los campos obligatorios (*).'); return; }
+  if (!$('eTc').checked){ showErr(err, 'Aceptá el aviso legal para publicar.'); return; }
+  err.style.display = 'none';
+  const btn = $('btnEmpleo'), orig = btn.innerHTML;
+  setBtn(btn, true, 'Publicando…');
+  const salario = $('eSalario').value.trim() || 'A convenir';
+  try{
+    const r = await fetch(API + '?endpoint=empleos', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({puesto, empresa, localidad, categoria:cat, tipo:$('eTipo').value, salario, contacto, descripcion:desc, plan:currentPlan, tc_aceptado:true})
+    });
+    if (!r.ok) throw new Error('API error');
+    loadJobs();
+    $('empFormPanel').style.display = 'none';
+    $('empleoSuccess').style.display = 'block';
+    if (currentPlan !== 'basico'){
+      const prices = {destacado:8000, seleccion:60000};
+      openCheckout('Publicación ' + currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1), prices[currentPlan] || 0);
+    }
+  }catch(e){
+    showErr(err, `No pudimos publicar el empleo. Probá de nuevo, o mandanos los datos por <a href="${WA}" target="_blank" rel="noopener">WhatsApp</a>.`);
+  }
+  setBtn(btn, false, orig);
+}
+function resetEmpleoForm(){
+  ['ePuesto','eEmpresa','eSalario','eContacto','eDesc'].forEach(id => $(id).value = '');
+  ['eLocalidad','eCategoria'].forEach(id => $(id).value = '');
+  $('eTc').checked = false;
+  selectPlan('basico');
+  $('empleoSuccess').style.display = 'none';
+  $('empFormPanel').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── CHECKOUT ─────────────────────────────────────────────────────────────
+let ckServicio = '', ckPrecio = 0;
+function openCheckout(servicio, precio){
+  ckServicio = servicio; ckPrecio = precio;
+  $('ckService').textContent = servicio;
+  $('ckPrice').innerHTML = '$' + precio.toLocaleString('es-AR') + ' <span>' + (/mensual/i.test(servicio) ? 'por mes' : 'pago único') + '</span>';
+  $('checkoutBody').style.display = 'block';
+  $('paySuccess').style.display = 'none';
+  $('ckFormError').style.display = 'none';
+  ['ckNombre','ckTel','ckEmail'].forEach(id => $(id).value = '');
+  $('ckTc').checked = false;
+  closeModal('jobModal');
+  openModal('checkoutModal');
+}
+async function procesarPago(){
+  const nombre = $('ckNombre').value.trim(), tel = $('ckTel').value.trim();
+  const err = $('ckFormError');
+  if (!nombre || !tel){ showErr(err, 'Completá nombre y teléfono.'); return; }
+  if (!$('ckTc').checked){ showErr(err, 'Aceptá el aviso legal.'); return; }
+  err.style.display = 'none';
+  const btn = $('btnPagar'), orig = btn.innerHTML;
+  setBtn(btn, true, 'Procesando…');
+  try{
+    const r = await fetch(API + '?endpoint=servicios', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({servicio: ckServicio, precio: ckPrecio, nombre, telefono: tel, email: $('ckEmail').value.trim()})
+    });
+    if (!r.ok) throw new Error('API error');
+    $('checkoutBody').style.display = 'none';
+    $('paySuccess').style.display = 'block';
+  }catch(e){
+    showErr(err, `No pudimos registrar la solicitud. Probá de nuevo, o escribinos por <a href="${WA}" target="_blank" rel="noopener">WhatsApp</a>.`);
+  }
+  setBtn(btn, false, orig);
+}
+
+// ── ANIMATED COUNTERS ────────────────────────────────────────────────────
+let counterObs = null;
+function initCounters(){
+  const els = document.querySelectorAll('[data-count]');
+  if (!('IntersectionObserver' in window)){
+    els.forEach(el => { el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix')||''); });
+    return;
+  }
+  if (counterObs) counterObs.disconnect();
+  counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        animateCounter(e.target, parseInt(e.target.getAttribute('data-count'), 10) || 0, e.target.getAttribute('data-suffix') || '');
+        counterObs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.4});
+  els.forEach(el => counterObs.observe(el));
+}
+function animateCounter(el, target, suffix){
+  const dur = 1100, t0 = performance.now();
+  (function tick(now){
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+// ── SCROLL REVEAL ────────────────────────────────────────────────────────
+let revealObs = null;
+function initReveal(){
+  const els = document.querySelectorAll('.page.active .rv:not(.in)');
+  if (!('IntersectionObserver' in window)){ els.forEach(el => el.classList.add('in')); return; }
+  if (!revealObs){
+    revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+    }, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+  }
+  els.forEach(el => revealObs.observe(el));
+}
+
+// ── HERO CAROUSEL ────────────────────────────────────────────────────────
+function initHeroCarousel(){
+  const imgs = Array.from(document.querySelectorAll('#heroCarousel img'));
+  const dots = Array.from(document.querySelectorAll('.hpd'));
+  if (imgs.length < 2) return;
+  let idx = 0, timer = null;
+  function go(n){
+    imgs[idx].classList.remove('active'); dots[idx] && dots[idx].classList.remove('active');
+    idx = (n + imgs.length) % imgs.length;
+    imgs[idx].classList.add('active'); dots[idx] && dots[idx].classList.add('active');
+    $('heroCaption').textContent = HERO_CAPTIONS[idx] || '';
+  }
+  function start(){ stop(); timer = setInterval(() => go(idx + 1), 5500); }
+  function stop(){ if (timer) clearInterval(timer); }
+  dots.forEach((d, i) => d.addEventListener('click', () => { go(i); start(); }));
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+  start();
+}
+
+// ── HOW IT WORKS TABS ────────────────────────────────────────────────────
+function initHowTabs(){
+  document.querySelectorAll('.tab[data-how]').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab[data-how]').forEach(x => { const on = x === t; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); });
+    $('how-cand').hidden = t.getAttribute('data-how') !== 'cand';
+    $('how-emp').hidden = t.getAttribute('data-how') !== 'emp';
+    const shown = t.getAttribute('data-how') === 'cand' ? $('how-cand') : $('how-emp');
+    shown.classList.add('in');
+  }));
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+function routeFromHash(){
+  const hash = (location.hash || '#inicio').slice(1);
+  const m = hash.match(/^empleo-(.+)$/);
+  if (m){
+    showPage('empleos', {keepHash:true});
+    const id = decodeURIComponent(m[1]);
+    const j = jobById(id);
+    if (j) openJob(j); else pendingJobId = id;
+    return;
+  }
+  showPage(PAGES.includes(hash) ? hash : 'inicio', {keepHash: PAGES.includes(hash)});
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  fillCatSelects();
+  routeFromHash();
+  loadJobs();
+  initMobileMenu();
+  initHeroCarousel();
+  initHowTabs();
+  initCvDrop();
+  initCounters();
+  $('year').textContent = new Date().getFullYear();
+
+  $('heroSearch').addEventListener('submit', e => {
+    e.preventDefault();
+    $('searchQ').value = $('heroQ').value; $('searchCat').value = $('heroCat').value; $('searchLoc').value = '';
+    showPage('empleos'); filterJobs();
+  });
+  $('jobsSearch').addEventListener('submit', e => { e.preventDefault(); filterJobs(); $('searchQ').blur(); });
+  $('searchQ').addEventListener('input', filterJobs);
+  $('searchCat').addEventListener('change', filterJobs);
+  $('searchLoc').addEventListener('change', filterJobs);
+  $('clearFilters').addEventListener('click', () => { $('searchQ').value = ''; $('searchCat').value = ''; $('searchLoc').value = ''; filterJobs(); });
+
+  document.querySelectorAll('.plan-pill').forEach(p => p.addEventListener('click', () => selectPlan(p.getAttribute('data-plan'))));
+  $('btnEmpleo').addEventListener('click', submitEmpleo);
+  $('btnOtroEmpleo').addEventListener('click', resetEmpleoForm);
+  $('btnCvSubmit').addEventListener('click', submitCvSimple);
+  $('btnPagar').addEventListener('click', procesarPago);
+
+  // Tarjetas de empleo accesibles con teclado.
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.job-card')){ e.preventDefault(); openJob(jobById(e.target.getAttribute('data-job-id'))); }
+  });
+
+  const nav = $('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+});
+window.addEventListener('hashchange', routeFromHash);
+</script>
+</body>
+</html>
